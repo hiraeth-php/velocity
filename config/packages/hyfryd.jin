@@ -28,3 +28,9 @@
 	providers = [
 
 	]
+
+[templates]
+
+	paths = {
+		"tags": "vendor/hiraeth/hyfryd/tags"
+	}
