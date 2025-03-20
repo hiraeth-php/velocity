@@ -1,0 +1,24 @@
+{% set url = url|default(null) %}
+
+{% set content %}
+    <button class="p-4 cursor-pointer" title="{{ text|default('Unknown') }}">
+        {% if children|length %}
+            {{ children|join|raw }}
+        {% else %}
+            {% if icon|default(false) %}
+                <i::icon class:="w-6" name="{{ icon }}" color="{{ color|default('white') }}" />
+            {% endif %}
+            <span class="block mt-1 text-xs">
+                {{ text|default('Unknown') }}
+            </span>
+        {% endif %}
+    </button>
+{% endset %}
+
+{% if url %}
+    <a href="{{ url }}">
+        {{ content }}
+    </a>
+{% else %}
+    {{ content }}
+{% endif %}

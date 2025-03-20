@@ -1,0 +1,8 @@
+<t::message
+    color="error"
+    icon="close-circle-line"
+    ghost={% v: ghost|default(false) %}
+    boxed={% v: boxed|default(false) %}
+>
+    {{ children|join|raw }}
+</t::message>

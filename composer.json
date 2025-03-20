@@ -1,0 +1,44 @@
+{
+    "name": "hiraeth/hyfryd",
+    "description": "A view-first component-based application framework",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "license": "MIT",
+    "authors": [
+        {
+            "name":  "Matthew J. Sahagian",
+            "email": "matthew.sahagian@gmail.com",
+            "role":  "Lead Architect / Developer"
+        }
+    ],
+    "require": {
+        "hiraeth/app": "^3.0",
+        "hiraeth/twig-tags": "^3.0",
+        "hiraeth/http-imp": "^3.0",
+        "hiraeth/middleware-imp": "^3.0"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^1.0",
+        "phpunit/phpunit": "^10.0",
+        "hiraeth/diactoros": "^3.0",
+        "hiraeth/harmony": "^3.0"
+    },
+    "autoload": {
+        "classmap": [
+            "src"
+        ]
+    },
+    "type": "opus-package",
+    "extra": {
+        "opus": {
+            "hiraeth/app": {
+                "config": ""
+            }
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "imarc/opus": true
+        }
+    }
+}

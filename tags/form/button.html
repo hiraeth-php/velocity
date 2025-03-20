@@ -1,0 +1,5 @@
+{% set type = type|default('submit') %}
+
+<t::button type:="{{ type }}">
+    {{ children|join|raw }}
+</t::button>

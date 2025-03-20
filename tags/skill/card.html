@@ -1,0 +1,36 @@
+<li class="
+    flex flex-col snap-center snap-always border-2 border-zinc-400 rounded-md
+    {# after:z-50 after:block after:w-0.5 after:bg-gray-400 after:absolute after:top-[calc(50%-25px)] after:h-[50px] after:-right-5 only:after:hidden last:after:hidden #}
+">
+    <header class="flex-grow-0 p-4 border-b-2 border-b-zinc-400">
+        <h3 class="font-bold text-secondary">{{ skill.title|default('Unknown') }}</h3>
+    </header>
+    <div class="p-4 flex flex-col flex-grow flex-shrink">
+        <div class="mb-4">
+            <t:skill:badge level="{{ random(4) }}" />
+        </div>
+
+        <p class="line-clamp-4">
+            {% if skill.description|default(null) %}
+                {{ skill.description }}
+            {% else %}
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            {% endif %}
+        </p>
+    </div>
+    <footer class="flex justify-start items-center bg-lift-300 p-4 text-base-800">
+        <a class="btn btn-xs btn-primary mr-2" href="#">Build</a>
+        <a class="btn btn-xs btn-secondary mr-2" href="#">Explore</a>
+
+        <div class="leading-none justify-self-end ml-auto">
+            {% for image in 1..5 %}
+                <a href="#" class="inline-block float-left ml-[-10px] rounded-full overflow-clip w-6 aspect-square">
+                    <img class="inline-block w-full h-full" src="https://i.pravatar.cc/{{ random(32, 64) }}" />
+                </a>
+            {% endfor %}
+            <button class="inline-block ml-2 p-0 w-6" hx-get="/io/skills/recognize" hx-target="#dialog" hx-on::after-request="document.querySelector('#modal').show()">
+                <i::icon name="add-line" />
+            </button>
+        </div>
+    </footer>
+</li>

@@ -1,0 +1,43 @@
+{% set url   = url|default(null) %}
+{% set text  = text|default('...') %}
+{% set color = color|default('base') %}
+{% set ghost = ghost|default(false)|bool %}
+{% set mods  = [
+    'inline-block',
+    'cursor-pointer',
+    'font-button',
+    'rounded-button',
+    'py-2',
+    'px-4',
+] %}
+
+{% if ghost %}
+    {% set mods = mods|merge([
+        'text-' ~ color ~ '-500',
+        'border-1'
+    ]) %}
+{% else %}
+    {% set mods = mods|merge([
+        'bg-' ~ color ~ '-400',
+        'text-base-900'
+    ]) %}
+{% endif %}
+
+{% set content %}
+    {% if children|length %}
+        {{ children|join|raw }}
+    {% else %}
+        {{ text }}
+    {% endif %}
+{% endset %}
+
+{% if url %}
+    <a class="{{ mods|join(' ') }}" href="{{ url }}">
+        {{ content }}
+    </a>
+{% else %}
+    <button class="{{ mods|join(' ') }}">
+        {{ content }}
+    </button>
+{% endif %}
+

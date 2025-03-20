@@ -1,0 +1,49 @@
+{% set icon = icon|default(null) %}
+
+{% set color = color|default('base-500') %}
+{% set boxed = boxed|default(ghost|default(false))|bool %}
+{% set ghost = ghost|default(false)|bool %}
+{% set icon  = icon|default('notification-line') %}
+{% set mods  = [] %}
+
+{% if boxed %}
+    {% set mods = mods|merge(['p-4']) %}
+
+    {% if ghost %}
+        {% set mods = mods|merge([
+            'text-' ~ color ~ '-500',
+            'border-1'
+        ]) %}
+    {% else %}
+        {% set mods = mods|merge([
+            'bg-' ~ color ~ '-400',
+            'text-base-900'
+        ]) %}
+    {% endif %}
+{% else %}
+    {% set mods = mods|merge([
+        'text-' ~ color ~ '-500'
+    ]) %}
+{% endif %}
+
+{% if icon %}
+    {% if boxed %}
+        {% set mods = mods|merge([
+            'pl-12
+        ']) %}
+    {% else %}
+        {% set mods = mods|merge([
+            'pl-8'
+        ]) %}
+    {% endif %}
+{% endif %}
+
+<div role="alert" class="relative font-message rounded-message mb-4 {{ mods|join(' ') }}">
+    {% if icon %}
+        <i::icon
+            name="{{ icon }}"
+            class:="w-[1.5em] absolute {{ boxed ? 'left-3 top-4.25' : 'left-0' }}"
+        />
+    {% endif %}
+    {{ children|join|raw }}
+</div>

@@ -1,0 +1,61 @@
+{% set animate = animate|default(false)|bool %}
+{% set capture = capture|default(false)|bool %}
+
+<section
+    x-data="{
+        open: false,
+        shade: $id('shade'),
+        toggle() {
+            if (this.isAutoclose) {
+                if (this.opened != this.shade) {
+                    this.opened = this.shade;
+                } else {
+                    this.opened = null;
+                }
+
+            } else {
+                this.open = ! this.open;
+            }
+
+            if (!this.isOpen) {
+                $dispatch('shade-closed', { el: $el });
+            }
+        },
+        get isAutoclose() {
+            if ('accordion' in $el.parentElement.dataset) {
+                return this.autoclose;
+            }
+
+            return false;
+        },
+        get isOpen() {
+            return this.isAutoclose ? this.opened == this.shade : this.open;
+        }
+    }"
+>
+    <div
+        {% if capture %}
+            x-on:click="toggle()"
+        {% endif %}
+        class="flex items-end cursor-pointer"
+    >
+        <x::fragment class:="grow">
+            {{ children[0]|default(null)|raw }}
+        </x::fragment>
+
+        <x::fragment class:="w-6 ml-4 shrink-0">
+            <i::icon x-show:="!isOpen" x-on:click:="toggle()" name="expand-up-down-line" />
+            <i::icon x-show:="isOpen"  x-on:click:="toggle()" name="arrow-down-s-line" />
+        </x::fragment>
+    </div>
+
+    <div
+        x-show="isOpen"
+        {% if animate %}
+            x-transition
+        {% endif %}
+        class="mt-4"
+    >
+        {{ children|slice(1)|join|raw }}
+    </div>
+</section>

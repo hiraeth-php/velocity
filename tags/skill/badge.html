@@ -1,0 +1,27 @@
+{% set levels = [
+    {
+        name: 'Trusted',
+        color: 'bg-lime-500'
+    },
+    {
+        name: 'Endorsed',
+        color: 'bg-yellow-300'
+    },
+    {
+        name: 'Recognized',
+        color: 'bg-orange-500',
+    },
+    {
+        name: 'Claimed',
+        color: 'bg-red-600'
+    },
+    {
+        name: 'Unverified',
+        color: 'bg-gray-400'
+    }
+] %}
+
+<span>
+    <i class="status inline-block w-3 h-3 {{ levels[level].color }} rounded-full mr-2" />
+    {{ levels[level].name }}
+</span>

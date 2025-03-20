@@ -1,0 +1,19 @@
+{% set autoclose = autoclose|default(false)|bool %}
+
+<div
+    data-accordion
+    x-data="{
+        opened: null,
+        autoclose: {{ autoclose|int }},
+        collapse($shade) {
+            if (this.autoclose) {
+                if ($shade.contains($el)) {
+                    this.opened = null;
+                }
+            }
+        }
+    }"
+    x-on:shade-closed.window="collapse($event.detail.el)"
+>
+   {{ children|join|raw }}
+</div>
