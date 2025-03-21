@@ -1,0 +1,10 @@
+{% set name  = name|default('question-line') %}
+{% set color = color|default('current') %}
+
+<i class="inline-block aspect-square text-{{ color }}">
+    {% if name|slice(0, 1) == '@' %}
+        {% include name %}
+    {% else %}
+        {% include '@icons/' ~ name ~ '.svg' %}
+    {% endif %}
+</i>

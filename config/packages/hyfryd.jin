@@ -31,6 +31,10 @@
 
 [templates]
 
+	priority = 100
+
 	paths = {
-		"tags": "vendor/hiraeth/hyfryd/tags"
+		"pages": "vendor/hiraeth/hyfryd/resources/pages",
+		"icons": "vendor/hiraeth/hyfryd/resources/icons",
+		"tags":  "vendor/hiraeth/hyfryd/resources/tags"
 	}
