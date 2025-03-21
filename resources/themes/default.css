@@ -1,0 +1,214 @@
+@import url('https://fonts.googleapis.com/css?Noto+Sans:ital,wght@0,100..900;1,100..900&family=Shrikhand&display=swap');
+
+@theme {
+	--spacing: .25rem;
+	--radius-default: var(--radius-none);
+
+	/**
+	 * Messages
+	 */
+
+	--font-weight-message: 600;
+	--radius-message: var(--radius-default);
+
+	--font-weight-button: 400;
+	--radius-button: var(--radius-md);
+
+
+	--color-base-50:  var(--color-zinc-50);
+	--color-base-100: var(--color-zinc-100);
+	--color-base-200: var(--color-zinc-200);
+	--color-base-300: var(--color-zinc-300);
+	--color-base-400: var(--color-zinc-400);
+	--color-base-500: var(--color-zinc-500);
+	--color-base-600: var(--color-zinc-600);
+	--color-base-700: var(--color-zinc-700);
+	--color-base-800: var(--color-zinc-800);
+	--color-base-900: var(--color-zinc-900);
+	--color-base-950: var(--color-zinc-950);
+
+	--color-info-50:  var(--color-cyan-50);
+	--color-info-100: var(--color-cyan-100);
+	--color-info-200: var(--color-cyan-200);
+	--color-info-300: var(--color-cyan-300);
+	--color-info-400: var(--color-cyan-400);
+	--color-info-500: var(--color-cyan-500);
+	--color-info-600: var(--color-cyan-600);
+	--color-info-700: var(--color-cyan-700);
+	--color-info-800: var(--color-cyan-800);
+	--color-info-900: var(--color-cyan-900);
+	--color-info-950: var(--color-cyan-950);
+
+	--color-warn-50:  var(--color-amber-50);
+	--color-warn-100: var(--color-amber-100);
+	--color-warn-200: var(--color-amber-200);
+	--color-warn-300: var(--color-amber-300);
+	--color-warn-400: var(--color-amber-400);
+	--color-warn-500: var(--color-amber-500);
+	--color-warn-600: var(--color-amber-600);
+	--color-warn-700: var(--color-amber-700);
+	--color-warn-800: var(--color-amber-800);
+	--color-warn-900: var(--color-amber-900);
+	--color-warn-950: var(--color-amber-950);
+
+	--color-error-50:  var(--color-rose-50);
+	--color-error-100: var(--color-rose-100);
+	--color-error-200: var(--color-rose-200);
+	--color-error-300: var(--color-rose-300);
+	--color-error-400: var(--color-rose-400);
+	--color-error-500: var(--color-rose-500);
+	--color-error-600: var(--color-rose-600);
+	--color-error-700: var(--color-rose-700);
+	--color-error-800: var(--color-rose-800);
+	--color-error-900: var(--color-rose-900);
+	--color-error-950: var(--color-rose-950);
+
+	--color-success-50:  var(--color-emerald-50);
+	--color-success-100: var(--color-emerald-100);
+	--color-success-200: var(--color-emerald-200);
+	--color-success-300: var(--color-emerald-300);
+	--color-success-400: var(--color-emerald-400);
+	--color-success-500: var(--color-emerald-500);
+	--color-success-600: var(--color-emerald-600);
+	--color-success-700: var(--color-emerald-700);
+	--color-success-800: var(--color-emerald-800);
+	--color-success-900: var(--color-emerald-900);
+	--color-success-950: var(--color-emerald-950);
+
+
+
+}
+
+@layer base {
+	@media (prefers-color-scheme: dark) {
+		:root, :host {
+			--color-base-50:  var(--color-zinc-950);
+			--color-base-100: var(--color-zinc-900);
+			--color-base-200: var(--color-zinc-800);
+			--color-base-300: var(--color-zinc-700);
+			--color-base-400: var(--color-zinc-600);
+			--color-base-500: var(--color-zinc-500);
+			--color-base-600: var(--color-zinc-400);
+			--color-base-700: var(--color-zinc-300);
+			--color-base-800: var(--color-zinc-200);
+			--color-base-900: var(--color-zinc-100);
+			--color-base-950: var(--color-zinc-50);
+
+			--color-info-50:  var(--color-cyan-950);
+			--color-info-100: var(--color-cyan-900);
+			--color-info-200: var(--color-cyan-800);
+			--color-info-300: var(--color-cyan-700);
+			--color-info-400: var(--color-cyan-600);
+			--color-info-500: var(--color-cyan-500);
+			--color-info-600: var(--color-cyan-400);
+			--color-info-700: var(--color-cyan-300);
+			--color-info-800: var(--color-cyan-200);
+			--color-info-900: var(--color-cyan-100);
+			--color-info-950: var(--color-cyan-50);
+
+			--color-warn-50:  var(--color-amber-950);
+			--color-warn-100: var(--color-amber-900);
+			--color-warn-200: var(--color-amber-800);
+			--color-warn-300: var(--color-amber-700);
+			--color-warn-400: var(--color-amber-600);
+			--color-warn-500: var(--color-amber-500);
+			--color-warn-600: var(--color-amber-400);
+			--color-warn-700: var(--color-amber-300);
+			--color-warn-800: var(--color-amber-200);
+			--color-warn-900: var(--color-amber-100);
+			--color-warn-950: var(--color-amber-50);
+
+			--color-error-50:  var(--color-rose-950);
+			--color-error-100: var(--color-rose-900);
+			--color-error-200: var(--color-rose-800);
+			--color-error-300: var(--color-rose-700);
+			--color-error-400: var(--color-rose-600);
+			--color-error-500: var(--color-rose-500);
+			--color-error-600: var(--color-rose-400);
+			--color-error-700: var(--color-rose-300);
+			--color-error-800: var(--color-rose-200);
+			--color-error-900: var(--color-rose-100);
+			--color-error-950: var(--color-rose-50);
+
+			--color-success-50:  var(--color-emerald-950);
+			--color-success-100: var(--color-emerald-900);
+			--color-success-200: var(--color-emerald-800);
+			--color-success-300: var(--color-emerald-700);
+			--color-success-400: var(--color-emerald-600);
+			--color-success-500: var(--color-emerald-500);
+			--color-success-600: var(--color-emerald-400);
+			--color-success-700: var(--color-emerald-300);
+			--color-success-800: var(--color-emerald-200);
+			--color-success-900: var(--color-emerald-100);
+			--color-success-950: var(--color-emerald-50);
+
+
+		}
+	}
+
+	@keyframes fade-in {
+		from { opacity: 0; }
+	}
+
+	@keyframes fade-out {
+		to { opacity: 0; }
+	}
+
+	::view-transition-old(fade-it) {
+		animation: 200ms cubic-bezier(0.4, 0, 1, 1) both fade-out;
+	}
+	::view-transition-new(fade-it) {
+		animation: 350ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in;
+	}
+
+	:focus {
+		@apply outline-0;
+	}
+
+	body {
+		@apply flex flex-col-reverse overflow-hidden bg-base-50 text-base-800 font-light font-sans;
+	}
+
+	h1, h2, h3 {
+		@apply font-bold mb-2;
+	}
+
+	h1 {
+		@apply text-3xl;
+	}
+
+	h2 {
+		@apply text-2xl;
+	}
+
+	p:not(:last-child) {
+		@apply mb-[2em];
+	}
+
+	hr {
+		@apply my-8;
+	}
+
+	pre {
+		@apply p-4 rounded-sm mb-4 !bg-base-200/80;
+	}
+
+	code {
+		@apply p-0.5 px-1.5 !bg-base-700/10 !text-base-700 rounded-xs text-sm font-mono;
+	}
+
+	svg {
+		@apply w-full h-auto;
+	}
+}
+
+@layer utilities {
+	.no-scrollbar::-webkit-scrollbar {
+		display: none;
+	}
+
+	.no-scrollbar {
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+}

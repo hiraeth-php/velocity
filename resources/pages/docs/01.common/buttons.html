@@ -1,0 +1,36 @@
+{% set text %}
+    Click Me!
+{% endset %}
+
+{% set signature = {
+    ghost: 'Thingy',
+    color: 'Sets the color of the button',
+} %}
+
+<header>
+    <h3 class="mb-0">
+        Buttons
+    </h3>
+    {% apply markdown %}
+        `<x::button>`
+
+        | Property  | Description
+        |-----------|------------------------
+        {% for i in signature|keys %}
+            | `{{ i }}` | {{ signature[i] }}
+        {% endfor %}
+    {% endapply %}
+</header>
+
+{% apply markdown %}
+    ```xml
+    <x::button>
+        {{ text|trim }}
+    </x::button>
+    ```
+{% endapply %}
+<x::button>
+    {% apply markdown %}
+        {{ text|trim }}
+    {% endapply %}
+</x::button>

@@ -1,0 +1,118 @@
+{% set message %}
+    This is my message. I hope you receive it.
+{% endset %}
+
+<header>
+    <h3 class="mb-0">
+        Messages and Alerts
+    </h3>
+    {% apply markdown %}
+        Messages and alerts use the `x::message` root component.  We can use this component to show
+    {% endapply %}
+</header>
+
+
+{% apply markdown %}
+    ```xml
+    <x::message>
+        {{ message|trim }}
+    </x::message>
+    ```
+{% endapply %}
+<x::message>
+    {% apply markdown %}
+        {{ message|trim }}
+    {% endapply %}
+</x::message>
+
+<hr />
+
+{% apply markdown %}
+    ```xml
+    <x::message boxed class:="bg-stone-300 dark:bg-stone-800">
+        {{ message|trim }}
+    </x::message>
+    ```
+{% endapply %}
+<x::message boxed class:="bg-stone-300 dark:bg-stone-800">
+    {% apply markdown %}
+        {{ message|trim }}
+    {% endapply %}
+</x::message>
+
+<hr />
+
+{% apply markdown %}
+    ```xml
+    <x::message ghost>
+        {{ message|trim }}
+    </x::message>
+    ```
+{% endapply %}
+<x::message ghost>
+    {% apply markdown %}
+        {{ message|trim }}
+    {% endapply %}
+</x::message>
+
+<hr />
+
+{% apply markdown %}
+    ```xml
+    <x::message ghost class:="border-dashed">
+        {{ message|trim }}
+    </x::message>
+    ```
+{% endapply %}
+<x::message ghost class:="border-dashed">
+    {% apply markdown %}
+        {{ message|trim }}
+    {% endapply %}
+</x::message>
+
+<hr>
+
+{% apply markdown %}
+    Using the alert component you can get specific variations base on your theme.  For example:
+
+    ```xml
+    <x:alert:info ghost>
+        {{ message|trim }}
+    </x:alert:info>
+
+    <x:alert:warn ghost>
+        {{ message|trim }}
+    </x:alert:warn>
+
+    <x:alert:error ghost>
+        {{ message|trim }}
+    </x:alert:error>
+
+    <x:alert:success ghost>
+        {{ message|trim }}
+    </x:alert:success>
+    ```
+{% endapply %}
+<x:alert:info ghost>
+    {% apply markdown %}
+        {{ message|trim }}
+    {% endapply %}
+</x:alert:info>
+
+<x:alert:warn ghost>
+    {% apply markdown %}
+        {{ message|trim }}
+    {% endapply %}
+</x:alert:warn>
+
+<x:alert:error ghost>
+    {% apply markdown %}
+        {{ message|trim }}
+    {% endapply %}
+</x:alert:error>
+
+<x:alert:success ghost>
+    {% apply markdown %}
+        {{ message|trim }}
+    {% endapply %}
+</x:alert:success>

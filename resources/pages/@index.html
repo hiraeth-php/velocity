@@ -1,4 +1,4 @@
-{% use '@layouts/global.html' %}
+{% set hyfryd = app.config('~', 'hyfryd', []) %}
 
 <!doctype html>
 <html lang="en" hx-boost="true" hx-target="#main" hx-swap="innerHTML">
@@ -10,21 +10,23 @@
         {% endif %}
 
         <link rel="preconnect" href="https://cdn.jsdelivr.net">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
         <script defer src="https://cdn.jsdelivr.net/npm/htmx.org@2.x.x/dist/htmx.min.js" crossorigin></script>
-        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" crossorigin></script>
 
-        {% block links %}
+        <style type="text/tailwindcss">
+            {% include '@vendor/hiraeth/hyfryd/resources/themes/' ~ hyfryd.theme.tags ~ '.css' %}
+        </style>
 
-        {% endblock %}
-
-        {% block scripts %}
+        {% block head %}
 
         {% endblock %}
     </head>
     <body>
         <main id="main">
-
         </main>
         <input type="hidden" hx-trigger="load" hx-get="{{ request.uri.path }}" />
     </body>
