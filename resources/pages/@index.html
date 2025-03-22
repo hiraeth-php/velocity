@@ -28,6 +28,6 @@
     <body>
         <main id="main">
         </main>
-        <input type="hidden" hx-trigger="load" hx-get="{{ request.uri.path }}" />
+        <input type="hidden" hx-trigger="load" hx-get="{{ route(request.uri.path) }}" />
     </body>
 </html>

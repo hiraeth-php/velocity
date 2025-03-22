@@ -2,6 +2,10 @@
     Click Me!
 {% endset %}
 
+{% set result %}
+    Message Received!
+{% endset %}
+
 {% set signature = {
     ghost: 'Thingy',
     color: 'Sets the color of the button',
@@ -24,12 +28,12 @@
 
 {% apply markdown %}
     ```xml
-    <x::button>
+    <x::button onclick:="alert('{{ result|trim }}')">
         {{ text|trim }}
     </x::button>
     ```
 {% endapply %}
-<x::button>
+<x::button onclick:="alert('{{ result|trim }}')">
     {% apply markdown %}
         {{ text|trim }}
     {% endapply %}

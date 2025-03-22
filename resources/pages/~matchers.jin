@@ -1,5 +1,14 @@
-[/]
+;
+; If there's already a local `@index.html` we don't want
+; to disrupt it.
+;
 
-	consume = true
-	include = ["@"]
-	pattern = .*
+{% if not app.hasFile('resources/pages/@index.html') %}
+
+	[/]
+
+		consume = true
+		include = ["@"]
+		pattern = .*
+
+{% endif %}

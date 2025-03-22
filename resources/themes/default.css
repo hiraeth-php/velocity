@@ -1,14 +1,16 @@
-@import url('https://fonts.googleapis.com/css?Noto+Sans:ital,wght@0,100..900;1,100..900&family=Shrikhand&display=swap');
+@import 'tailwindcss';
+@import url('https://fonts.googleapis.com/css?Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
 @theme {
 	--spacing: .25rem;
 	--radius-default: var(--radius-none);
+	--font-sans: 'Noto Sans';
 
 	/**
 	 * Messages
 	 */
 
-	--font-weight-message: 600;
+	--font-weight-message: 400;
 	--radius-message: var(--radius-default);
 
 	--font-weight-button: 400;
@@ -165,8 +167,12 @@
 		@apply outline-0;
 	}
 
+	html {
+		@apply text-lg;
+	}
+
 	body {
-		@apply flex flex-col-reverse overflow-hidden bg-base-50 text-base-800 font-light font-sans;
+		@apply flex flex-col-reverse bg-base-50 text-base-800 font-sans m-8;
 	}
 
 	h1, h2, h3 {
@@ -189,8 +195,8 @@
 		@apply my-8;
 	}
 
-	pre {
-		@apply p-4 rounded-sm mb-4 !bg-base-200/80;
+	pre[data-lang] {
+		@apply p-4 rounded-sm mb-4 drop-shadow-md !bg-white/50 dark:!bg-white/5;
 	}
 
 	code {
@@ -199,6 +205,22 @@
 
 	svg {
 		@apply w-full h-auto;
+	}
+
+	a:not([class]) {
+		@apply underline decoration-1 decoration-base-950 decoration-dotted underline-offset-2;
+	}
+
+	ul:not([class]), ol:not([class]) {
+		@apply list-inside mb-4;
+	}
+
+	ul:not([class]) {
+		@apply list-disc;
+	}
+
+	ol:not([class]) {
+		@apply list-decimal;
 	}
 }
 

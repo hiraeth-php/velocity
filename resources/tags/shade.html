@@ -32,6 +32,7 @@
             return this.isAutoclose ? this.opened == this.shade : this.open;
         }
     }"
+    class="first:pt-0 last:pb-0"
 >
     <div
         {% if capture %}
@@ -39,13 +40,20 @@
         {% endif %}
         class="flex items-end cursor-pointer"
     >
-        <x::fragment class:="grow">
+        <x::fragment
+            class:="grow"
+        >
             {{ children[0]|default(null)|raw }}
         </x::fragment>
 
-        <x::fragment class:="w-6 ml-4 shrink-0">
-            <i::icon x-show:="!isOpen" x-on:click:="toggle()" name="expand-up-down-line" />
-            <i::icon x-show:="isOpen"  x-on:click:="toggle()" name="arrow-down-s-line" />
+        <x::fragment
+            {% if not capture %}
+                x-on:click:="toggle()"
+            {% endif %}
+            class:="w-6 ml-4 shrink-0"
+        >
+            <i::icon x-show:="!isOpen" name="expand-up-down-line" />
+            <i::icon x-show:="isOpen"  name="arrow-down-s-line" />
         </x::fragment>
     </div>
 

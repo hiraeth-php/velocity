@@ -1,0 +1,39 @@
+{% apply markdown %}
+    # Welcome to Hyfryd
+
+    Hyfryd is an opinionated application framework built on Hiraeth.  It takes a view-first component-based approach, using Tailwind, HTMX and AlpineJS to create dynamic and fast experiences with the full power of PHP.
+
+    ## Installation
+
+    1. [Install Hiraeth](https://hiraeth.dev/docs/3.0/installation)
+    2. Add Hyfryd
+
+    ```
+    composer require hiraeth/hyfrid
+    ```
+{% endapply %}
+
+<x:alert:info ghost>
+    {% apply markdown %}
+        You can install Hyfryd into an existing project to make use of its components, however, if you're already making use of static pages, see [here](#routing) for pitfalls.
+    {% endapply %}
+</x:alert:info>
+
+<x::accordion autoclose>
+    {% for section in app.run('glob', [app.directory('vendor/hiraeth/hyfryd/resources/pages/docs') ~ '/*', constant('GLOB_ONLYDIR')]) %}
+        {% set folder = app.run('basename', [section]) %}
+        {% set title  = app.run('pathinfo', [section, constant('PATHINFO_EXTENSION')])|title %}
+        <x::shade animate capture>
+            <h2 class="mb-0">
+                {{ title }}
+            </h2>
+            <x::accordion autoclose>
+                {% for component in app.run('glob', [section ~ '/*']) %}
+                    <t::shade animate class:="py-8 border-b-2 border-cyan-500 last:border-0">
+                        {% include '@pages/docs/' ~ folder ~ '/' ~ app.run('basename', [component]) %}
+                    </t::shade>
+                {% endfor %}
+            </x::accordion>
+        </x>
+    {% endfor %}
+</x::accordion>
