@@ -52,24 +52,6 @@
 </x:alert:info>
 
 {% apply markdown %}
-    By default the body the index entry point (`@index.html`) is a single `<main>` element which acts as the HTMX boost load target.  In most cases you're going to want to put things like navigational elements outside of this target and not reload them on every page (which is kinda the point).
-
-    To do this, to overload the default index entry point (@index.html) and specify your layout.  The element which should load boosted partials by default **must** have an `id="portal"`:
-
-    {: .mb-0}
-    `resources/pages/@index.html`
-    ```html{% verbatim %}
-    {% extends '@vendor/hiraeth/hyfryd/resources/pages/@index.html' %}
-
-    {% block body %}
-        <!-- nav or starting wrappers -->
-        <main id="portal">
-            <!-- boosted partials will be loaded here -->
-        </main>
-        <!-- footer or ending wrappers -->
-    {% endblock %}
-    {% endverbatim %}```
-
     ## Branching (Routing) {: #branching}
 
     One of the major reasons modern backend applications use routers is because we want to make nice clean URLs based on informaton provided in URL segments.  Hyfryd uses a concept called branching instead, which makes use of the existing filesystem hierarchy corresponding to request paths to replace segments that match certain patterns while parsing them and populating the mapped parameters.  So, what do you do if you to access `/users/1`, parse the `1` as the user ID, and render it with a detail template?
@@ -168,51 +150,128 @@
 </x:alert:info>
 
 {% apply markdown %}
-    ## Theming {: #theming}
+    ## Production {: #production}
 
-    To try a different theme or customize your own simply copy the theme you want from the vendor directory. The default theme will act as a good baseline and should allow for fairly easy customization.  It provides tailwind configuration for colors which are required for Hyfrid components, as well as various other variables which control how components display.:
+    By default, CDN-based dependencies are used for all front-end libraries including Tailwind, HTMX, and AlpineJS.  This is designed to make development and prototyping faster out of the box.  This also works well for very basic cases, however, more advanced users will likely want to build or bundle their own front-end assets, add custom tags, or modify the basic body structure.
 
-    ```
-    cp vendor/hiraeth/hyfrid/themes/default.css resources/hyfrid.css
-    ```
-
-    ## Moving to Production {: #production}
-
-    By default, Hyfryd uses external CDN dependencies for all front-end libraries including Tailwind, HTMX, and AlpineJS.  This is designed to make development and prototyping faster out of the box.  In order to move to production you will need to change a few things.
-
-    Use `npm` or similar package manger to install and build dependencies:
+    If you opt to build or bundle your own custom assets, you'll want to make sure you target:
 
     - Tailwind 4.x
     - HTMLX 2.x
     - AlpineJS 3.x
 
-    You can use whatever build/bundling tool you like, but once built you will need to overload the default index entry point (`@index.html`) and specify your JS/CSS bundled files:
+    To begin this process, you want to overload and extend the supplied entry point (`@index.html`).  This begins by simply creating a new file:
 
     {: .mb-0}
     `resources/pages/@index.html`
-    ```html{% verbatim %}
+    ```xml{% verbatim %}
     {% extends '@vendor/hiraeth/hyfryd/resources/pages/@index.html' %}
+    {% endverbatim %}```
 
+    This template includes two overloadable blocks, `head` and `body`.  Each of these corresponds to the brunt of the HTML element with the same name.
+
+    ### Head
+
+    The `head` block is responsible for loading all assets, ergo, if you want to build a production CSS file with tailwind.  This is where to start.  As a simple example, let's take a look at what this site uses.  Add the following:
+
+    ```xml{% verbatim %}
     {% block head %}
-        <!-- Your script / style tags here -->
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+        <script defer src="https://cdn.jsdelivr.net/npm/htmx.org@2.x.x/dist/htmx.min.js" crossorigin></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" crossorigin></script>
+
+        <link rel="stylesheet" href="/assets/app.css" />
     {% endblock %}
     {% endverbatim %}```
-{% endapply %}
 
-<x:alert:info ghost class:="border-dashed">
-    {% apply markdown %}
-        Don't forget to bundle your theme!
-    {% endapply %}
-</x:alert:info>
+    Here, we continue using the CDN version of HTMX and AlpineJS, but for our CSS, we opt to use a compiled file.  Which build or bundling system you use is up to you.  However, in the case of Tailwind, you want to ensure that you import the following:
 
-{% apply markdown %}
+    |Source|Description|
+    |-|-|
+    |`vendor/hiraeth/hyfryd/sources.css`|Ensures Tailwind sources appropriate directories, namely, `resources`.
+    |`vendor/hiraeth/hyfryd/themes/<theme>.css`|Includes a selected theme, replace `<theme>` with desire theme.
+
+    Continuing with the example of this site, we add the following:
+
+    {: .mb-0}
+    `resources/app.css`
+    ```css
+    @import '../vendor/hiraeth/hyfryd/sources.css';
+    @import '../vendor/hiraeth/hyfryd/themes/default.css';
+    ```
+
+    As well as a simplified package and build process:
+
+    {: .mb-0 }
+    `package.json`
+    ```json
+    {
+    "dependencies": {
+        "@tailwindcss/cli": "^4.0.14",
+        "tailwindcss": "^4.0.14"
+    },
+    "scripts": {
+        "start": "concurrently --kill-others 'npm run watch' 'npm run serve'",
+        "watch": "npx @tailwindcss/cli -i ./resources/app.css -o ./public/assets/app.css --watch",
+        "build": "npx @tailwindcss/cli --minify -i ./resources/app.css -o ./public/assets/app.css",
+        "serve": "php bin/server"
+    },
+    "devDependencies": {
+        "concurrently": "^9.1.2"
+    }
+    }
+    ```
+
+    Using the above, you can run development and watch for changes via:
+
+    ```
+    npm run start
+    ```
+
+    Or build for production with:
+
+    ```
+    npm run build
+    ```
+
+    ### Body
+
+    The default `body` block is a single `<main>` element which acts as the HTMX boost load target.  In most cases you're going to want to put things like navigational elements outside of this target and not reload them on every page (which is kinda the point).
+
+    To do this, add another block to your entry point ensuring that the element which should load boosted partials by default has the `portal` ID, e.g. `id="portal"`:
+
+    {: .mb-0}
+    `resources/pages/@index.html`
+    ```xml{% verbatim %}
+    {% block body %}
+        <!-- nav or starting wrappers -->
+        <main id="portal">
+            <!-- boosted partials will be loaded here -->
+        </main>
+        <!-- footer or ending wrappers -->
+    {% endblock %}
+    {% endverbatim %}```
+
     ## Pitfalls {: #pitfalls}
 
     While we attempt to ensure this is as easy to develop with as possible, there are handful of common pitfalls to be aware of.
 
     ### Integrating
 
-    If you already have an existing Hiraeth install, and in particular if you're using static pages, you can still use the Hyfryd components.  It's **important** to note, however, that because Hyfryd is intended to be a fuller application framework that uses HTMX's boost functionality for partial page loads (by default), the `~matchers.jin` at the root of its template path consumes any and all non-HTMX requests paths entirely.
+    If you already have an existing Hiraeth install and, in particular, if you're using static pages, you can still use the Hyfryd components.  It's **important** to note, however, that because Hyfryd is intended to be a fuller application framework that uses HTMX's boost functionality for partial page loads (by default), the `~matchers.jin` at the root of its template path consumes any and all non-HTMX requests paths entirely.
 
     If you have an existing `~matchers.jin` in your `resources/pages` folder, then this will not cause any problems for your existing `@template.html` pages, however, if you don't, you'll want to overload it by creating an empty `resources/pages/~matchers.jin`.
+
+    ### Safelisting
+
+    While not as much a pitfall of Hyfryd as much as it is of Tailwind, it should be noted that components which create or include dynamic classes, i.e. where a portion of the class is a Twig variable or has been otherwise formed by an expression, may not be recognized by Tailwind.  This is less true with the CDN as it's already operating on rendered code, however, when building for production any such classes need to be "safelisted."
+
+    Hyfryd maintains its own safelisting for built-in components which is "sourced" via the `@import` of the `vendor/hiraeth/hyfryd/sources.css` file.  To add your own safelist (although this might change in the future, you can simply add a `resources/safelist.html` containing the static versions of any dynamically generated classes.
 {% endapply %}
+
+<x:alert:warn ghost>
+    If a class appears on an HTML element and is otherwise a valid Tailwind utility class, but the styles are not taking effect, it is highly likely that said class was created and added dynamically, so Tailwind couldn't find it during the build.
+</x:alert:warn>
