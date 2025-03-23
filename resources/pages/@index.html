@@ -27,10 +27,10 @@
 
         {% endblock %}
     </head>
-    <body>
-        <input type="hidden" hx-trigger="load" hx-target="next [hx-target]" hx-get="{{ route(request) }}" />
+    <body hx-boost="true" hx-target="#portal">
+        <input type="hidden" hx-trigger="load" hx-get="{{ route(request) }}" />
         {% block body %}
-            <main id="main" hx-boost="true" hx-target="main">
+            <main id="portal">
 
             </main>
         {% endblock %}

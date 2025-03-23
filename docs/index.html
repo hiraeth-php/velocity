@@ -53,6 +53,24 @@
 </x:alert:info>
 
 {% apply markdown %}
+    By default the body the index entry point (`@index.html`) is a single `<main>` element which acts as the HTMX boost load target.  In most cases you're going to want to put things like navigational elements outside of this target and not reload them on every page (which is kinda the point).
+
+    To do this, to overload the default index entry point (@index.html) and specify your layout.  The element which should load boosted partials by default **must** have an `id="portal"`:
+
+    {: .mb-0}
+    `resources/pages/@index.html`
+    ```html{% verbatim %}
+    {% extends '@vendor/hiraeth/hyfryd/resources/pages/@index.html' %}
+
+    {% block body %}
+        <!-- nav or starting wrappers -->
+        <main id="portal">
+            <!-- boosted partials will be loaded here -->
+        </main>
+        <!-- footer or ending wrappers -->
+    {% endblock %}
+    {% endverbatim %}```
+
     ## Branching (Routing) {: #branching}
 
     One of the major reasons modern backend applications use routers is because we want to make nice clean URLs based on informaton provided in URL segments.  Hyfryd uses a concept called branching instead, which makes use of the existing filesystem hierarchy corresponding to request paths to replace segments that match certain patterns while parsing them and populating the mapped parameters.  So, what do you do if you to access `/users/1`, parse the `1` as the user ID, and render it with a detail template?
@@ -164,8 +182,10 @@
     - HTMLX 2.x
     - AlpineJS 3.x
 
-    You can use whatever build/builnding tool you like, but once built you will need to add the `resources/pages/@index.html` file to overload the default and specify your JS/CSS bundled files:
+    You can use whatever build/builnding tool you like, but once built you will to overload the default index entry point (`@index.html`) and specify your JS/CSS bundled files:
 
+    {: .mb-0}
+    `resources/pages/@index.html`
     ```html{% verbatim %}
     {% extends '@vendor/hiraeth/hyfryd/resources/pages/@index.html' %}
 

@@ -172,11 +172,11 @@
 	}
 
 	body {
-		@apply bg-base-50 text-base-800 my-4 lg:my-8;
+		@apply bg-base-50 text-base-800 m-[5%];
 	}
 
 	main {
-		@apply container mx-auto px-4 lg:px-64;
+		@apply container mx-auto;
 	}
 
 	h1, h2, h3, h4 {
