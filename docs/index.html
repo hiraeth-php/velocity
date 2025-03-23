@@ -11,7 +11,6 @@
 
     ## Installation
 
-    {: hx-boost="false"}
     1. [Install Hiraeth](https://hiraeth.dev/docs/3.0/installation)
     2. Add Hyfryd
 
@@ -22,7 +21,7 @@
 
 <x:alert:info ghost class:="border-dashed">
     {% apply markdown %}
-        You can install Hyfryd into an existing project to make use of its components, however, if you're already making use of static pages, see [here](#integration) for pitfalls.
+        You can install Hyfryd into an existing project to make use of its components, however, if you're already making use of static pages, read about our [pitfalls](#pitfalls).
     {% endapply %}
 </x:alert:info>
 
@@ -169,21 +168,13 @@
 </x:alert:info>
 
 {% apply markdown %}
-    ## Integration {: #integration}
-
-    If you already have an existing Hiraeth install, and in particular if you're using static pages, you can still use the Hyfryd components.  It's **important** to note, however, that because Hyfryd is intended to be a fuller application framework that uses HTMX's boost functionality for partial page loads (by default), the `~matchers.jin` at the root of its template path consumes any and all non-HTMX requests paths entirely.
-
-    If you have an existing `~matchers.jin` in your `resources/pages` folder, then this will not cause any problems for your existing `@template.html` pages, however, if you don't, you'll want to overload it by creating an empty `resources/pages/~matchers.jin`.
-
     ## Theming {: #theming}
 
-    Themes are stored in `vendor/hiraeth/hyfrid/themes`.  To try a different theme or customize your own simply create copy and existing theme to `resources/hyfrid.css` and make whatever modifications you like:
+    To try a different theme or customize your own simply copy the theme you want from the vendor directory. The default theme will act as a good baseline and should allow for fairly easy customization.  It provides tailwind configuration for colors which are required for Hyfrid components, as well as various other variables which control how components display.:
 
     ```
     cp vendor/hiraeth/hyfrid/themes/default.css resources/hyfrid.css
     ```
-
-    The default theme will act as a good baseline and should allow for fairly easy customization.  It provides tailwind configuration for colors which are required for Hyfrid components, as well as various other variables which control how components display.
 
     ## Moving to Production {: #production}
 
@@ -213,3 +204,15 @@
         Don't forget to bundle your theme!
     {% endapply %}
 </x:alert:info>
+
+{% apply markdown %}
+    ## Pitfalls {: #pitfalls}
+
+    While we attempt to ensure this is as easy to develop with as possible, there are handful of common pitfalls to be aware of.
+
+    ### Integrating
+
+    If you already have an existing Hiraeth install, and in particular if you're using static pages, you can still use the Hyfryd components.  It's **important** to note, however, that because Hyfryd is intended to be a fuller application framework that uses HTMX's boost functionality for partial page loads (by default), the `~matchers.jin` at the root of its template path consumes any and all non-HTMX requests paths entirely.
+
+    If you have an existing `~matchers.jin` in your `resources/pages` folder, then this will not cause any problems for your existing `@template.html` pages, however, if you don't, you'll want to overload it by creating an empty `resources/pages/~matchers.jin`.
+{% endapply %}

@@ -20,7 +20,7 @@
                 {% if not app.hasFile('resources/hyfryd.css') %}
                     {% include '@vendor/hiraeth/hyfryd/themes/default.css' %}
                 {% else %}
-                    {% include '@resources/hyfryd.css' %}
+                    {{ app.getFile('resources/hyfryd.css').openFile('r').fpassthru }}
                 {% endif %}
             </style>
         {% endblock %}
