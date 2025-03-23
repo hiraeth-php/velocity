@@ -17,10 +17,10 @@
             <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" crossorigin></script>
 
             <style type="text/tailwindcss">
-                {% if not app.hasFile('resources/hyfryd.css') %}
+                {% if not app.hasFile('theme.hyfryd.css') %}
                     {% include '@vendor/hiraeth/hyfryd/themes/default.css' %}
                 {% else %}
-                    {{ app.getFile('resources/hyfryd.css').openFile('r').fpassthru }}
+                    {{ app.getFile('theme.hyfryd.css').openFile('r').fpassthru }}
                 {% endif %}
             </style>
         {% endblock %}

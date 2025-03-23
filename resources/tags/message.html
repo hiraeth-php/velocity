@@ -16,7 +16,7 @@
         ]) %}
     {% else %}
         {% set mods = mods|merge([
-            'bg-' ~ color ~ '-400',
+            'bg-' ~ color ~ '-500',
             'text-base-900'
         ]) %}
     {% endif %}
@@ -29,8 +29,8 @@
 {% if icon %}
     {% if boxed %}
         {% set mods = mods|merge([
-            'pl-12
-        ']) %}
+            'pl-12'
+        ]) %}
     {% else %}
         {% set mods = mods|merge([
             'pl-8'
