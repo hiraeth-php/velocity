@@ -168,27 +168,35 @@
 	}
 
 	html {
-		@apply text-lg;
+		@apply lg:text-lg;
 	}
 
 	body {
-		@apply flex flex-col-reverse bg-base-50 text-base-800 font-sans m-8;
+		@apply flex flex-col-reverse bg-base-50 text-base-800 font-sans container mx-auto my-4 px-4 lg:my-8 lg:px-64;
 	}
 
-	h1, h2, h3 {
-		@apply font-bold mb-2;
+	h1, h2, h3, h4 {
+		@apply font-bold mb-1 mt-[1em] first:mt-0 ;
 	}
 
 	h1 {
-		@apply text-3xl;
+		@apply text-4xl;
 	}
 
 	h2 {
+		@apply text-3xl;
+	}
+
+	h3 {
 		@apply text-2xl;
 	}
 
+	h4 {
+		@apply text-xl;
+	}
+
 	p:not(:last-child) {
-		@apply mb-[2em];
+		@apply mb-[1em];
 	}
 
 	hr {
@@ -208,7 +216,7 @@
 	}
 
 	a:not([class]) {
-		@apply underline decoration-1 decoration-base-950 decoration-dotted underline-offset-2;
+		@apply underline decoration-1 decoration-base-950 decoration-dotted underline-offset-2 text-amber-700 dark:text-amber-400;
 	}
 
 	ul:not([class]), ol:not([class]) {
@@ -221,6 +229,18 @@
 
 	ol:not([class]) {
 		@apply list-decimal;
+	}
+
+	table {
+		@apply border border-current/10;
+	}
+
+	td, th {
+		@apply p-2 text-left;
+	}
+
+	tr {
+		@apply border-b border-current/10;
 	}
 }
 

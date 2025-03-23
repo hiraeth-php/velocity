@@ -1,0 +1,31 @@
+<title>Components - Hyfryd</title>
+
+{% set docpath ='vendor/hiraeth/hyfryd/docs' %}
+
+<span class="flex items-center">
+    <x::icon name="arrow-left-double-line" class:="w-[1em] mr-2" />
+    <a href="{{ route('/') }}">Return Home</a>
+</span>
+
+{% apply markdown %}
+    # Components {: #components}
+{% endapply %}
+
+<x::accordion autoclose class:="p-4">
+    {% for section in app.run('glob', [ app.directory(docpath) ~ '/*', constant('GLOB_ONLYDIR')]) %}
+        {% set folder = app.run('basename', [section]) %}
+        {% set title  = app.run('pathinfo', [section, constant('PATHINFO_EXTENSION')])|title %}
+        <x::shade animate capture>
+            <h3 class="mb-0">
+                {{ title }}
+            </h3>
+            <x::accordion autoclose class:="p-4">
+                {% for component in app.run('glob', [section ~ '/*']) %}
+                    <t::shade animate class:="py-8 border-b-2 border-cyan-500 last:border-0">
+                        {% include '@' ~ docpath ~ '/' ~ folder ~ '/' ~ app.run('basename', [component]) %}
+                    </t::shade>
+                {% endfor %}
+            </x::accordion>
+        </x>
+    {% endfor %}
+</x::accordion>

@@ -1,13 +1,31 @@
-{% set message %}
-    This is my message. I hope you receive it.
-{% endset %}
+{% set tags = [
+    '<x::message>',
+    '<x:alert:info>',
+    '<x:alert:warn>',
+    '<x:alert:error>',
+    '<x:alert:success',
+] %}
+
+{% set attributes = {
+    color: '
+        Sets the color of the button, for some styles the color is used for text, for others the background, e.g. **amber**, **zinc**.
+    ',
+    boxed: '
+        Boxes off the message with padding, uses color for background.
+    ',
+    ghost: '
+        Uses the color for text and border, background is transparent.
+    ',
+} %}
+
+{% set message = 'This is my message. I hope you receive it.' %}
 
 <header>
-    <h3 class="mb-0">
-        Messages and Alerts
-    </h3>
     {% apply markdown %}
-        Messages and alerts use the `x::message` root component.  We can use this component to show
+        {: .mb-0}
+        #### Messages and Alerts
+
+        {% include '@vendor/hiraeth/hyfryd/docs/-signature.html' %}
     {% endapply %}
 </header>
 
@@ -44,12 +62,12 @@
 
 {% apply markdown %}
     ```xml
-    <x::message ghost>
+    <x::message ghost color="emerald">
         {{ message|trim }}
     </x::message>
     ```
 {% endapply %}
-<x::message ghost>
+<x::message ghost color="emerald">
     {% apply markdown %}
         {{ message|trim }}
     {% endapply %}
@@ -76,7 +94,7 @@
     Using the alert component you can get specific variations base on your theme.  For example:
 
     ```xml
-    <x:alert:info ghost>
+    <x:alert:info boxed>
         {{ message|trim }}
     </x:alert:info>
 
@@ -84,7 +102,7 @@
         {{ message|trim }}
     </x:alert:warn>
 
-    <x:alert:error ghost>
+    <x:alert:error boxed>
         {{ message|trim }}
     </x:alert:error>
 
@@ -93,7 +111,7 @@
     </x:alert:success>
     ```
 {% endapply %}
-<x:alert:info ghost>
+<x:alert:info boxed>
     {% apply markdown %}
         {{ message|trim }}
     {% endapply %}
@@ -105,7 +123,7 @@
     {% endapply %}
 </x:alert:warn>
 
-<x:alert:error ghost>
+<x:alert:error boxed>
     {% apply markdown %}
         {{ message|trim }}
     {% endapply %}

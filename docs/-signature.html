@@ -1,0 +1,10 @@
+{: .mt-2}
+{{ tags|map(t => "`#{t}`")|join(' | ')|raw }}
+
+{% if attributes|length %}
+| Property  | Description
+|-----------|------------------------
+{% for i in attributes|keys %}
+    | `{{ i }}` | {{ attributes[i]|trim }}
+{% endfor %}
+{% endif %}

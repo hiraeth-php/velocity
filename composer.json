@@ -13,6 +13,7 @@
     ],
     "require": {
         "hiraeth/app": "^3.0",
+        "hiraeth/actions": "^3.0",
         "hiraeth/twig-tags": "^3.0",
         "hiraeth/diactoros": "^3.0",
         "hiraeth/harmony": "^3.0"

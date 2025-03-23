@@ -1,0 +1,83 @@
+<title>Welcome to Hyfryd</title>
+
+{% apply markdown %}
+    # Welcome to Hyfryd
+
+    Hyfryd is an opinionated application framework built on Hiraeth.  It takes a view-first component-based approach, using Tailwind, HTMX and AlpineJS to create dynamic and fast experiences with the full power of PHP and Twig.
+
+    Already know what you're doing?
+
+    [Skip to Components]({{ route('/components') }}).
+
+    ## Installation
+
+    1. [Install Hiraeth](https://hiraeth.dev/docs/3.0/installation)
+    2. Add Hyfryd
+
+    ```
+    composer require hiraeth/hyfrid
+    ```
+{% endapply %}
+
+<x:alert:info ghost class:="border-dashed">
+    {% apply markdown %}
+        You can install Hyfryd into an existing project to make use of its components, however, if you're already making use of static pages, see [here](#routing) for pitfalls.
+    {% endapply %}
+</x:alert:info>
+
+{% apply markdown %}
+    ## Creating Pages {: #pages}
+
+    Hyfryd use's Hiraeth's [static templates](https://hiraeth.dev/docs/latest/pages#static-templates) with the template prefix of `%` (instead of `@`).  This indicates the template is a partial template (a percent of a page) and can be returned by the template middleware in the event of an AJAX or HTMX request.  So, to create your first page, simply add a new file:
+
+    {: .mb-0}
+    `resources/pages/%index.html`
+    ```xml
+    <title>Welcome to Hyfryd!</title>
+    <x:alert:info ghost class:="border-dashed">
+        Hello World!
+    </x:alert:info>
+    ```
+
+    Creating other pages is as simple as creating the directory and file structure you want under `resources/pages`.  The following represents a given URI path and how it maps to the template:
+
+    - **`/docs/`** : `resources/pages/docs/%index.html` (will redirect to `/docs` if only `resources/pages/%docs.html` exists)
+    - **`/docs`** : `resources/pages/%docs.html` (will redirect to `/docs/` if only `resources/pages/docs/%index.html` exists)
+{% endapply %}
+
+
+{% apply markdown %}
+    ## Dynamic Routing (Branching) {: #branching}
+
+    One of the major reasons modern backend applications use routers is because we want to make nice clean URLs based on informaton provided in URL segments.  Hyfryd uses a concept called branching instead, which makes use of the existing filesystem hierarchy corresponding to request paths to replace segments that match certain patterns while parsing them an populating the available parameters.  So, what do you do if you to access `/users/1`, parse the `1` as the user ID, and render it with a detail template?
+
+    {: .mb-0}
+    `resources/pages/users/~matchers.jin`
+    ```json
+    [detail]
+
+        pattern = ([1-9][0-9]*)
+        mapping = [
+            "id"
+        ]
+    ```
+
+    Using the above `~matchers.jin` configuration, the `1` will match the pattern, and the template lookup for that segment will be replaced with `detail`.  Now you can simply create a `resources/users/%detail.html` file and get your user:
+
+    ```xml {% verbatim %}
+    <x:alert:info>
+        You selected the user with the id of {{ parameters.id }}
+    </x:alert:info>
+    {% endverbatim %}```
+
+    Matched paraemters will stack along the way, so they would also be available in any templates downstream, e.g. `/users/1/edit`:
+
+    {: .mb-0}
+    `resources/pages/users/detail/%edit.html`
+    ```xml {% verbatim %}
+    <x:alert:info>
+        You selected to EDIT the user with the id of {{ parameters.id }}
+    </x:alert:info>
+    {% endverbatim %}```
+
+{% endapply %}

@@ -1,5 +1,6 @@
-{% set name = name|default(label|slug|lower) %}
-{% set eg   = eg|default(null) %}
+{% set name  = name|default(label|slug|lower) %}
+{% set value = value|default(null) %}
+{% set eg    = eg|default(null) %}
 
 {% if inline|default(false) %}
     <t:form:label class:="border-1 rounded-sm flex">
@@ -10,5 +11,5 @@
     <t:form:label class:="text-main-300">
         {{ label }}
     </t:form:label>
-    <input class="p-4 mb-4 border-1" type="text" name="{{ name }}" placeholder="{{ eg }}" />
+    <input class="p-4 mb-4 border-1" type="text" name="{{ name }}" value="{{ value }}" placeholder="{{ eg }}" />
 {% endif %}

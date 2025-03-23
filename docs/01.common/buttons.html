@@ -1,0 +1,37 @@
+{% set tags = [
+    '<x::button>',
+] %}
+
+{% set attributes = {
+    color: '
+        Sets the color of the button, for some styles the color is used for text, for others the background, e.g. **amber**, **zinc**.
+    ',
+    ghost: '
+        Uses the color for text and border, background is transparent.
+    ',
+} %}
+
+{% set text = 'Click Me!' %}
+{% set result = 'Message Received!' %}
+
+<header>
+    {% apply markdown %}
+        {: .mb-0 }
+        #### Buttons
+
+        {% include '@vendor/hiraeth/hyfryd/docs/-signature.html' %}
+    {% endapply %}
+</header>
+
+{% apply markdown %}
+    ```xml
+    <x::button onclick:="alert('{{ result|trim }}')">
+        {{ text|trim }}
+    </x::button>
+    ```
+{% endapply %}
+<x::button onclick:="alert('{{ result|trim }}')">
+    {% apply markdown %}
+        {{ text|trim }}
+    {% endapply %}
+</x::button>
