@@ -168,11 +168,15 @@
 	}
 
 	html {
-		@apply lg:text-lg;
+		@apply text-sm lg:text-lg font-sans;
 	}
 
 	body {
-		@apply flex flex-col-reverse bg-base-50 text-base-800 font-sans container mx-auto my-4 px-4 lg:my-8 lg:px-64;
+		@apply bg-base-50 text-base-800 my-4 lg:my-8;
+	}
+
+	main {
+		@apply container mx-auto px-4 lg:px-64;
 	}
 
 	h1, h2, h3, h4 {
@@ -204,11 +208,11 @@
 	}
 
 	pre[data-lang] {
-		@apply p-4 rounded-sm mb-4 drop-shadow-md !bg-white/50 dark:!bg-white/5;
+		@apply p-4 rounded-sm mb-4 drop-shadow-md !bg-white/50 dark:!bg-white/5 overflow-y-scroll;
 	}
 
 	code {
-		@apply p-0.5 px-1.5 !bg-base-700/10 !text-base-700 rounded-xs text-sm font-mono;
+		@apply p-0.5 px-1.5 !bg-base-700/10 !text-base-700 rounded-xs text-[.90em] font-mono text-nowrap;
 	}
 
 	svg {
@@ -220,7 +224,7 @@
 	}
 
 	ul:not([class]), ol:not([class]) {
-		@apply list-inside mb-4;
+		@apply list-outside mb-4 ml-4;
 	}
 
 	ul:not([class]) {
@@ -231,12 +235,16 @@
 		@apply list-decimal;
 	}
 
+	li {
+		@apply mb-[.5em];
+	}
+
 	table {
-		@apply border border-current/10;
+		@apply w-full border border-current/10 mb-4 overflow-y-scroll;
 	}
 
 	td, th {
-		@apply p-2 text-left;
+		@apply p-2 text-left align-text-top;
 	}
 
 	tr {

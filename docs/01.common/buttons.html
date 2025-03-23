@@ -25,12 +25,39 @@
 
 {% apply markdown %}
     ```xml
-    <x::button onclick:="alert('{{ result|trim }}')">
+    <x::button
+        class:="bg-sky-500"
+        onclick:="alert('{{ result|trim }}')"
+    >
         {{ text|trim }}
     </x::button>
     ```
 {% endapply %}
-<x::button onclick:="alert('{{ result|trim }}')">
+<x::button
+    class:="bg-sky-500"
+    onclick:="alert('{{ result|trim }}')"
+>
+    {% apply markdown %}
+        {{ text|trim }}
+    {% endapply %}
+</x::button>
+
+{% apply markdown %}
+    ```xml
+    <x::button
+        ghost
+        class:="text-sky-500"
+        onclick:="alert('{{ result|trim }}')"
+    >
+        {{ text|trim }}
+    </x::button>
+    ```
+{% endapply %}
+<x::button
+    ghost
+    class:="text-sky-500"
+    onclick:="alert('{{ result|trim }}')"
+>
     {% apply markdown %}
         {{ text|trim }}
     {% endapply %}
