@@ -38,13 +38,3 @@
 		"icons": "vendor/hiraeth/hyfryd/resources/icons",
 		"tags":  "vendor/hiraeth/hyfryd/resources/tags"
 	}
-
-[hyfryd]
-
-	theme = {
-		"tags": "default",
-		"syntax": {
-			"light": "solarized-light",
-			"dark": "slack-dark"
-		}
-	}

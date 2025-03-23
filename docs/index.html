@@ -168,10 +168,23 @@
     {% endapply %}
 </x:alert:info>
 
-
-
-
 {% apply markdown %}
+    ## Integration {: #integration}
+
+    If you already have an existing Hiraeth install, and in particular if you're using static pages, you can still use the Hyfryd components.  It's **important** to note, however, that because Hyfryd is intended to be a fuller application framework that uses HTMX's boost functionality for partial page loads (by default), the `~matchers.jin` at the root of its template path consumes any and all non-HTMX requests paths entirely.
+
+    If you have an existing `~matchers.jin` in your `resources/pages` folder, then this will not cause any problems for your existing `@template.html` pages, however, if you don't, you'll want to overload it by creating an empty `resources/pages/~matchers.jin`.
+
+    ## Theming {: #theming}
+
+    Themes are stored in `vendor/hiraeth/hyfrid/themes`.  To try a different theme or customize your own simply create copy and existing theme to `resources/hyfrid.css` and make whatever modifications you like:
+
+    ```
+    cp vendor/hiraeth/hyfrid/themes/default.css resources/hyfrid.css
+    ```
+
+    The default theme will act as a good baseline and should allow for fairly easy customization.  It provides tailwind configuration for colors which are required for Hyfrid components, as well as various other variables which control how components display.
+
     ## Moving to Production {: #production}
 
     By default, Hyfryd uses external CDN dependencies for all front-end libraries including Tailwind, HTMX, and AlpineJS.  This is designed to make development and prototyping faster out of the box.  In order to move to production you will need to change a few things.
@@ -182,7 +195,7 @@
     - HTMLX 2.x
     - AlpineJS 3.x
 
-    You can use whatever build/builnding tool you like, but once built you will to overload the default index entry point (`@index.html`) and specify your JS/CSS bundled files:
+    You can use whatever build/bundling tool you like, but once built you will need to overload the default index entry point (`@index.html`) and specify your JS/CSS bundled files:
 
     {: .mb-0}
     `resources/pages/@index.html`
@@ -193,10 +206,10 @@
         <!-- Your script / style tags here -->
     {% endblock %}
     {% endverbatim %}```
-
-    ## Integration {: #integration}
-
-    If you already have an existing Hiraeth install, and in particular if you're using static pages, you can still use the Hyfryd components.  It's **important** to note, however, that because Hyfryd is intended to be a fuller application framework that uses HTMX's boost functionality for partial page loads (by default), the `~matchers.jin` at the root of its template path consumes any and all non-HTMX requests paths entirely.
-
-    If you have an existing `~matchers.jin` in your `resources/pages` folder, then this will not cause any problems for your existing `@template.html` pages, however, if you don't, you'll want to overload it by creating an empty `resources/pages/~matchers.jin`.
 {% endapply %}
+
+<x:alert:info ghost class:="border-dashed">
+    {% apply markdown %}
+        Don't forget to bundle your theme!
+    {% endapply %}
+</x:alert:info>

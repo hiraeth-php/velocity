@@ -1,5 +1,3 @@
-{% set hyfryd = app.config('~', 'hyfryd', []) %}
-
 <!doctype html>
 <html lang="en">
     <head>
@@ -9,7 +7,7 @@
             <link rel="manifest" href="/manifest.json" />
         {% endif %}
 
-        {% if not app.hasFile('package.lock') %}
+        {% block head %}
             <link rel="preconnect" href="https://cdn.jsdelivr.net">
             <link rel="preconnect" href="https://fonts.googleapis.com">
             <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,12 +17,12 @@
             <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" crossorigin></script>
 
             <style type="text/tailwindcss">
-                {% include '@vendor/hiraeth/hyfryd/resources/themes/' ~ hyfryd.theme.tags ~ '.css' %}
+                {% if not app.hasFile('resources/hyfryd.css') %}
+                    {% include '@vendor/hiraeth/hyfryd/themes/default.css' %}
+                {% else %}
+                    {% include '@resources/hyfryd.css' %}
+                {% endif %}
             </style>
-        {% endif %}
-
-        {% block head %}
-
         {% endblock %}
     </head>
     <body hx-boost="true" hx-target="#portal">
