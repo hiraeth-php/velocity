@@ -1,184 +1,182 @@
 <title>Welcome to Hyfryd</title>
 
-<main>
+{% apply markdown %}
+    # Welcome to Hyfryd
+
+    Hyfryd is an opinionated application framework built on Hiraeth.  It takes a view-first component-based approach, using Tailwind, HTMX and AlpineJS to create dynamic and fast experiences with the full power of PHP and Twig.
+
+    Already know what you're doing?
+
+    [Skip to Components]({{ route('/components') }}).
+
+    ## Installation
+
+    {: hx-boost="false"}
+    1. [Install Hiraeth](https://hiraeth.dev/docs/3.0/installation)
+    2. Add Hyfryd
+
+    ```
+    composer require hiraeth/hyfrid
+    ```
+{% endapply %}
+
+<x:alert:info ghost class:="border-dashed">
     {% apply markdown %}
-        # Welcome to Hyfryd
-
-        Hyfryd is an opinionated application framework built on Hiraeth.  It takes a view-first component-based approach, using Tailwind, HTMX and AlpineJS to create dynamic and fast experiences with the full power of PHP and Twig.
-
-        Already know what you're doing?
-
-        [Skip to Components]({{ route('/components') }}).
-
-        ## Installation
-
-        {: hx-boost="false"}
-        1. [Install Hiraeth](https://hiraeth.dev/docs/3.0/installation)
-        2. Add Hyfryd
-
-        ```
-        composer require hiraeth/hyfrid
-        ```
+        You can install Hyfryd into an existing project to make use of its components, however, if you're already making use of static pages, see [here](#integration) for pitfalls.
     {% endapply %}
+</x:alert:info>
 
+{% apply markdown %}
+    ## Creating Pages {: #pages}
+
+    Hyfryd use's Hiraeth's [static templates](https://hiraeth.dev/docs/latest/pages#static-templates) with the template prefix of `%` (instead of `@`).  This indicates the template is a partial template (a percent of a page) and can be returned by the template middleware in the event of an AJAX or HTMX request.  So, to create your first page, simply add a new file:
+
+    {: .mb-0}
+    `resources/pages/%index.html`
+    ```xml
+    <title>Welcome to Hyfryd!</title>
     <x:alert:info ghost class:="border-dashed">
-        {% apply markdown %}
-            You can install Hyfryd into an existing project to make use of its components, however, if you're already making use of static pages, see [here](#integration) for pitfalls.
-        {% endapply %}
+        Hello World!
     </x:alert:info>
+    ```
 
-    {% apply markdown %}
-        ## Creating Pages {: #pages}
+    Creating other pages is as simple as creating the directory and file structure you want under `resources/pages`.  Depending on whether or not the URL ends in a slash (`/`) determine the canonical location of the template:
 
-        Hyfryd use's Hiraeth's [static templates](https://hiraeth.dev/docs/latest/pages#static-templates) with the template prefix of `%` (instead of `@`).  This indicates the template is a partial template (a percent of a page) and can be returned by the template middleware in the event of an AJAX or HTMX request.  So, to create your first page, simply add a new file:
+    |URI Path|Canonical Template Location|
+    |-|-|
+    |**`/docs/`**|`resources/pages/docs/%index.html`|
+    |**`/docs`**|`resources/pages/%docs.html`|
+{% endapply %}
 
-        {: .mb-0}
-        `resources/pages/%index.html`
-        ```xml
-        <title>Welcome to Hyfryd!</title>
-        <x:alert:info ghost class:="border-dashed">
-            Hello World!
-        </x:alert:info>
-        ```
+<x:alert:info ghost class:="border-dashed">
+    In both cases, if the template cannot be found at the canonical location but the alternative is found, Hyfryd will redirect the user to the canonical path.
+</x:alert:info>
 
-        Creating other pages is as simple as creating the directory and file structure you want under `resources/pages`.  Depending on whether or not the URL ends in a slash (`/`) determine the canonical location of the template:
+{% apply markdown %}
+    ## Branching (Routing) {: #branching}
 
-        |URI Path|Canonical Template Location|
-        |-|-|
-        |**`/docs/`**|`resources/pages/docs/%index.html`|
-        |**`/docs`**|`resources/pages/%docs.html`|
-    {% endapply %}
+    One of the major reasons modern backend applications use routers is because we want to make nice clean URLs based on informaton provided in URL segments.  Hyfryd uses a concept called branching instead, which makes use of the existing filesystem hierarchy corresponding to request paths to replace segments that match certain patterns while parsing them and populating the mapped parameters.  So, what do you do if you to access `/users/1`, parse the `1` as the user ID, and render it with a detail template?
 
-    <x:alert:info ghost class:="border-dashed">
-        In both cases, if the template cannot be found at the canonical location but the alternative is found, Hyfryd will redirect the user to the canonical path.
+    {: .mb-0}
+    `resources/pages/users/~matchers.jin`
+    ```json
+    [detail]
+
+        pattern = ([1-9][0-9]*)
+        mapping = [
+            "id"
+        ]
+    ```
+{% endapply %}
+
+<x:alert:info ghost class:="border-dashed">
+    Each matching group within the pattern RegEx corresponds to a parameter in the mapping.
+</x:alert:info>
+
+{% apply markdown %}
+    Using the above `~matchers.jin` configuration, the `1` will match the pattern, and the template lookup for that segment will be replaced with `detail`.   Now you can simply create a `resources/users/%detail.html` file and get your user:
+
+    ```xml {% verbatim %}
+    <x:alert:info>
+        You selected the user with the id of
+        {{ parameters.id }}
     </x:alert:info>
+    {% endverbatim %}```
 
-    {% apply markdown %}
-        ## Branching (Routing) {: #branching}
+    Matched paraemters will stack along the way, so they would also be available in any templates downstream, e.g. `/users/1/edit`:
 
-        One of the major reasons modern backend applications use routers is because we want to make nice clean URLs based on informaton provided in URL segments.  Hyfryd uses a concept called branching instead, which makes use of the existing filesystem hierarchy corresponding to request paths to replace segments that match certain patterns while parsing them and populating the mapped parameters.  So, what do you do if you to access `/users/1`, parse the `1` as the user ID, and render it with a detail template?
-
-        {: .mb-0}
-        `resources/pages/users/~matchers.jin`
-        ```json
-        [detail]
-
-            pattern = ([1-9][0-9]*)
-            mapping = [
-                "id"
-            ]
-        ```
-    {% endapply %}
-
-    <x:alert:info ghost class:="border-dashed">
-        Each matching group within the pattern RegEx corresponds to a parameter in the mapping.
+    {: .mb-0}
+    `resources/pages/users/detail/%edit.html`
+    ```xml {% verbatim %}
+    <x:alert:info>
+        You selected to EDIT the user with the id
+        of {{ parameters.id }}
     </x:alert:info>
+    {% endverbatim %}```
 
-    {% apply markdown %}
-        Using the above `~matchers.jin` configuration, the `1` will match the pattern, and the template lookup for that segment will be replaced with `detail`.   Now you can simply create a `resources/users/%detail.html` file and get your user:
+    ## Adding Actions {: #actions}
 
-        ```xml {% verbatim %}
-        <x:alert:info>
-            You selected the user with the id of
-            {{ parameters.id }}
-        </x:alert:info>
-        {% endverbatim %}```
+    You may be wondering at this point, without controllers, how do I get data into my templates?  While it's possible to install additional packages that perform traditional routing (e.g. `hiraeth/fastroute`), Hyfryd promotes a view-first approach.  This approach provides a few benefits:
 
-        Matched paraemters will stack along the way, so they would also be available in any templates downstream, e.g. `/users/1/edit`:
+    1. Different views can easily re-use the same control logic and get the same data.  Compared to a traditional router => controller approach, you'd need to update the controller to determine the appropriate template to respond with and under what conditions.
+    2. Since called actions respond directly with arrays of data, actions can be re-used with a router to automatically provide functional API endpoints with no additional changes needed in most cases.
+    3. Provides larger caching surface area prior dependency resolution, faster lookups and a lower memory footprint per-request without the need to load routing tables or validate targets.
 
-        {: .mb-0}
-        `resources/pages/users/detail/%edit.html`
-        ```xml {% verbatim %}
-        <x:alert:info>
-            You selected to EDIT the user with the id
-            of {{ parameters.id }}
-        </x:alert:info>
-        {% endverbatim %}```
+    To get started with an action, just add your class:
 
-        ## Adding Actions {: #actions}
+    {: .mb-0}
+    `local/User/Details.php`
+    ```php
+    namespace User;
 
-        You may be wondering at this point, without controllers, how do I get data into my templates?  While it's possible to install additional packages that perform traditional routing (e.g. `hiraeth/fastroute`), Hyfryd promotes a view-first approach.  This approach provides a few benefits:
-
-        1. Different views can easily re-use the same control logic and get the same data.  Compared to a traditional router => controller approach, you'd need to update the controller to determine the appropriate template to respond with and under what conditions.
-        2. Since called actions respond directly with arrays of data, actions can be re-used with a router to automatically provide functional API endpoints with no additional changes needed in most cases.
-        3. Provides larger caching surface area prior dependency resolution, faster lookups and a lower memory footprint per-request without the need to load routing tables or validate targets.
-
-        To get started with an action, just add your class:
-
-        {: .mb-0}
-        `local/User/Details.php`
-        ```php
-        namespace User;
-
-        class Details extends \AbstractAction
+    class Details extends \AbstractAction
+    {
+        public function __construct(protected UserRepository $users)
         {
-            public function __construct(protected UserRepository $users)
-            {
 
-            }
-
-            public function __invoke(int $id)
-            {
-                $user = $this->users->find($id);
-
-                if (!$user) {
-                    return $this->response(404);
-                }
-
-                return [
-                    'user' => $user;
-                ]
-            }
         }
-        ```
 
-        Then call the action in your template:
+        public function __invoke(int $id)
+        {
+            $user = $this->users->find($id);
 
-        ```xml {% verbatim %}
-        {% do action('User:Details') %}
+            if (!$user) {
+                return $this->response(404);
+            }
 
-        <h1>{{ user.name }}</h1>
-        <p>
-            This user was created on {{ user.dateCreated|date('d/m/Y') }}
-            and has {{ user.friends|length }} friend(s).
-        </p>
-        {% endverbatim %}```
-    {% endapply %}
+            return [
+                'user' => $user;
+            ]
+        }
+    }
+    ```
 
-    <x:alert:info ghost class:="border-dashed">
-        {% apply markdown %}
-            Remember, the parameters from your `~matchers.jin` file are available and will automatically be mapped to the `__invoke()` method on your action.  If you need to overload a parameter you can pass them as a second argument to the `action()` method, e.g. `{id: 2}`.
-        {% endapply %}
-    </x:alert:info>
+    Then call the action in your template:
 
+    ```xml {% verbatim %}
+    {% do action('User:Details') %}
 
+    <h1>{{ user.name }}</h1>
+    <p>
+        This user was created on {{ user.dateCreated|date('d/m/Y') }}
+        and has {{ user.friends|length }} friend(s).
+    </p>
+    {% endverbatim %}```
+{% endapply %}
 
-
+<x:alert:info ghost class:="border-dashed">
     {% apply markdown %}
-        ## Moving to Production {: #production}
-
-        By default, Hyfryd uses external CDN dependencies for all front-end libraries including Tailwind, HTMX, and AlpineJS.  This is designed to make development and prototyping faster out of the box.  In order to move to production you will need to change a few things.
-
-        Use `npm` or similar package manger to install and build dependencies:
-
-        - Tailwind 4.x
-        - HTMLX 2.x
-        - AlpineJS 3.x
-
-        You can use whatever build/builnding tool you like, but once built you will need to add the `resources/pages/@index.html` file to overload the default and specify your JS/CSS bundled files:
-
-        ```html{% verbatim %}
-        {% extends '@vendor/hiraeth/hyfryd/resources/pages/@index.html' %}
-
-        {% block head %}
-            <!-- Your script / style tags here -->
-        {% endblock %}
-        {% endverbatim %}```
-
-        ## Integration {: #integration}
-
-        If you already have an existing Hiraeth install, and in particular if you're using static pages, you can still use the Hyfryd components.  It's **important** to note, however, that because Hyfryd is intended to be a fuller application framework that uses HTMX's boost functionality for partial page loads (by default), the `~matchers.jin` at the root of its template path consumes any and all non-HTMX requests paths entirely.
-
-        If you have an existing `~matchers.jin` in your `resources/pages` folder, then this will not cause any problems for your existing `@template.html` pages, however, if you don't, you'll want to overload it by creating an empty `resources/pages/~matchers.jin`.
+        Remember, the parameters from your `~matchers.jin` file are available and will automatically be mapped to the `__invoke()` method on your action.  If you need to overload a parameter you can pass them as a second argument to the `action()` method, e.g. `{id: 2}`.
     {% endapply %}
-</main>
+</x:alert:info>
+
+
+
+
+{% apply markdown %}
+    ## Moving to Production {: #production}
+
+    By default, Hyfryd uses external CDN dependencies for all front-end libraries including Tailwind, HTMX, and AlpineJS.  This is designed to make development and prototyping faster out of the box.  In order to move to production you will need to change a few things.
+
+    Use `npm` or similar package manger to install and build dependencies:
+
+    - Tailwind 4.x
+    - HTMLX 2.x
+    - AlpineJS 3.x
+
+    You can use whatever build/builnding tool you like, but once built you will need to add the `resources/pages/@index.html` file to overload the default and specify your JS/CSS bundled files:
+
+    ```html{% verbatim %}
+    {% extends '@vendor/hiraeth/hyfryd/resources/pages/@index.html' %}
+
+    {% block head %}
+        <!-- Your script / style tags here -->
+    {% endblock %}
+    {% endverbatim %}```
+
+    ## Integration {: #integration}
+
+    If you already have an existing Hiraeth install, and in particular if you're using static pages, you can still use the Hyfryd components.  It's **important** to note, however, that because Hyfryd is intended to be a fuller application framework that uses HTMX's boost functionality for partial page loads (by default), the `~matchers.jin` at the root of its template path consumes any and all non-HTMX requests paths entirely.
+
+    If you have an existing `~matchers.jin` in your `resources/pages` folder, then this will not cause any problems for your existing `@template.html` pages, however, if you don't, you'll want to overload it by creating an empty `resources/pages/~matchers.jin`.
+{% endapply %}

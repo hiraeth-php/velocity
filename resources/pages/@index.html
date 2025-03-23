@@ -9,12 +9,6 @@
             <link rel="manifest" href="/manifest.json" />
         {% endif %}
 
-        <script type="text/javascript">
-            document.body.addEventListener('htmx:beforeOnLoad', function (evt) {
-                evt.detail.shouldSwap = true;
-            });
-        </script>
-
         {% if not app.hasFile('package.lock') %}
             <link rel="preconnect" href="https://cdn.jsdelivr.net">
             <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,7 +27,18 @@
 
         {% endblock %}
     </head>
-    <body hx-boost="true" hx-target="body" hx-swap="innerHTML">
+    <body>
+        <input type="hidden" hx-trigger="load" hx-target="next [hx-target]" hx-get="{{ route(request) }}" />
+        {% block body %}
+            <main id="main" hx-boost="true" hx-target="main">
+
+            </main>
+        {% endblock %}
     </body>
-    <input type="hidden" hx-trigger="load" hx-get="{{ route(request) }}" />
+    <script type="text/javascript">
+        document.body.addEventListener('htmx:beforeOnLoad', function (e) {
+            e.detail.shouldSwap = true;
+            e.detail.isError = false;
+        });
+    </script>
 </html>
