@@ -14,7 +14,9 @@
     1. [Install Hiraeth](https://hiraeth.dev/docs/3.0/installation)
     2. Add Hyfryd
 
-    ```
+    ```html
+    composer create-project hiraeth/app:^3.0 <path> -s dev
+    cd <path>
     composer require hiraeth/hyfryd
     ```
 {% endapply %}
@@ -37,6 +39,12 @@
     <x:alert:info ghost class:="border-dashed">
         Hello World!
     </x:alert:info>
+    ```
+
+    Now run the dev server to see the result by visiting http://localhost:8080:
+
+    ```
+    php bin/server
     ```
 
     Creating other pages is as simple as creating the directory and file structure you want under `resources/pages`.  Depending on whether or not the URL ends in a slash (`/`) determine the canonical location of the template:
