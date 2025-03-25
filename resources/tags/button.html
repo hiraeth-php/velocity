@@ -26,7 +26,7 @@
 
 {% set content %}
     {% if children|length %}
-        {{ children|join|raw }}
+        {{ children|raw }}
     {% else %}
         {{ text }}
     {% endif %}
