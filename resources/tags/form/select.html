@@ -1,0 +1,18 @@
+{% set label   = label ?? name|slug(' ')|title %}
+{% set value   = value ?? ctx.model[name] ?? false %}
+{% set options = options ?? [] %}
+
+<x:form:label>
+    {{ label }}
+</x:form:label>
+<select name="{{ name }}">
+    {% if children.length %}
+        {{ children|raw }}
+    {% else %}
+        {% for v, n in options %}
+            <option value="{{ v }}" {{ (v == value ?: NULL)|attr('selected')}}>
+                {{ n }}
+            </option>
+        {% endfor %}
+    {% endif %}
+</select>

@@ -1,12 +1,15 @@
-{% set animate = animate|default(false)|bool %}
-{% set capture = capture|default(false)|bool %}
+{% set autoclose = (autoclose ?? ctx.autoclose ?? false)|int  %}
+{% set animate   = (animate ?? ctx.animate ?? false)|int  %}
+{% set capture   = (capture ?? false)|int  %}
+{% set open      = (open ?? false)|int  %}
 
 <section
     x-data="{
-        open: false,
+        open: {{ open }},
         shade: $id('shade'),
+        autoclose: {{ autoclose }},
         toggle() {
-            if (this.isAutoclose) {
+            if (this.autoclose) {
                 if (this.opened != this.shade) {
                     this.opened = this.shade;
                 } else {
@@ -21,15 +24,8 @@
                 $dispatch('shade-closed', { el: $el });
             }
         },
-        get isAutoclose() {
-            if ('accordion' in $el.parentElement.dataset) {
-                return this.autoclose;
-            }
-
-            return false;
-        },
         get isOpen() {
-            return this.isAutoclose ? this.opened == this.shade : this.open;
+            return this.autoclose ? this.opened == this.shade : this.open;
         }
     }"
     class="first:pt-0 last:pb-0"
@@ -40,13 +36,11 @@
         {% endif %}
         class="flex items-end cursor-pointer"
     >
-        <x::fragment
-            class:="grow"
-        >
-            {{ children[0]|default(null)|raw }}
-        </x::fragment>
+        <x:: class:="grow">
+            {{ (children[0] ?? null)|raw }}
+        </x::>
 
-        <x::fragment
+        <x::
             {% if not capture %}
                 x-on:click:="toggle()"
             {% endif %}
@@ -54,7 +48,7 @@
         >
             <i::icon x-show:="!isOpen" name="expand-up-down-line" />
             <i::icon x-show:="isOpen"  name="arrow-down-s-line" />
-        </x::fragment>
+        </x::>
     </div>
 
     <div

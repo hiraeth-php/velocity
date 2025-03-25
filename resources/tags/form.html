@@ -1,0 +1,13 @@
+{% set requests = {
+    get:  get  ?? null,
+    post: post ?? null
+} %}
+{% set method = method ?? requests|filter(i => i)|keys|first|default('get') %}
+{% set action = action ?? requests[method] %}
+
+<form
+    method="{{ method }}"
+    action="{{ action }}"
+>
+    {{ children|raw }}
+</form>

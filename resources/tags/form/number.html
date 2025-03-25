@@ -1,0 +1,6 @@
+{% set label = label ?? name|slug(' ')|title %}
+{% set value = value ?? model[name] ?? null %}
+
+<x:form:label>
+    {{ label }}
+</x:form:label>

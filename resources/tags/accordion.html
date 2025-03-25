@@ -1,7 +1,6 @@
-{% set autoclose = autoclose|default(false)|bool %}
+{% set autoclose = autoclose|default(ctx.autoclose|default(false))|int %}
 
 <div
-    data-accordion
     x-data="{
         opened: null,
         autoclose: {{ autoclose|int }},

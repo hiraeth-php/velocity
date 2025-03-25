@@ -1,7 +1,7 @@
 {% set url   = url|default(null) %}
 {% set text  = text|default('...') %}
 {% set color = color|default('base') %}
-{% set ghost = ghost|default(false)|bool %}
+{% set ghost = ghost|default(false)|int %}
 {% set mods  = [
     'inline-block',
     'cursor-pointer',
