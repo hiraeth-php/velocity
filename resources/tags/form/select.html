@@ -1,12 +1,16 @@
-{% set label   = label ?? name|slug(' ')|title %}
-{% set value   = value ?? ctx.model[name] ?? false %}
-{% set options = options ?? [] %}
+{% do require(["name"]) %}
+{% do resolve({
+    options:
+        options ?? [],
+    label:
+        label ?? name|slug(' ')|title,
+    value:
+        value ?? ctx.model[name] ?? null,
+}) %}
 
-<x:form:label>
-    {{ label }}
-</x:form:label>
+<x:form:label>{{ label }}</x:form:label>
 <select name="{{ name }}">
-    {% if children.length %}
+    {% if children|length %}
         {{ children|raw }}
     {% else %}
         {% for v, n in options %}

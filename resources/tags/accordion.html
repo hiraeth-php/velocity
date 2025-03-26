@@ -1,17 +1,24 @@
 {% set autoclose = autoclose|default(ctx.autoclose|default(false))|int %}
 
-<div
-    x-data="{
-        opened: null,
-        autoclose: {{ autoclose|int }},
-        collapse($shade) {
-            if (this.autoclose) {
-                if ($shade.contains($el)) {
+<script>
+    function hAccordion(opt) {
+        return {
+            opened: null,
+            autoclose: opt.autoclose,
+            collapse(shade) {
+                if (this.autoclose && shade.parentElement.contains(this.$el)) {
                     this.opened = null;
                 }
             }
-        }
-    }"
+        };
+    }
+</script>
+
+
+<div
+    x-data="hAccordion({
+        autoclose: {{ autoclose }}
+    })"
     x-on:shade-closed.window="collapse($event.detail.el)"
 >
    {{ children|raw }}

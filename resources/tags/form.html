@@ -1,9 +1,5 @@
-{% set requests = {
-    get:  get  ?? null,
-    post: post ?? null
-} %}
-{% set method = method ?? requests|filter(i => i)|keys|first|default('get') %}
-{% set action = action ?? requests[method] %}
+{% set method = method ?? 'get' %}
+{% set action = action ?? route(request.uri.path ?? null) %}
 
 <form
     method="{{ method }}"

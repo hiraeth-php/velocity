@@ -3,31 +3,41 @@
 {% set capture   = (capture ?? false)|int  %}
 {% set open      = (open ?? false)|int  %}
 
-<section
-    x-data="{
-        open: {{ open }},
-        shade: $id('shade'),
-        autoclose: {{ autoclose }},
-        toggle() {
-            if (this.autoclose) {
-                if (this.opened != this.shade) {
-                    this.opened = this.shade;
+<script>
+    function hShade(opt) {
+        return {
+            shade: opt.shade,
+            autoclose: opt.autoclose,
+            open: opt.open,
+            toggle() {
+                if (this.autoclose) {
+                    if (this.opened != this.shade) {
+                        this.opened = this.shade;
+                    } else {
+                        this.opened = null;
+                    }
+
                 } else {
-                    this.opened = null;
+                    this.open = ! this.open;
                 }
 
-            } else {
-                this.open = ! this.open;
+                if (!this.isOpen) {
+                    this.$dispatch('shade-closed', { el: this.$el });
+                }
+            },
+            get isOpen() {
+                return this.autoclose ? this.opened == this.shade : this.open;
             }
-
-            if (!this.isOpen) {
-                $dispatch('shade-closed', { el: $el });
-            }
-        },
-        get isOpen() {
-            return this.autoclose ? this.opened == this.shade : this.open;
         }
-    }"
+    };
+</script>
+
+<section
+    x-data="hShade({
+        shade: $id('shade'),
+        autoclose: {{ autoclose}},
+        open: {{ open }},
+    })"
     class="first:pt-0 last:pb-0"
 >
     <div

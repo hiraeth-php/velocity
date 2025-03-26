@@ -1,6 +1,74 @@
-{% set label = label ?? name|slug(' ')|title %}
-{% set value = value ?? model[name] ?? null %}
+{% do require(["name"], ["method"]) %}
+
+{% do resolve({
+    label:
+        label ?? name|slug(' ')|title,
+    value:
+        value ?? ctx.model[name] ?? null,
+    min:
+        min ?? null,
+    max:
+        max ?? null,
+    step:
+        step ?? 1
+}) %}
+
+{% set timeout = 500 %}
+{% set mods = [
+    "cursor-pointer",
+    "size-10",
+] %}
+
+<script>
+    function hFormNumber(options) {
+        return {
+            value: options.value,,
+            timeout: options.timeout,
+            interval: null,
+            change(step) {
+                this.value += step;
+
+                this.interval = setTimeout(() => {
+                    this.change(step);
+
+                    if (this.timeout > 50) {
+                        this.timeout = Math.round(this.timeout * .80);
+                    }
+                }, this.timeout);
+            },
+            stop() {
+                clearTimeout(this.interval);
+                this.timeout = options.timeout;
+            }
+        };
+    };
+</script>
 
 <x:form:label>
     {{ label }}
 </x:form:label>
+<div
+    x-data="hFormNumber({value: {{ value ?? 'null' }}, timeout: {{ timeout }}})"
+    class="flex items-center max-w-128 min-w-24 border-1 mb-4"
+>
+    <i::icon
+        x-on:mousedown:="change({{ step }} * -1)"
+        x-on:mouseup:="stop()"
+        class:="{{ mods|join(' ') }}"
+        name="arrow-down-s-fill" />
+    <input
+         x-bind:value="value"
+         class="px-4 py-2 grow shrink text-center border-x"
+         type="number"
+         step="{{ step }}"
+         size="1"
+         {{ min|attr('min') }}
+         {{ max|attr('max') }}
+    />
+    <i::icon
+        x-on:mousedown:="change({{ step }})"
+        x-on:mouseup:="stop()"
+        class:="{{ mods|join(' ') }}"
+        name="arrow-up-s-fill"
+    />
+</div>

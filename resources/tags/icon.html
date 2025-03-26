@@ -1,6 +1,6 @@
 {% set name  = name|default('question-line') %}
 
-<i class="inline-block aspect-square">
+<i class="aspect-square">
     {% if name|slice(0, 1) == '@' %}
         {% include name %}
     {% else %}
