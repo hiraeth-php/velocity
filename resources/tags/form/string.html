@@ -1,5 +1,4 @@
 {% set eg    = eg|default(null) %}
-{% set label = label|default(name|slug('-')|title) %}
 {% set value = value|default(ctx.model[name]|default(null)) %}
 
 {% set mods = [

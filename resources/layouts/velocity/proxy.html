@@ -1,1 +1,3 @@
-{{ block(__velocity__['proxy']) }}
+{% for name in _velocity_.proxy %}
+    {{ block(name) }}
+{% endfor %}

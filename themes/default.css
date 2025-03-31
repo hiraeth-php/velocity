@@ -1,20 +1,29 @@
 @import 'tailwindcss';
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap');
 
 @theme {
+
+	/**
+	 * General
+	 */
+
 	--spacing: .25rem;
 	--radius-default: var(--radius-none);
-	--font-sans: 'Noto Sans', sans-serif;
+	--font-sans: 'Source Sans 3', sans-serif;
 
 	/**
 	 * Messages
 	 */
 
-	--font-weight-message: 400;
-	--radius-message: var(--radius-default);
+	 --radius-message: var(--radius-default);
+	 --font-weight-message: 400;
 
-	--font-weight-button: 400;
-	--radius-button: var(--radius-md);
+	/**
+	 * Buttons
+	 */
+
+	 --radius-button: var(--radius-md);
+	 --font-weight-button: 400;
 
 
 	--color-base-50:  var(--color-zinc-50);
@@ -28,6 +37,30 @@
 	--color-base-800: var(--color-zinc-800);
 	--color-base-900: var(--color-zinc-900);
 	--color-base-950: var(--color-zinc-950);
+
+	--color-main-50:  var(--color-zinc-50);
+	--color-main-100: var(--color-zinc-100);
+	--color-main-200: var(--color-zinc-200);
+	--color-main-300: var(--color-zinc-300);
+	--color-main-400: var(--color-zinc-400);
+	--color-main-500: var(--color-zinc-500);
+	--color-main-600: var(--color-zinc-600);
+	--color-main-700: var(--color-zinc-700);
+	--color-main-800: var(--color-zinc-800);
+	--color-main-900: var(--color-zinc-900);
+	--color-main-950: var(--color-zinc-950);
+
+	--color-link-50:  var(--color-teal-50);
+	--color-link-100: var(--color-teal-100);
+	--color-link-200: var(--color-teal-200);
+	--color-link-300: var(--color-teal-300);
+	--color-link-400: var(--color-teal-400);
+	--color-link-500: var(--color-teal-500);
+	--color-link-600: var(--color-teal-600);
+	--color-link-700: var(--color-teal-700);
+	--color-link-800: var(--color-teal-800);
+	--color-link-900: var(--color-teal-900);
+	--color-link-950: var(--color-teal-950);
 
 	--color-info-50:  var(--color-cyan-50);
 	--color-info-100: var(--color-cyan-100);
@@ -53,30 +86,29 @@
 	--color-warn-900: var(--color-amber-900);
 	--color-warn-950: var(--color-amber-950);
 
-	--color-error-50:  var(--color-rose-50);
-	--color-error-100: var(--color-rose-100);
-	--color-error-200: var(--color-rose-200);
-	--color-error-300: var(--color-rose-300);
-	--color-error-400: var(--color-rose-400);
-	--color-error-500: var(--color-rose-500);
-	--color-error-600: var(--color-rose-600);
-	--color-error-700: var(--color-rose-700);
-	--color-error-800: var(--color-rose-800);
-	--color-error-900: var(--color-rose-900);
-	--color-error-950: var(--color-rose-950);
+	--color-halt-50:  var(--color-rose-50);
+	--color-halt-100: var(--color-rose-100);
+	--color-halt-200: var(--color-rose-200);
+	--color-halt-300: var(--color-rose-300);
+	--color-halt-400: var(--color-rose-400);
+	--color-halt-500: var(--color-rose-500);
+	--color-halt-600: var(--color-rose-600);
+	--color-halt-700: var(--color-rose-700);
+	--color-halt-800: var(--color-rose-800);
+	--color-halt-900: var(--color-rose-900);
+	--color-halt-950: var(--color-rose-950);
 
-	--color-success-50:  var(--color-emerald-50);
-	--color-success-100: var(--color-emerald-100);
-	--color-success-200: var(--color-emerald-200);
-	--color-success-300: var(--color-emerald-300);
-	--color-success-400: var(--color-emerald-400);
-	--color-success-500: var(--color-emerald-500);
-	--color-success-600: var(--color-emerald-600);
-	--color-success-700: var(--color-emerald-700);
-	--color-success-800: var(--color-emerald-800);
-	--color-success-900: var(--color-emerald-900);
-	--color-success-950: var(--color-emerald-950);
-
+	--color-good-50:  var(--color-emerald-50);
+	--color-good-100: var(--color-emerald-100);
+	--color-good-200: var(--color-emerald-200);
+	--color-good-300: var(--color-emerald-300);
+	--color-good-400: var(--color-emerald-400);
+	--color-good-500: var(--color-emerald-500);
+	--color-good-600: var(--color-emerald-600);
+	--color-good-700: var(--color-emerald-700);
+	--color-good-800: var(--color-emerald-800);
+	--color-good-900: var(--color-emerald-900);
+	--color-good-950: var(--color-emerald-950);
 
 
 }
@@ -120,31 +152,29 @@
 			--color-warn-900: var(--color-amber-100);
 			--color-warn-950: var(--color-amber-50);
 
-			--color-error-50:  var(--color-rose-950);
-			--color-error-100: var(--color-rose-900);
-			--color-error-200: var(--color-rose-800);
-			--color-error-300: var(--color-rose-700);
-			--color-error-400: var(--color-rose-600);
-			--color-error-500: var(--color-rose-500);
-			--color-error-600: var(--color-rose-400);
-			--color-error-700: var(--color-rose-300);
-			--color-error-800: var(--color-rose-200);
-			--color-error-900: var(--color-rose-100);
-			--color-error-950: var(--color-rose-50);
+			--color-halt-50:  var(--color-rose-950);
+			--color-halt-100: var(--color-rose-900);
+			--color-halt-200: var(--color-rose-800);
+			--color-halt-300: var(--color-rose-700);
+			--color-halt-400: var(--color-rose-600);
+			--color-halt-500: var(--color-rose-500);
+			--color-halt-600: var(--color-rose-400);
+			--color-halt-700: var(--color-rose-300);
+			--color-halt-800: var(--color-rose-200);
+			--color-halt-900: var(--color-rose-100);
+			--color-halt-950: var(--color-rose-50);
 
-			--color-success-50:  var(--color-emerald-950);
-			--color-success-100: var(--color-emerald-900);
-			--color-success-200: var(--color-emerald-800);
-			--color-success-300: var(--color-emerald-700);
-			--color-success-400: var(--color-emerald-600);
-			--color-success-500: var(--color-emerald-500);
-			--color-success-600: var(--color-emerald-400);
-			--color-success-700: var(--color-emerald-300);
-			--color-success-800: var(--color-emerald-200);
-			--color-success-900: var(--color-emerald-100);
-			--color-success-950: var(--color-emerald-50);
-
-
+			--color-good-50:  var(--color-emerald-950);
+			--color-good-100: var(--color-emerald-900);
+			--color-good-200: var(--color-emerald-800);
+			--color-good-300: var(--color-emerald-700);
+			--color-good-400: var(--color-emerald-600);
+			--color-good-500: var(--color-emerald-500);
+			--color-good-600: var(--color-emerald-400);
+			--color-good-700: var(--color-emerald-300);
+			--color-good-800: var(--color-emerald-200);
+			--color-good-900: var(--color-emerald-100);
+			--color-good-950: var(--color-emerald-50);
 		}
 	}
 
@@ -179,16 +209,9 @@
 	}
 
 	html {
-		@apply text-sm lg:text-lg font-sans;
+		@apply bg-base-50 text-base-950 lg:text-lg font-sans;
 	}
 
-	body {
-		@apply bg-base-50 text-base-800 m-[5%];
-	}
-
-	main {
-		@apply container mx-auto;
-	}
 
 	h1, h2, h3, h4 {
 		@apply font-bold;
@@ -270,12 +293,29 @@
 }
 
 @layer utilities {
-	.no-scrollbar::-webkit-scrollbar {
-		display: none;
+	.contain {
+		@apply
+				py-8
+			    px-[5%]
+			 md:px-[calc((100%-var(--breakpoint-sm))/2)]
+			 lg:px-[calc((100%-var(--breakpoint-md))/2)]
+			 xl:px-[calc((100%-var(--breakpoint-lg))/2)]
+			2xl:px-[calc((100%-var(--breakpoint-xl))/2)]
+
+		;
 	}
+
+	.container {
+		@apply mx-auto px-4 md:px-8 lg:px-12;
+	}
+
 
 	.no-scrollbar {
 		-ms-overflow-style: none;
 		scrollbar-width: none;
+
+		&::-webkit-scrollbar {
+			display: none;
+		}
 	}
 }

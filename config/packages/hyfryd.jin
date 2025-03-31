@@ -43,14 +43,25 @@
 [twig]
 
 	globals = {
-		"__velocity__": "ArrayObject"
+		"_velocity_": "ArrayObject"
 	}
 
-	filters = {
-		'proxies' => {
-			"target": "Hiraeth\Velocity\ProxiesFilter",
+	functions = {
+		"proxy": {
+			"target": "Hiraeth\Velocity\ProxyFunction",
 			"options": {
-				"needs_context": true
+				"needs_context": true,
 			}
 		}
 	}
+
+	filters = {
+		"proxy": {
+			"target": "Hiraeth\Velocity\ProxyFilter",
+			"options": {
+				"needs_context": true,
+				"is_variadic": true,
+			}
+		}
+	}
+
