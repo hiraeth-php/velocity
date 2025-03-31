@@ -34,7 +34,23 @@
 	priority = 100
 
 	paths = {
+		"layouts": "vendor/hiraeth/hyfryd/resources/layouts",
 		"pages": "vendor/hiraeth/hyfryd/resources/pages",
 		"icons": "vendor/hiraeth/hyfryd/resources/icons",
-		"tags":  "vendor/hiraeth/hyfryd/resources/tags"
+		"tags":  "vendor/hiraeth/hyfryd/resources/tags",
+	}
+
+[twig]
+
+	globals = {
+		"__velocity__": "ArrayObject"
+	}
+
+	filters = {
+		'proxies' => {
+			"target": "Hiraeth\Velocity\ProxiesFilter",
+			"options": {
+				"needs_context": true
+			}
+		}
 	}
