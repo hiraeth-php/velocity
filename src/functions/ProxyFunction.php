@@ -9,6 +9,6 @@ class ProxyFunction
 	 */
 	public function __invoke(array &$context): bool
 	{
-		return count($context['_velocity_']['proxy']) > 0;
+		return count($context['_velocity_']['proxy'] ?? []) > 0;
 	}
 }

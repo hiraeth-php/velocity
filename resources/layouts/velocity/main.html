@@ -12,9 +12,17 @@
 	<body hx-boost="true" hx-target="this" hx-swap="innerHTML show:window:top settle:0">
 		{% include '@layouts/velocity/body.html' %}
 	</body>
-	<input type="hidden" hx-trigger="load" hx-get="{{ route(request) }}" hx-headers='{"Velocity-Proxy": false}' />
+	<input type="hidden" hx-trigger="load" hx-get="{{ route(request) }}" v-proxy="false" />
     <script>
         window.hashLoads = {};
+
+        document.addEventListener('htmx:beforeSend', function(e) {
+            let proxy = e.explicitOriginalTarget.closest('[v-proxy]');
+
+            if (proxy) {
+                e.detail.xhr.setRequestHeader("Velocity-Proxy", proxy.getAttribute('v-proxy'));
+            }
+        });
 
         document.addEventListener('htmx:beforeOnLoad', function (e) {
             e.detail.shouldSwap = true;
