@@ -245,10 +245,14 @@
 	}
 
 	pre {
-		@apply !p-4 scroll-m-4 scroll-mb-8 rounded-sm drop-shadow-md !bg-zinc-700 dark:!bg-white/5 relative;
+		@apply p-4 rounded-sm drop-shadow-md bg-zinc-700 relative;
 
 		& > code {
-			@apply !bg-transparent !p-0 !py-4;
+			@apply !bg-transparent;
+		}
+
+		& > .hljs {
+			@apply !pb-4;
 		}
 
 		& > .copy {
