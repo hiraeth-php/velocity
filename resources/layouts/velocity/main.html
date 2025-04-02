@@ -1,56 +1,47 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-        {% if app.hasFile('public/manifest.json') %}
-            <link rel="manifest" href="/manifest.json" />
-        {% endif %}
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		{% if app.hasFile('public/manifest.json') %}
+			<link rel="manifest" href="/manifest.json" />
+		{% endif %}
 
-        {% block head %}
-            <link rel="preconnect" href="https://cdn.jsdelivr.net">
-            <link rel="preconnect" href="https://fonts.googleapis.com">
-            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		{% include '@layouts/velocity/head.html' %}
+	</head>
+	<body hx-boost="true" hx-target="this" hx-swap="innerHTML show:window:top settle:0">
+		{% include '@layouts/velocity/body.html' %}
+	</body>
+	<input type="hidden" hx-trigger="load" hx-get="{{ route(request) }}" hx-headers='{"Velocity-Proxy": false}' />
+    <script>
+        window.hashLoads = {};
 
-            <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-
-            <script defer src="https://cdn.jsdelivr.net/npm/htmx.org@2.x.x/dist/htmx.min.js"></script>
-            <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-            <style type="text/tailwindcss">
-                {% include '@vendor/hiraeth/hyfryd/themes/default.css' %}
-            </style>
-        {% endblock %}
-
-        {% block scripts %}
-
-        {% endblock %}
-    </head>
-    <body hx-boost="true" hx-target="this" hx-swap="innerHTML show:none settle:0">
-        {% block body %}
-
-        {% endblock %}
-    </body>
-    <input type="hidden" hx-trigger="load" hx-get="{{ route(request) }}" hx-headers='{"Velocity-Proxy": false}' />
-    <script type="text/javascript">
-        document.body.addEventListener('htmx:beforeOnLoad', function (e) {
+        document.addEventListener('htmx:beforeOnLoad', function (e) {
             e.detail.shouldSwap = true;
             e.detail.isError = false;
         });
 
-        document.body.addEventListener('htmx:afterRequest', function(e) {
+        document.addEventListener('htmx:afterRequest', function(e) {
             let parser = new DOMParser;
 
             if (e.detail.xhr.response.includes('<html>')) {
                 let dom = parser.parseFromString(e.detail.xhr.response, 'text/html');
 
-                dom.querySelectorAll('script').forEach((el) => {
-                    let script = document.createElement('script');
-                    script.innerHTML = el.innerHTML;
+                ['script', 'style'].forEach((type) => {
+                    dom.querySelectorAll(type).forEach((node) => {
+                        let hash = node.getAttribute('data-hash');
 
-                    e.detail.target.appendChild(script);
+                        if (!hash || window.hashLoads[hash]) {
+                            return;
+                        }
 
-                    el.remove();
+                        let new_node           = document.createElement(type);
+                        new_node.innerHTML     = node.innerHTML;
+                        window.hashLoads[hash] = true;
+
+                        document.head.appendChild(new_node);
+                        node.remove();
+                    });
                 });
 
                 e.detail.xhr.response = dom.documentElement.innerHTML;

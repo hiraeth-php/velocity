@@ -1,15 +1,14 @@
 @import 'tailwindcss';
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap');
 
 @theme {
-
 	/**
 	 * General
 	 */
 
 	--spacing: .25rem;
 	--radius-default: var(--radius-none);
-	--font-sans: 'Source Sans 3', sans-serif;
+	--font-sans: 'Muli', sans-serif;
+	--font-mono: 'Source Code Pro', monospace;
 
 	/**
 	 * Messages
@@ -214,23 +213,21 @@
 
 
 	h1, h2, h3, h4 {
-		@apply font-bold;
-
 		&:not(:last-child) {
-			@apply mb-1;
+			@apply mb-4;
 		}
 	}
 
 	h1 {
-		@apply text-4xl;
+		@apply text-6xl;
 	}
 
 	h2 {
-		@apply text-3xl;
+		@apply text-3xl border-b border-stone-200;
 	}
 
 	h3 {
-		@apply text-2xl;
+		@apply text-2xl text-slate-500;
 	}
 
 	h4 {
@@ -247,12 +244,20 @@
 		@apply my-8;
 	}
 
-	pre[data-lang] {
-		@apply p-4 rounded-sm drop-shadow-md !bg-white/50 dark:!bg-white/5 overflow-y-scroll;
+	pre {
+		@apply !p-4 scroll-m-4 scroll-mb-8 rounded-sm drop-shadow-md !bg-zinc-700 dark:!bg-white/5 relative;
+
+		& > code {
+			@apply !bg-transparent !p-0 !py-4;
+		}
+
+		& > .copy {
+			@apply absolute inline-block h-[20px] w-[20px] right-3 top-3 bg-[url("https://api.iconify.design/mdi:content-copy.svg?color=%23ffffff&height=20")] cursor-pointer text-transparent;
+		}
 	}
 
-	code {
-		@apply p-0.5 px-1.5 !bg-base-700/10 !text-base-700 rounded-xs text-[.90em] font-mono text-nowrap;
+	:not(pre) > code {
+		@apply border border-zinc-300 p-0.5 px-1 text-sm font-mono text-nowrap leading-4;
 	}
 
 	svg {
@@ -301,7 +306,6 @@
 			 lg:px-[calc((100%-var(--breakpoint-md))/2)]
 			 xl:px-[calc((100%-var(--breakpoint-lg))/2)]
 			2xl:px-[calc((100%-var(--breakpoint-xl))/2)]
-
 		;
 	}
 
