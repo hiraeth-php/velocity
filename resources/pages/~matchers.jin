@@ -1,5 +1,5 @@
 [/]
 
-	consume = true
+	proxies = {"@":"%"}
 	include = ["@"]
 	pattern = .*

@@ -212,7 +212,7 @@
 	}
 
 
-	h1, h2, h3, h4 {
+	h1, h2, h3, h4, h5 {
 		&:not(:last-child) {
 			@apply mb-4;
 		}
@@ -223,14 +223,18 @@
 	}
 
 	h2 {
-		@apply text-3xl border-b border-stone-200;
+		@apply text-4xl border-b border-stone-200;
 	}
 
 	h3 {
-		@apply text-2xl text-slate-500;
+		@apply text-3xl text-slate-500;
 	}
 
 	h4 {
+		@apply text-2xl;
+	}
+
+	h5 {
 		@apply text-xl;
 	}
 
