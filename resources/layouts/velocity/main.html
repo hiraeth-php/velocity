@@ -17,7 +17,7 @@
         window.hashLoads = {};
 
         document.addEventListener('htmx:beforeSend', function(e) {
-            let proxy = e.explicitOriginalTarget.closest('[v-proxy]');
+            let proxy = e.target.closest('[v-proxy]');
 
             if (proxy) {
                 e.detail.xhr.setRequestHeader("Velocity-Proxy", proxy.getAttribute('v-proxy'));
