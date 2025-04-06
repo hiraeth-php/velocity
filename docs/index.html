@@ -1,9 +1,9 @@
-<title>Welcome to Hyfryd</title>
+<title>Welcome to Velocity</title>
 
 {% apply markdown %}
-    # Welcome to Hyfryd
+    # Welcome to Velocity
 
-    Hyfryd is an opinionated application framework built on Hiraeth.  It takes a view-first component-based approach, using Tailwind, HTMX and AlpineJS to create dynamic and fast experiences with the full power of PHP and Twig.
+    Velocity is an opinionated application framework built on Hiraeth.  It takes a view-first component-based approach, using Tailwind, HTMX and AlpineJS to create dynamic and fast experiences with the full power of PHP and Twig.
 
     Already know what you're doing?
 
@@ -12,7 +12,7 @@
     ## Installation
 
     1. [Install Hiraeth](https://hiraeth.dev/docs/3.0/installation)
-    2. Add Hyfryd
+    2. Add Velocity
 
     ```html
     composer create-project hiraeth/app:^3.0 <path> -s dev
@@ -23,19 +23,19 @@
 
 <x:alert:info ghost class:="border-dashed">
     {% apply markdown %}
-        You can install Hyfryd into an existing project to make use of its components, however, if you're already making use of static pages, read about our [pitfalls](#pitfalls).
+        You can install Velocity into an existing project to make use of its components, however, if you're already making use of static pages, read about our [pitfalls](#pitfalls).
     {% endapply %}
 </x:alert:info>
 
 {% apply markdown %}
     ## Creating Pages {: #pages}
 
-    Hyfryd use's Hiraeth's [static templates](https://hiraeth.dev/docs/latest/pages#static-templates) with the template prefix of `%` (instead of `@`).  This indicates the template is a partial template (a percent of a page) and can be returned by the template middleware in the event of an AJAX or HTMX request.  So, to create your first page, simply add a new file:
+    Velocity use's Hiraeth's [static templates](https://hiraeth.dev/docs/latest/pages#static-templates) with the template prefix of `%` (instead of `@`).  This indicates the template is a partial template (a percent of a page) and can be returned by the template middleware in the event of an AJAX or HTMX request.  So, to create your first page, simply add a new file:
 
     {: .mb-0}
     `resources/pages/%index.html`
     ```xml
-    <title>Welcome to Hyfryd!</title>
+    <title>Welcome to Velocity!</title>
     <x:alert:info ghost class:="border-dashed">
         Hello World!
     </x:alert:info>
@@ -56,13 +56,13 @@
 {% endapply %}
 
 <x:alert:info ghost class:="border-dashed">
-    In both cases, if the template cannot be found at the canonical location but the alternative is found, Hyfryd will redirect the user to the canonical path.
+    In both cases, if the template cannot be found at the canonical location but the alternative is found, Velocity will redirect the user to the canonical path.
 </x:alert:info>
 
 {% apply markdown %}
     ## Branching (Routing) {: #branching}
 
-    One of the major reasons modern backend applications use routers is because we want to make nice clean URLs based on informaton provided in URL segments.  Hyfryd uses a concept called branching instead, which makes use of the existing filesystem hierarchy corresponding to request paths to replace segments that match certain patterns while parsing them and populating the mapped parameters.  So, what do you do if you to access `/users/1`, parse the `1` as the user ID, and render it with a detail template?
+    One of the major reasons modern backend applications use routers is because we want to make nice clean URLs based on informaton provided in URL segments.  Velocity uses a concept called branching instead, which makes use of the existing filesystem hierarchy corresponding to request paths to replace segments that match certain patterns while parsing them and populating the mapped parameters.  So, what do you do if you to access `/users/1`, parse the `1` as the user ID, and render it with a detail template?
 
     {: .mb-0}
     `resources/pages/users/~matchers.jin`
@@ -103,7 +103,7 @@
 
     ## Adding Actions {: #actions}
 
-    You may be wondering at this point, without controllers, how do I get data into my templates?  While it's possible to install additional packages that perform traditional routing (e.g. `hiraeth/fastroute`), Hyfryd promotes a view-first approach.  This approach provides a few benefits:
+    You may be wondering at this point, without controllers, how do I get data into my templates?  While it's possible to install additional packages that perform traditional routing (e.g. `hiraeth/fastroute`), Velocity promotes a view-first approach.  This approach provides a few benefits:
 
     1. Different views can easily re-use the same control logic and get the same data.  Compared to a traditional router => controller approach, you'd need to update the controller to determine the appropriate template to respond with and under what conditions.
     2. Since called actions respond directly with arrays of data, actions can be re-used with a router to automatically provide functional API endpoints with no additional changes needed in most cases.
@@ -269,15 +269,15 @@
 
     ### Integrating
 
-    If you already have an existing Hiraeth install and, in particular, if you're using static pages, you can still use the Hyfryd components.  It's **important** to note, however, that because Hyfryd is intended to be a fuller application framework that uses HTMX's boost functionality for partial page loads (by default), the `~matchers.jin` at the root of its template path consumes any and all non-HTMX requests paths entirely.
+    If you already have an existing Hiraeth install and, in particular, if you're using static pages, you can still use the Velocity components.  It's **important** to note, however, that because Velocity is intended to be a fuller application framework that uses HTMX's boost functionality for partial page loads (by default), the `~matchers.jin` at the root of its template path consumes any and all non-HTMX requests paths entirely.
 
     If you have an existing `~matchers.jin` in your `resources/pages` folder, then this will not cause any problems for your existing `@template.html` pages, however, if you don't, you'll want to overload it by creating an empty `resources/pages/~matchers.jin`.
 
     ### Safelisting
 
-    While not as much a pitfall of Hyfryd as much as it is of Tailwind, it should be noted that components which create or include dynamic classes, i.e. where a portion of the class is a Twig variable or has been otherwise formed by an expression, may not be recognized by Tailwind.  This is less true with the CDN as it's already operating on rendered code, however, when building for production any such classes need to be "safelisted."
+    While not as much a pitfall of Velocity as much as it is of Tailwind, it should be noted that components which create or include dynamic classes, i.e. where a portion of the class is a Twig variable or has been otherwise formed by an expression, may not be recognized by Tailwind.  This is less true with the CDN as it's already operating on rendered code, however, when building for production any such classes need to be "safelisted."
 
-    Hyfryd maintains its own safelisting for built-in components which is "sourced" via the `@import` of the `vendor/hiraeth/velocity/sources.css` file.  To add your own safelist (although this might change in the future, you can simply add a `resources/safelist.html` containing the static versions of any dynamically generated classes.
+    Velocity maintains its own safelisting for built-in components which is "sourced" via the `@import` of the `vendor/hiraeth/velocity/sources.css` file.  To add your own safelist (although this might change in the future, you can simply add a `resources/safelist.html` containing the static versions of any dynamically generated classes.
 {% endapply %}
 
 <x:alert:warn ghost>
