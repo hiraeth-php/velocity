@@ -1,5 +1,5 @@
 {
-    "name": "hiraeth/hyfryd",
+    "name": "hiraeth/velocity",
     "description": "A view-first component-based application framework",
     "minimum-stability": "dev",
     "prefer-stable": true,

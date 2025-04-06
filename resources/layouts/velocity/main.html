@@ -1,50 +1,66 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-		{% if app.hasFile('public/manifest.json') %}
-			<link rel="manifest" href="/manifest.json" />
-		{% endif %}
-
-		{% include '@layouts/velocity/head.html' %}
-	</head>
-	<body hx-boost="true" hx-target="this" hx-swap="innerHTML show:window:top settle:0">
-		{% include '@layouts/velocity/body.html' %}
-	</body>
-	<input type="hidden" hx-trigger="load" hx-get="{{ route(request) }}" v-proxy="false" />
+    <head>
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
+        {% if app.hasFile('public/manifest.json') %}
+        <link rel="manifest" href="/manifest.json" />
+        {% endif %} {% include '@layouts/velocity/head.html' %}
+    </head>
+    <body
+        hx-boost="true"
+        hx-target="this"
+        hx-swap="innerHTML show:window:top settle:0"
+    >
+        {% include '@layouts/velocity/body.html' %}
+    </body>
+    <input
+        type="hidden"
+        hx-trigger="load"
+        hx-get="{{ route(request) }}"
+        v-proxy="false"
+    />
     <script>
         window.hashLoads = {};
 
-        document.addEventListener('htmx:beforeSend', function(e) {
-            let proxy = e.target.closest('[v-proxy]');
+        document.addEventListener("htmx:beforeSend", function (e) {
+            let proxy = e.target.closest("[v-proxy]");
 
             if (proxy) {
-                e.detail.xhr.setRequestHeader("Velocity-Proxy", proxy.getAttribute('v-proxy'));
+                e.detail.xhr.setRequestHeader(
+                    "Velocity-Proxy",
+                    proxy.getAttribute("v-proxy"),
+                );
             }
         });
 
-        document.addEventListener('htmx:beforeOnLoad', function (e) {
+        document.addEventListener("htmx:beforeOnLoad", function (e) {
             e.detail.shouldSwap = true;
             e.detail.isError = false;
         });
 
-        document.addEventListener('htmx:afterRequest', function(e) {
-            let parser = new DOMParser;
+        document.addEventListener("htmx:afterRequest", function (e) {
+            let parser = new DOMParser();
 
-            if (e.detail.xhr.response.includes('<html>')) {
-                let dom = parser.parseFromString(e.detail.xhr.response, 'text/html');
+            if (e.detail.xhr.response.includes("<html>")) {
+                let dom = parser.parseFromString(
+                    e.detail.xhr.response,
+                    "text/html",
+                );
 
-                ['script', 'style'].forEach((type) => {
+                ["script", "style"].forEach((type) => {
                     dom.querySelectorAll(type).forEach((node) => {
-                        let hash = node.getAttribute('data-hash');
+                        let hash = node.getAttribute("data-hash");
 
                         if (!hash || window.hashLoads[hash]) {
                             return;
                         }
 
-                        let new_node           = document.createElement(type);
-                        new_node.innerHTML     = node.innerHTML;
+                        let new_node = document.createElement(type);
+                        new_node.innerHTML = node.innerHTML;
                         window.hashLoads[hash] = true;
 
                         document.head.appendChild(new_node);
