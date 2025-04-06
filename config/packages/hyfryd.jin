@@ -34,10 +34,10 @@
 	priority = 100
 
 	paths = {
-		"layouts": "vendor/hiraeth/hyfryd/resources/layouts",
-		"pages": "vendor/hiraeth/hyfryd/resources/pages",
-		"icons": "vendor/hiraeth/hyfryd/resources/icons",
-		"tags":  "vendor/hiraeth/hyfryd/resources/tags",
+		"layouts": "vendor/hiraeth/velocity/resources/layouts",
+		"pages": "vendor/hiraeth/velocity/resources/pages",
+		"icons": "vendor/hiraeth/velocity/resources/icons",
+		"tags":  "vendor/hiraeth/velocity/resources/tags",
 	}
 
 [twig]

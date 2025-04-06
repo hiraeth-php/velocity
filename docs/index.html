@@ -17,7 +17,7 @@
     ```html
     composer create-project hiraeth/app:^3.0 <path> -s dev
     cd <path>
-    composer require hiraeth/hyfryd
+    composer require hiraeth/velocity
     ```
 {% endapply %}
 
@@ -173,7 +173,7 @@
     {: .mb-0}
     `resources/pages/@index.html`
     ```xml{% verbatim %}
-    {% extends '@vendor/hiraeth/hyfryd/resources/pages/@index.html' %}
+    {% extends '@vendor/hiraeth/velocity/resources/pages/@index.html' %}
     {% endverbatim %}```
 
     This template includes two overloadable blocks, `head` and `body`.  Each of these corresponds to the brunt of the HTML element with the same name.
@@ -199,16 +199,16 @@
 
     |Source|Description|
     |-|-|
-    |`vendor/hiraeth/hyfryd/sources.css`|Ensures Tailwind sources appropriate directories, namely, `resources`.
-    |`vendor/hiraeth/hyfryd/themes/<theme>.css`|Includes a selected theme, replace `<theme>` with desire theme.
+    |`vendor/hiraeth/velocity/sources.css`|Ensures Tailwind sources appropriate directories, namely, `resources`.
+    |`vendor/hiraeth/velocity/themes/<theme>.css`|Includes a selected theme, replace `<theme>` with desire theme.
 
     Continuing with the example of this site, we add the following:
 
     {: .mb-0}
     `resources/app.css`
     ```css
-    @import '../vendor/hiraeth/hyfryd/sources.css';
-    @import '../vendor/hiraeth/hyfryd/themes/default.css';
+    @import '../vendor/hiraeth/velocity/sources.css';
+    @import '../vendor/hiraeth/velocity/themes/default.css';
     ```
 
     As well as a simplified package and build process:
@@ -277,7 +277,7 @@
 
     While not as much a pitfall of Hyfryd as much as it is of Tailwind, it should be noted that components which create or include dynamic classes, i.e. where a portion of the class is a Twig variable or has been otherwise formed by an expression, may not be recognized by Tailwind.  This is less true with the CDN as it's already operating on rendered code, however, when building for production any such classes need to be "safelisted."
 
-    Hyfryd maintains its own safelisting for built-in components which is "sourced" via the `@import` of the `vendor/hiraeth/hyfryd/sources.css` file.  To add your own safelist (although this might change in the future, you can simply add a `resources/safelist.html` containing the static versions of any dynamically generated classes.
+    Hyfryd maintains its own safelisting for built-in components which is "sourced" via the `@import` of the `vendor/hiraeth/velocity/sources.css` file.  To add your own safelist (although this might change in the future, you can simply add a `resources/safelist.html` containing the static versions of any dynamically generated classes.
 {% endapply %}
 
 <x:alert:warn ghost>
