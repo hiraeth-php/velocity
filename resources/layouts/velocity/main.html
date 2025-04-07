@@ -10,54 +10,6 @@
             <link rel="manifest" href="/manifest.json" />
         {% endif %}
 
-        <script>
-            window.hashLoads = {};
-
-            document.addEventListener("htmx:beforeSend", function (e) {
-                let proxy = e.target.closest("[vf-proxy]");
-
-                e.detail.xhr.setRequestHeader(
-                    "VF-Proxy",
-                    proxy ? proxy.getAttribute("vf-proxy") : 'true',
-                );
-            });
-
-            document.addEventListener("htmx:beforeOnLoad", function (e) {
-                e.detail.shouldSwap = true;
-                e.detail.isError = false;
-            });
-
-            document.addEventListener("htmx:afterRequest", function (e) {
-                let parser = new DOMParser();
-
-                if (e.detail.xhr.response.includes("<html>")) {
-                    let dom = parser.parseFromString(
-                        e.detail.xhr.response,
-                        "text/html",
-                    );
-
-                    ["script", "style"].forEach((type) => {
-                        dom.querySelectorAll(type).forEach((node) => {
-                            let hash = node.getAttribute("data-hash");
-
-                            if (!hash || window.hashLoads[hash]) {
-                                return;
-                            }
-
-                            let new_node = document.createElement(type);
-                            new_node.innerHTML = node.innerHTML;
-                            window.hashLoads[hash] = true;
-
-                            document.head.appendChild(new_node);
-                            node.remove();
-                        });
-                    });
-
-                    e.detail.xhr.response = dom.documentElement.innerHTML;
-                }
-            });
-        </script>
-
         {% block head %}
         	{% include '@layouts/velocity/head.html' %}
         {% endblock %}
@@ -71,5 +23,51 @@
 
         {% endblock %}}
     </body>
+    <script>
+        window.hashLoads = {};
 
+        document.addEventListener('htmx:beforeSend', function (e) {
+            let proxy = e.target.closest('[vf-proxy]');
+
+            e.detail.xhr.setRequestHeader(
+                'VF-Proxy',
+                proxy ? proxy.getAttribute('vf-proxy') : 'true',
+            );
+        });
+
+        document.addEventListener('htmx:beforeOnLoad', function (e) {
+            e.detail.shouldSwap = true;
+            e.detail.isError = false;
+        });
+
+        document.addEventListener('htmx:afterRequest', function (e) {
+            let parser = new DOMParser();
+
+            if (e.detail.xhr.response.includes('<html>')) {
+                let dom = parser.parseFromString(
+                    e.detail.xhr.response,
+                    'text/html',
+                );
+
+                ['script', 'style'].forEach((type) => {
+                    dom.querySelectorAll(type).forEach((node) => {
+                        let hash = node.getAttribute('data-hash');
+
+                        if (!hash || window.hashLoads[hash]) {
+                            return;
+                        }
+
+                        let new_node = document.createElement(type);
+                        new_node.innerHTML = node.innerHTML;
+                        window.hashLoads[hash] = true;
+
+                        document.head.appendChild(new_node);
+                        node.remove();
+                    });
+                });
+
+                e.detail.xhr.response = dom.documentElement.innerHTML;
+            }
+        });
+    </script>
 </html>

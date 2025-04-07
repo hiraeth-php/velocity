@@ -38,7 +38,7 @@ class ProxyFilter
 
 		$context['_velocity_']['proxy'] = [
 			'blocks' => $blocks,
-			'active' => $do_proxy || $always
+			'active' => $do_proxy
 		];
 
 		return $target;
