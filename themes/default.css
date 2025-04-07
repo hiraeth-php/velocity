@@ -31,7 +31,7 @@
 	--color-main: var(--color-zinc-950);    /* Main Text Color */
 	--color-flip: var(--color-base);        /* Flipped Text Color */
 	--color-link: var(--color-amber-700);   /* Link Color */
-	--color-push: var(--color-zinc-800);   /* Push Color */
+	--color-push: var(--color-amber-700);   /* Push Color */
 	--color-info: var(--color-cyan-700);    /* Info Color */
 	--color-warn: var(--color-amber-700);   /* Warn Color */
 	--color-halt: var(--color-rose-700);    /* Halt Color */
