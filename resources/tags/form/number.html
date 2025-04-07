@@ -1,16 +1,11 @@
 {% do require(["name"], ["method"]) %}
 
 {% do resolve({
-    label:
-        label ?? name|slug(' ')|title,
-    value:
-        value ?? ctx.model[name] ?? null,
-    min:
-        min ?? null,
-    max:
-        max ?? null,
-    step:
-        step ?? 1
+    label: label ?? name|slug(' ')|title,
+    value: value ?? ctx.model[name] ?? null,
+    min: min ?? null,
+    max: max ?? null,
+    step: step ?? 1,
 }) %}
 
 {% set timeout = 500 %}

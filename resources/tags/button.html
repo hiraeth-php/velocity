@@ -1,27 +1,24 @@
-{% set url   = url|default(null) %}
-{% set text  = text|default('...') %}
-{% set color = color|default('link') %}
-{% set ghost = ghost|default(false)|int %}
-{% set mods  = [
-    'inline-block',
-    'cursor-pointer',
-    'font-button',
-    'rounded-button',
+{% do default({
+	url: url ?? null,
+	text: text ?? '...',
+	naked: (naked ?? 'false')|int,
+	ghost: (ghost ?? 'false')|int,
+}) %}
+
+{% do styling(
     'py-2',
     'px-4',
-] %}
-
-{% if ghost %}
-    {% set mods = mods|merge([
-        'text-' ~ color ~ '-200',
-        'border-1'
-    ]) %}
-{% else %}
-    {% set mods = mods|merge([
-        'bg-' ~ color ~ '-200',
-        'text-base-950'
-    ]) %}
-{% endif %}
+    'font-button',
+    'inline-block',
+    'cursor-pointer',
+    'rounded-button',
+    'bg-push'|if(not ghost),
+    'text-flip'|if(not ghost),
+    'shadow-button'|if(not naked),
+    'underline'|if(ghost and naked),
+    'border'|if(ghost and not naked),
+    'text-push'|if(ghost),
+) %}
 
 {% set content %}
     {% if children|length %}
@@ -32,12 +29,11 @@
 {% endset %}
 
 {% if url %}
-    <a class="{{ mods|join(' ') }}" href="{{ url }}">
+    <a class="{{ styling }}" href="{{ url }}">
         {{ content }}
     </a>
 {% else %}
-    <button class="{{ mods|join(' ') }}">
+    <button class="{{ styling }}">
         {{ content }}
     </button>
 {% endif %}
-

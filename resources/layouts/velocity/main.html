@@ -7,69 +7,69 @@
             content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
         />
         {% if app.hasFile('public/manifest.json') %}
-        <link rel="manifest" href="/manifest.json" />
-        {% endif %} {% include '@layouts/velocity/head.html' %}
+            <link rel="manifest" href="/manifest.json" />
+        {% endif %}
+
+        <script>
+            window.hashLoads = {};
+
+            document.addEventListener("htmx:beforeSend", function (e) {
+                let proxy = e.target.closest("[vf-proxy]");
+
+                e.detail.xhr.setRequestHeader(
+                    "VF-Proxy",
+                    proxy ? proxy.getAttribute("vf-proxy") : 'true',
+                );
+            });
+
+            document.addEventListener("htmx:beforeOnLoad", function (e) {
+                e.detail.shouldSwap = true;
+                e.detail.isError = false;
+            });
+
+            document.addEventListener("htmx:afterRequest", function (e) {
+                let parser = new DOMParser();
+
+                if (e.detail.xhr.response.includes("<html>")) {
+                    let dom = parser.parseFromString(
+                        e.detail.xhr.response,
+                        "text/html",
+                    );
+
+                    ["script", "style"].forEach((type) => {
+                        dom.querySelectorAll(type).forEach((node) => {
+                            let hash = node.getAttribute("data-hash");
+
+                            if (!hash || window.hashLoads[hash]) {
+                                return;
+                            }
+
+                            let new_node = document.createElement(type);
+                            new_node.innerHTML = node.innerHTML;
+                            window.hashLoads[hash] = true;
+
+                            document.head.appendChild(new_node);
+                            node.remove();
+                        });
+                    });
+
+                    e.detail.xhr.response = dom.documentElement.innerHTML;
+                }
+            });
+        </script>
+
+        {% block head %}
+        	{% include '@layouts/velocity/head.html' %}
+        {% endblock %}
     </head>
     <body
         hx-boost="true"
         hx-target="this"
         hx-swap="innerHTML show:window:top settle:0"
     >
-        {% include '@layouts/velocity/body.html' %}
+        {% block body %}
+
+        {% endblock %}}
     </body>
-    <input
-        type="hidden"
-        hx-trigger="load"
-        hx-get="{{ route(request) }}"
-        v-proxy="false"
-    />
-    <script>
-        window.hashLoads = {};
 
-        document.addEventListener("htmx:beforeSend", function (e) {
-            let proxy = e.target.closest("[v-proxy]");
-
-            if (proxy) {
-                e.detail.xhr.setRequestHeader(
-                    "Velocity-Proxy",
-                    proxy.getAttribute("v-proxy"),
-                );
-            }
-        });
-
-        document.addEventListener("htmx:beforeOnLoad", function (e) {
-            e.detail.shouldSwap = true;
-            e.detail.isError = false;
-        });
-
-        document.addEventListener("htmx:afterRequest", function (e) {
-            let parser = new DOMParser();
-
-            if (e.detail.xhr.response.includes("<html>")) {
-                let dom = parser.parseFromString(
-                    e.detail.xhr.response,
-                    "text/html",
-                );
-
-                ["script", "style"].forEach((type) => {
-                    dom.querySelectorAll(type).forEach((node) => {
-                        let hash = node.getAttribute("data-hash");
-
-                        if (!hash || window.hashLoads[hash]) {
-                            return;
-                        }
-
-                        let new_node = document.createElement(type);
-                        new_node.innerHTML = node.innerHTML;
-                        window.hashLoads[hash] = true;
-
-                        document.head.appendChild(new_node);
-                        node.remove();
-                    });
-                });
-
-                e.detail.xhr.response = dom.documentElement.innerHTML;
-            }
-        });
-    </script>
 </html>

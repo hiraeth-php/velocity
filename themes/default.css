@@ -14,166 +14,34 @@
 	 * Messages
 	 */
 
-	 --radius-message: var(--radius-default);
-	 --font-weight-message: 400;
+	--shadow-message: var(--drop-shadow-sm);
+	--radius-message: var(--radius-default);
+	--font-weight-message: 400;
 
 	/**
 	 * Buttons
 	 */
 
-	 --radius-button: var(--radius-md);
-	 --font-weight-button: 400;
+	--shadow-button: var(--drop-shadow-sm);
+	--radius-button: var(--radius-md);
+	--font-weight-button: 400;
 
 
-	--color-base-50:  var(--color-zinc-50);
-	--color-base-100: var(--color-zinc-100);
-	--color-base-200: var(--color-zinc-200);
-	--color-base-300: var(--color-zinc-300);
-	--color-base-400: var(--color-zinc-400);
-	--color-base-500: var(--color-zinc-500);
-	--color-base-600: var(--color-zinc-600);
-	--color-base-700: var(--color-zinc-700);
-	--color-base-800: var(--color-zinc-800);
-	--color-base-900: var(--color-zinc-900);
-	--color-base-950: var(--color-zinc-950);
-
-	--color-main-50:  var(--color-zinc-50);
-	--color-main-100: var(--color-zinc-100);
-	--color-main-200: var(--color-zinc-200);
-	--color-main-300: var(--color-zinc-300);
-	--color-main-400: var(--color-zinc-400);
-	--color-main-500: var(--color-zinc-500);
-	--color-main-600: var(--color-zinc-600);
-	--color-main-700: var(--color-zinc-700);
-	--color-main-800: var(--color-zinc-800);
-	--color-main-900: var(--color-zinc-900);
-	--color-main-950: var(--color-zinc-950);
-
-	--color-link-50:  var(--color-teal-50);
-	--color-link-100: var(--color-teal-100);
-	--color-link-200: var(--color-teal-200);
-	--color-link-300: var(--color-teal-300);
-	--color-link-400: var(--color-teal-400);
-	--color-link-500: var(--color-teal-500);
-	--color-link-600: var(--color-teal-600);
-	--color-link-700: var(--color-teal-700);
-	--color-link-800: var(--color-teal-800);
-	--color-link-900: var(--color-teal-900);
-	--color-link-950: var(--color-teal-950);
-
-	--color-info-50:  var(--color-cyan-50);
-	--color-info-100: var(--color-cyan-100);
-	--color-info-200: var(--color-cyan-200);
-	--color-info-300: var(--color-cyan-300);
-	--color-info-400: var(--color-cyan-400);
-	--color-info-500: var(--color-cyan-500);
-	--color-info-600: var(--color-cyan-600);
-	--color-info-700: var(--color-cyan-700);
-	--color-info-800: var(--color-cyan-800);
-	--color-info-900: var(--color-cyan-900);
-	--color-info-950: var(--color-cyan-950);
-
-	--color-warn-50:  var(--color-amber-50);
-	--color-warn-100: var(--color-amber-100);
-	--color-warn-200: var(--color-amber-200);
-	--color-warn-300: var(--color-amber-300);
-	--color-warn-400: var(--color-amber-400);
-	--color-warn-500: var(--color-amber-500);
-	--color-warn-600: var(--color-amber-600);
-	--color-warn-700: var(--color-amber-700);
-	--color-warn-800: var(--color-amber-800);
-	--color-warn-900: var(--color-amber-900);
-	--color-warn-950: var(--color-amber-950);
-
-	--color-halt-50:  var(--color-rose-50);
-	--color-halt-100: var(--color-rose-100);
-	--color-halt-200: var(--color-rose-200);
-	--color-halt-300: var(--color-rose-300);
-	--color-halt-400: var(--color-rose-400);
-	--color-halt-500: var(--color-rose-500);
-	--color-halt-600: var(--color-rose-600);
-	--color-halt-700: var(--color-rose-700);
-	--color-halt-800: var(--color-rose-800);
-	--color-halt-900: var(--color-rose-900);
-	--color-halt-950: var(--color-rose-950);
-
-	--color-good-50:  var(--color-emerald-50);
-	--color-good-100: var(--color-emerald-100);
-	--color-good-200: var(--color-emerald-200);
-	--color-good-300: var(--color-emerald-300);
-	--color-good-400: var(--color-emerald-400);
-	--color-good-500: var(--color-emerald-500);
-	--color-good-600: var(--color-emerald-600);
-	--color-good-700: var(--color-emerald-700);
-	--color-good-800: var(--color-emerald-800);
-	--color-good-900: var(--color-emerald-900);
-	--color-good-950: var(--color-emerald-950);
-
-
+	--color-base: var(--color-zinc-50);     /* Overall Background Color */
+	--color-main: var(--color-zinc-950);    /* Main Text Color */
+	--color-flip: var(--color-base);        /* Flipped Text Color */
+	--color-link: var(--color-amber-700);   /* Link Color */
+	--color-push: var(--color-zinc-800);   /* Push Color */
+	--color-info: var(--color-cyan-700);    /* Info Color */
+	--color-warn: var(--color-amber-700);   /* Warn Color */
+	--color-halt: var(--color-rose-700);    /* Halt Color */
+	--color-play: var(--color-emerald-700); /* Play Color */
 }
 
 @layer base {
 	@media (prefers-color-scheme: dark) {
 		:root, :host {
-			--color-base-50:  var(--color-zinc-950);
-			--color-base-100: var(--color-zinc-900);
-			--color-base-200: var(--color-zinc-800);
-			--color-base-300: var(--color-zinc-700);
-			--color-base-400: var(--color-zinc-600);
-			--color-base-500: var(--color-zinc-500);
-			--color-base-600: var(--color-zinc-400);
-			--color-base-700: var(--color-zinc-300);
-			--color-base-800: var(--color-zinc-200);
-			--color-base-900: var(--color-zinc-100);
-			--color-base-950: var(--color-zinc-50);
 
-			--color-info-50:  var(--color-cyan-950);
-			--color-info-100: var(--color-cyan-900);
-			--color-info-200: var(--color-cyan-800);
-			--color-info-300: var(--color-cyan-700);
-			--color-info-400: var(--color-cyan-600);
-			--color-info-500: var(--color-cyan-500);
-			--color-info-600: var(--color-cyan-400);
-			--color-info-700: var(--color-cyan-300);
-			--color-info-800: var(--color-cyan-200);
-			--color-info-900: var(--color-cyan-100);
-			--color-info-950: var(--color-cyan-50);
-
-			--color-warn-50:  var(--color-amber-950);
-			--color-warn-100: var(--color-amber-900);
-			--color-warn-200: var(--color-amber-800);
-			--color-warn-300: var(--color-amber-700);
-			--color-warn-400: var(--color-amber-600);
-			--color-warn-500: var(--color-amber-500);
-			--color-warn-600: var(--color-amber-400);
-			--color-warn-700: var(--color-amber-300);
-			--color-warn-800: var(--color-amber-200);
-			--color-warn-900: var(--color-amber-100);
-			--color-warn-950: var(--color-amber-50);
-
-			--color-halt-50:  var(--color-rose-950);
-			--color-halt-100: var(--color-rose-900);
-			--color-halt-200: var(--color-rose-800);
-			--color-halt-300: var(--color-rose-700);
-			--color-halt-400: var(--color-rose-600);
-			--color-halt-500: var(--color-rose-500);
-			--color-halt-600: var(--color-rose-400);
-			--color-halt-700: var(--color-rose-300);
-			--color-halt-800: var(--color-rose-200);
-			--color-halt-900: var(--color-rose-100);
-			--color-halt-950: var(--color-rose-50);
-
-			--color-good-50:  var(--color-emerald-950);
-			--color-good-100: var(--color-emerald-900);
-			--color-good-200: var(--color-emerald-800);
-			--color-good-300: var(--color-emerald-700);
-			--color-good-400: var(--color-emerald-600);
-			--color-good-500: var(--color-emerald-500);
-			--color-good-600: var(--color-emerald-400);
-			--color-good-700: var(--color-emerald-300);
-			--color-good-800: var(--color-emerald-200);
-			--color-good-900: var(--color-emerald-100);
-			--color-good-950: var(--color-emerald-50);
 		}
 	}
 
@@ -208,7 +76,7 @@
 	}
 
 	html {
-		@apply bg-base-50 text-base-950 lg:text-lg font-sans;
+		@apply bg-base text-main lg:text-lg font-sans;
 	}
 
 
@@ -249,7 +117,7 @@
 	}
 
 	pre {
-		@apply p-4 rounded-sm drop-shadow-md bg-zinc-700 relative;
+		@apply p-4 rounded-sm drop-shadow-md bg-zinc-700 relative leading-6;
 
 		& > code {
 			@apply !bg-transparent;
@@ -273,7 +141,7 @@
 	}
 
 	a:not([class]) {
-		@apply underline decoration-1 decoration-base-950 decoration-dotted underline-offset-2 text-amber-700 dark:text-amber-400;
+		@apply underline decoration-1 decoration-dotted underline-offset-3 text-link;
 	}
 
 	ul:not([class]), ol:not([class]) {
@@ -316,11 +184,6 @@
 			2xl:px-[calc((100%-var(--breakpoint-xl))/2)]
 		;
 	}
-
-	.container {
-		@apply mx-auto px-4 md:px-8 lg:px-12;
-	}
-
 
 	.no-scrollbar {
 		-ms-overflow-style: none;
