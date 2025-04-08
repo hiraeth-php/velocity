@@ -71,6 +71,13 @@
 	  -moz-appearance: textfield;
 	}
 
+	select {
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+		background-image: none;
+	}
+
 	:focus {
 		@apply outline-0;
 	}
