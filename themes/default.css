@@ -83,7 +83,7 @@
 	}
 
 	html {
-		@apply bg-base text-main lg:text-lg font-sans;
+		@apply bg-base text-main font-sans;
 	}
 
 
