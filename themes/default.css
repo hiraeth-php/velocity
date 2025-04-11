@@ -10,6 +10,8 @@
 	--font-sans: 'Muli', sans-serif;
 	--font-mono: 'Source Code Pro', monospace;
 
+	--checkmark: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAyNCAyNCcgZmlsbD0nY3VycmVudENvbG9yJz48cGF0aCBkPSdNOS45OTk3IDE1LjE3MDlMMTkuMTkyMSA1Ljk3ODUyTDIwLjYwNjMgNy4zOTI3M0w5Ljk5OTcgMTcuOTk5M0wzLjYzNTc0IDExLjYzNTRMNS4wNDk5NiAxMC4yMjEyTDkuOTk5NyAxNS4xNzA5Wic+PC9wYXRoPjwvc3ZnPg==");
+
 	/**
 	 * Messages
 	 */
@@ -66,7 +68,14 @@
 	  margin: 0;
 	}
 
-	/* Firefox */
+	input[type="checkbox"] {
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		-ms-appearance: none;
+		-o-appearance: none;
+		appearance: none;
+	}
+
 	input[type=number] {
 	  -moz-appearance: textfield;
 	}

@@ -1,0 +1,29 @@
+{% do require(['value']) %}
+
+{% do default({
+    selected: name
+        |split('.')
+        |reduce(
+            (n, v, k) => [
+                n[0].(v) ?? null,
+                n[1].(v) ?? null,
+                n[2]
+            ],
+            [
+                context.request.method == 'GET'
+                    ? context.request.queryParams
+                    : context.request.parsedBody,
+                context.model ?? null,
+                value|if(selected is defined)
+            ]
+        )
+        |filter((v) => v is not null)
+        |first
+}) %}
+
+<x:form:label class:="flex items-start mb-4">
+    <input class="block mr-4 p-2 size-4 border-1 checked:bg-(image:--checkmark)" type="checkbox" {{ 'checked'|if(selected == value) }} />
+    <span class="text-sm">
+        {{ children|raw }}
+    </span>
+</x:form:label>

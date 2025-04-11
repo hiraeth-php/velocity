@@ -1,5 +1,9 @@
-{% set type = type|default('submit') %}
+{% do default({
+    type: type ?? 'submit',
+    ghost: ghost ?? 'false',
+    naked: naked ?? 'false',
+}) %}
 
-<t::button type:="{{ type }}">
+<x::button type:="{{ type }}" ghost="{{ ghost }}" naked="{{ naked }}">
     {{ children|raw }}
-</t::button>
+</x::button>
