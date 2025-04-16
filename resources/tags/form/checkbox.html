@@ -1,7 +1,8 @@
-{% do require(['value']) %}
+{% do require(['value', 'name']) %}
 
 {% do default({
     selected: name
+        |trim('[]')
         |split('.')
         |reduce(
             (n, v, k) => [
@@ -22,7 +23,13 @@
 }) %}
 
 <x:form:label class:="flex items-start mb-4">
-    <input class="block mr-4 p-2 size-4 border-1 checked:bg-(image:--checkmark)" type="checkbox" {{ 'checked'|if(selected == value) }} />
+    <input
+        type="checkbox"
+        name="{{ name }}"
+        value="{{ value }}"
+        {{ 'checked'|if(selected|array ? value in selected : selected == value) }}
+        class="block mr-4 p-2 size-4 border-1 checked:bg-(image:--checkmark)"
+    />
     <span class="text-sm">
         {{ children|raw }}
     </span>

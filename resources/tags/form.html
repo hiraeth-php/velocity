@@ -4,6 +4,7 @@
 <form
     method="{{ method }}"
     action="{{ action }}"
+    {{ 'novalidate'|if(app.debugging) }}
 >
     {{ children|raw }}
 </form>
