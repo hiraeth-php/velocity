@@ -6,6 +6,7 @@
 <form
     method="{{ method }}"
     action="{{ action }}"
+    hx-push-url="false"
     hx-swap="outerHTML"
     hx-target="this"
     {{ 'novalidate'|if(app.debugging) }}
