@@ -1,23 +1,19 @@
 {% do default({
 	url: url ?? null,
-	text: text ?? '...',
-	naked: (naked ?? 'false')|int,
-	ghost: (ghost ?? 'false')|int,
+	text: text ?? 'Click',
+	naked: (naked ?? false)|switch,
+	ghost: (ghost ?? false)|switch,
 }) %}
 
-{% do styling(
-    'py-2',
-    'px-4',
-    'font-button',
-    'inline-block',
-    'cursor-pointer',
-    'rounded-button',
-    'bg-push'|if(not ghost),
-    'text-flip'|if(not ghost),
-    'shadow-button'|if(not naked),
-    'underline'|if(ghost and naked),
-    'border'|if(ghost and not naked),
-    'text-push'|if(ghost),
+{% set classes = styling(
+    'py-2 px-4 font-button inline-block cursor-pointer rounded-button',
+    {
+        'text-push': ghost,
+        'bg-push': not ghost,
+        'shadow-button': not naked,
+        'underline': ghost and naked,
+        'border': ghost and not naked,
+    }
 ) %}
 
 {% set content %}
@@ -29,11 +25,11 @@
 {% endset %}
 
 {% if url %}
-    <a class="{{ styling }}" href="{{ url }}">
+    <a class="{{ classes }}" href="{{ url }}">
         {{ content }}
     </a>
 {% else %}
-    <button class="{{ styling }}">
+    <button class="{{ classes }}">
         {{ content }}
     </button>
 {% endif %}

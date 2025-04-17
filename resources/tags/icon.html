@@ -1,4 +1,6 @@
-{% set name  = name|default('question-line') %}
+{% do default({
+    'name': name ?? 'question-line',
+}) %}
 
 <i class="aspect-square">
     {% if name|slice(0, 1) == '@' %}

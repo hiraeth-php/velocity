@@ -1,9 +1,10 @@
 {% do require(["name"], ["method"]) %}
 
 {% do default({
-    eg: eg ?? null,
     label: label ?? name|title,
-    required: required ?? null,
+    required: (required ?? false)|switch,
+    inline: (inline ?? false)|switch,
+    eg: eg ?? null,
     value: name
         |split('.')
         |reduce(
@@ -24,19 +25,21 @@
         |first
 }) %}
 
-{% do styling(
-    "px-4",
-    "py-2",
-    "w-full"
+{% set classes = styling(
+    'px-4 py-2 w-full',
+    {
+        'border-l-1': inline,
+        'mb-4 border-1 rounded-input': not inline
+    }
 ) %}
 
-{% if inline|default(false) %}
+{% if inline %}
     <t:form:label class:="border-1 rounded-input flex">
         <div class="px-4 py-2 text-main-300 text-nowrap">
             {{ label }} {% if required %}<span class="text-halt">*</span>{% endif %}
         </div>
         <input
-            class="{{ styling }} border-l-1"
+            class="{{ classes }}"
             type="text"
             size="1"
             name="{{ name }}"
@@ -52,7 +55,7 @@
         {% endif %}
     </t:form:label>
     <input
-        class="{{ styling }} mb-4 border-1 rounded-input"
+        class="{{ classes }}"
         type="email"
         size="1"
         name="{{ name }}"

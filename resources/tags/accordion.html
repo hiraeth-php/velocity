@@ -1,4 +1,6 @@
-{% set autoclose = autoclose|default(ctx.autoclose|default(false))|int %}
+{% do default({
+    'autoclose': (autoclose ?? context.autoclose ?? false)|switch,
+}) %}
 
 <script>
     function hAccordion(opt) {

@@ -1,11 +1,28 @@
 {% do require(["name"], ["method"]) %}
 
-{% do resolve({
-    label: label ?? name|slug(' ')|title,
-    value: value ?? ctx.model[name] ?? null,
+{% do default({
+    label: label ?? name|title,
     min: min ?? null,
     max: max ?? null,
     step: step ?? 1,
+    value: name
+        |split('.')
+        |reduce(
+            (n, v, k) => [
+                n[0].(v) ?? null,
+                n[1].(v) ?? null,
+                n[2]
+            ],
+            [
+                context.request.method == 'GET'
+                    ? context.request.queryParams
+                    : context.request.parsedBody,
+                context.model ?? null,
+                value ?? null
+            ]
+        )
+        |filter((v) => v is not null)
+        |first
 }) %}
 
 {% set timeout = 500 %}

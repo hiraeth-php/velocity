@@ -1,7 +1,9 @@
-{% set autoclose = (autoclose ?? ctx.autoclose ?? false)|int  %}
-{% set animate   = (animate ?? ctx.animate ?? false)|int  %}
-{% set capture   = (capture ?? false)|int  %}
-{% set open      = (open ?? false)|int  %}
+{% do default({
+    'autoclose': (autoclose ?? context.autoclose ?? false)|switch,
+    'animate': (animate ?? context.animate ?? false)|switch,
+    'capture': (capture ?? false)|switch,
+    'open': (open ?? false)|switch
+}) %}
 
 <script>
     function hShade(opt) {

@@ -1,9 +1,13 @@
-{% set method = method ?? 'get' %}
-{% set action = action ?? route(request.uri.path ?? null) %}
+{% do default({
+    'method': method ?? 'get',
+    'action': action ?? route(request.uri.path ?? null),
+}) %}
 
 <form
     method="{{ method }}"
     action="{{ action }}"
+    hx-swap="outerHTML"
+    hx-target="this"
     {{ 'novalidate'|if(app.debugging) }}
 >
     {{ children|raw }}

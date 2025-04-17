@@ -1,9 +1,26 @@
 {% do require(["name"], ["method"]) %}
 
 {% do default({
-    options: options ?? [],
     label: label ?? name|title,
-    value: value ?? ctx.model[name] ?? null,
+    options: options ?? [],
+    value: name
+        |split('.')
+        |reduce(
+            (n, v, k) => [
+                n[0].(v) ?? null,
+                n[1].(v) ?? null,
+                n[2]
+            ],
+            [
+                context.request.method == 'GET'
+                    ? context.request.queryParams
+                    : context.request.parsedBody,
+                context.model ?? null,
+                value ?? null
+            ]
+        )
+        |filter((v) => v is not null)
+        |first
 }) %}
 
 <x:form:label>{{ label }}</x:form:label>

@@ -10,14 +10,14 @@
 	--font-sans: 'Muli', sans-serif;
 	--font-mono: 'Source Code Pro', monospace;
 
-	--checkmark: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAyNCAyNCcgZmlsbD0nY3VycmVudENvbG9yJz48cGF0aCBkPSdNOS45OTk3IDE1LjE3MDlMMTkuMTkyMSA1Ljk3ODUyTDIwLjYwNjMgNy4zOTI3M0w5Ljk5OTcgMTcuOTk5M0wzLjYzNTc0IDExLjYzNTRMNS4wNDk5NiAxMC4yMjEyTDkuOTk5NyAxNS4xNzA5Wic+PC9wYXRoPjwvc3ZnPg==");
+	--checkmark: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0icmdiYSgxODAsODMsOSwxKSI+PHBhdGggZD0iTTkuOTk5NyAxNS4xNzA5TDE5LjE5MjEgNS45Nzg1MkwyMC42MDYzIDcuMzkyNzNMOS45OTk3IDE3Ljk5OTNMMy42MzU3NCAxMS42MzU0TDUuMDQ5OTYgMTAuMjIxMkw5Ljk5OTcgMTUuMTcwOVoiPjwvcGF0aD48L3N2Zz4=");
 
 	/**
 	 * Messages
 	 */
 
 	--shadow-message: var(--drop-shadow-sm);
-	--radius-message: var(--radius-default);
+	--radius-message: var(--radius-sm);
 	--font-weight-message: 400;
 
 	/**
@@ -25,7 +25,7 @@
 	 */
 
 	--shadow-button: var(--drop-shadow-sm);
-	--radius-button: var(--radius-md);
+	--radius-button: var(--radius-sm);
 	--font-weight-button: 400;
 
 
@@ -173,7 +173,7 @@
 	}
 
 	li {
-		@apply mb-[.5em];
+		@apply mb-2;
 	}
 
 	table {
