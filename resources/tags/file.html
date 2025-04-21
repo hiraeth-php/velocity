@@ -1,0 +1,18 @@
+{% do require(['url']) %}
+
+{% set parts = url|basename %}
+
+{% do default({
+    type: type ?? parts|split('.')|last,
+    name: name ?? parts|split('.')|first,
+    icons: {
+        pdf: 'file-pdf-2-line'
+    }
+}) %}
+
+<a download class="flex w-full text-push items-center justify-start" href="{{ url }}" hx-boost="false">
+    <x::icon class:="w-8 mr-4" name="{{ icons[type] ?? 'file-download' }}" />
+    <span>
+        {{ name }}
+    </span>
+</a>
