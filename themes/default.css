@@ -126,6 +126,10 @@
 		&:not(:last-child) {
 			@apply mb-6;
 		}
+
+		&:not([class]) {
+			@apply mb-6;
+		}
 	}
 
 	hr {
@@ -172,7 +176,7 @@
 		@apply list-decimal;
 	}
 
-	li {
+	li:not([class]) {
 		@apply mb-2;
 	}
 
