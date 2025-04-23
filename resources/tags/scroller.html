@@ -1,0 +1,53 @@
+<script>
+    function vScroller() {
+        return {
+            cursor: 0,
+            items: null,
+            view: null,
+            init() {
+                this.view  = this.$el.querySelector('& > section');
+                this.items = this.view.querySelectorAll('& > *');
+            },
+            scroll(mod = 1) {
+                this.view.scroll({
+                    left: this.view.scrollLeft + (this.items.item(this.cursor).offsetWidth * mod),
+                    behavior: 'smooth'
+                });
+            },
+            next() {
+                if (this.items.item(this.cursor + 1)) {
+                    this.scroll();
+                    this.cursor++;
+                }
+            },
+            prev() {
+                if (this.items.item(this.cursor - 1)) {
+                    this.scroll(-1);
+                    this.cursor--;
+                }
+            }
+        }
+    }
+</script>
+
+<div x-data="vScroller" class="flex">
+    <button
+        x-on:click="prev()"
+        x-bind:class="{ 'opacity-50': cursor == 0 }"
+        class="min-w-5% grow-0 text-push cursor-pointer"
+    >
+        <x::icon name="arrow-left-wide-line" />
+    </button>
+    <section class="flex overflow-scroll no-scrollbar">
+        <x:: class:="w-full shrink-0 m-0">
+            {{ children|raw }}
+        </x::>
+    </section>
+    <button
+        x-on:click="next()"
+        x-bind:class="{ 'opacity-50': cursor == items.length - 1 }"
+        class="min-w-5% grow-0 text-push cursor-pointer"
+    >
+        <x::icon name="arrow-right-wide-line" />
+    </button>
+</div>

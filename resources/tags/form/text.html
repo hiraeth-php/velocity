@@ -2,6 +2,7 @@
 
 {% do default({
     eg: eg ?? null,
+    lines: lines ?? 4,
     label: label ?? name|title,
     required: (required ?? false)|switch,
     inline: (inline ?? false)|switch,
@@ -54,13 +55,13 @@
             <span class="text-halt">*</span>
         {% endif %}
     </t:form:label>
-    <input
+    <textarea
         class="{{ classes }}"
         type="text"
         size="1"
         name="{{ name }}"
-        value="{{ value }}"
+        rows="{{ lines }}"
         placeholder="{{ eg }}"
         {{ 'required'|if(required) }}
-    />
+    >{{ value }}</textarea>
 {% endif %}
