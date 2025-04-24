@@ -1,11 +1,17 @@
 {% do default({
     'method': method ?? 'get',
     'action': action ?? route(request.uri.path ?? null),
+    'boost': (boost ?? true)|switch,
 }) %}
 
 <form
-    method="{{ method }}"
-    action="{{ action }}"
+    {% if boost %}
+        method="{{ method }}"
+        action="{{ action }}"
+    {% else %}
+        hx-{{ method }}="{{ action }}"
+    {% endif %}
+
     hx-push-url="false"
     hx-swap="outerHTML"
     hx-target="this"

@@ -14,13 +14,17 @@
                     behavior: 'smooth'
                 });
             },
-            next() {
+            next(e) {
+                e.preventDefault();
+
                 if (this.items.item(this.cursor + 1)) {
                     this.scroll();
                     this.cursor++;
                 }
             },
-            prev() {
+            prev(e) {
+                e.preventDefault();
+
                 if (this.items.item(this.cursor - 1)) {
                     this.scroll(-1);
                     this.cursor--;
@@ -32,7 +36,7 @@
 
 <div x-data="vScroller" class="flex">
     <button
-        x-on:click="prev()"
+        x-on:click="prev($event)"
         x-bind:class="{ 'opacity-50': cursor == 0 }"
         class="min-w-5% grow-0 text-push cursor-pointer"
     >
@@ -44,7 +48,7 @@
         </x::>
     </section>
     <button
-        x-on:click="next()"
+        x-on:click="next($event)"
         x-bind:class="{ 'opacity-50': cursor == items.length - 1 }"
         class="min-w-5% grow-0 text-push cursor-pointer"
     >

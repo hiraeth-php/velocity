@@ -91,6 +91,12 @@
 		@apply outline-0;
 	}
 
+	.htmx-request .indicate,
+	.html-request.indicate {
+		@apply animate-pulse grayscale;
+	}
+
+
 	html {
 		@apply bg-main text-fore font-sans;
 	}
@@ -194,7 +200,7 @@
 	.contain {
 		@apply
 				py-8
-			    px-[5%]
+				px-[5%]
 			 md:px-[calc((100%-var(--breakpoint-sm))/2)]
 			 lg:px-[calc((100%-var(--breakpoint-md))/2)]
 			 xl:px-[calc((100%-var(--breakpoint-lg))/2)]
