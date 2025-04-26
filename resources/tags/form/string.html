@@ -25,6 +25,8 @@
         |first
 }) %}
 
+{% set id = 'id' ~ random() %}
+
 {% set classes = styling(
     'px-4 py-2 w-full',
     {
@@ -48,13 +50,14 @@
         />
     </t:form:label>
 {% else %}
-    <t:form:label>
+    <t:form:label for="{{ id }}">
         {{ label }}
         {% if required %}
             <span class="text-halt">*</span>
         {% endif %}
     </t:form:label>
     <input
+        id="{{ id }}"
         class="{{ classes }}"
         type="text"
         size="1"

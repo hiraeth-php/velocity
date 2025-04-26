@@ -4,6 +4,7 @@
     eg: eg ?? null,
     lines: lines ?? 4,
     label: label ?? name|title,
+    maxlength: maxlength ?? null,
     required: (required ?? false)|switch,
     inline: (inline ?? false)|switch,
     value: name
@@ -26,16 +27,45 @@
         |first
 }) %}
 
+{% set id = 'id' ~ random() %}
+
 {% set classes = styling(
-    'px-4 py-2 w-full',
+    'px-4 w-full relative',
     {
         'border-l-1': inline,
-        'mb-4 border-1 rounded-input': not inline
+        'mb-4 border-1 rounded-input': not inline,
+        'pt-4 pb-8': maxlength,
+        'py-4': not maxlength,
     }
 ) %}
 
+<script>
+    function vFormText() {
+        return {
+            textArea: null,
+            remainder: null,
+            maximum: false,
+            init() {
+                this.textArea = this.$el.querySelector('textarea');
+                this.maximum  = this.textArea.getAttribute('maxlength');
+
+                this.update();
+            },
+            update() {
+                this.remainder = this.maximum - this.textArea.value.length;
+            },
+            available(min, max) {
+                return (
+                       this.remainder > (min * this.maximum)
+                    && this.remainder <= (max * this.maximum)
+                );
+            }
+        };
+    }
+</script>
+
 {% if inline %}
-    <t:form:label class:="border-1 rounded-input flex">
+    <x:form:label class:="border-1 rounded-input flex">
         <div class="px-4 py-2 text-fore-300 text-nowrap">
             {{ label }} {% if required %}<span class="text-halt">*</span>{% endif %}
         </div>
@@ -47,21 +77,41 @@
             placeholder="{{ eg }}"
             {{ 'required'|if(required) }}
         />
-    </t:form:label>
+    </x:form:label>
 {% else %}
-    <t:form:label>
+    <x:form:label for="{{ id }}">
         {{ label }}
         {% if required %}
             <span class="text-halt">*</span>
         {% endif %}
-    </t:form:label>
-    <textarea
+    </x:form:label>
+    <div
+        x-data="vFormText"
         class="{{ classes }}"
-        type="text"
-        size="1"
-        name="{{ name }}"
-        rows="{{ lines }}"
-        placeholder="{{ eg }}"
-        {{ 'required'|if(required) }}
-    >{{ value }}</textarea>
+    >
+        <textarea
+            x-on:keyup="update"
+            id="{{ id }}"
+            class="w-full field-sizing-content"
+            type="text"
+            size="1"
+            name="{{ name }}"
+            rows="{{ lines }}"
+            placeholder="{{ eg }}"
+            {{ 'required'|if(required) }}
+            {% if maxlength %}
+                maxlength="{{ maxlength }}"
+            {% endif %}
+        >{{ value }}</textarea>
+        <span
+            class="text-xs absolute right-4 bottom-2"
+            x-text="remainder"
+            x-show="textArea.getAttribute('maxlength')"
+            x-bind:class="{
+                'text-play': available(0.66, 1.00),
+                'text-warn': available(0.33, 0.66),
+                'text-halt': available(0.00, 0.33)
+            }"
+        ></span>
+    </div>
 {% endif %}
