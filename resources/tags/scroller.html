@@ -37,7 +37,7 @@
 <div x-data="vScroller" class="flex">
     <button
         x-on:click="prev($event)"
-        x-bind:class="{ 'opacity-50': cursor == 0 }"
+        x-bind:class="{ 'opacity-30': cursor == 0 }"
         class="min-w-5% grow-0 text-push cursor-pointer"
     >
         <x::icon name="arrow-left-wide-line" />
@@ -49,7 +49,7 @@
     </section>
     <button
         x-on:click="next($event)"
-        x-bind:class="{ 'opacity-50': cursor == items.length - 1 }"
+        x-bind:class="{ 'opacity-30': cursor == items.length - 1 }"
         class="min-w-5% grow-0 text-push cursor-pointer"
     >
         <x::icon name="arrow-right-wide-line" />
