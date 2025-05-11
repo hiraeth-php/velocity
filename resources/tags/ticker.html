@@ -33,10 +33,10 @@
     x-data="vTicker({
         timeout: {{ timeout ?? 5000 }}
     })"
-    class="inline-block border-b border-dotted overflow-hidden relative h-[1lh] align-top"
+    class="inline-block border-b border-dotted overflow-clip relative h-[1lh] align-top -mr-[.5ch]"
 >
     {% for i, child in children|split(';')|map(v => v|trim) %}
-        <li class="relative transition-[top] duration-500">
+        <li class="relative transition-[top] duration-[300ms]">
             {{ child }}
         </li>
     {% endfor %}
