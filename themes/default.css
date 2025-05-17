@@ -38,6 +38,12 @@
 	--color-warn: var(--color-amber-700);   /* Warn Color */
 	--color-halt: var(--color-rose-700);    /* Halt Color */
 	--color-play: var(--color-emerald-700); /* Play Color */
+
+	--breakpoint-sm: 640px;
+	--breakpoint-md: 768px;
+	--breakpoint-lg: 1024px;
+	--breakpoint-xl: 1280px;
+	--breakpoint-2xl: 1536px;
 }
 
 @layer base {
@@ -98,7 +104,7 @@
 
 
 	html {
-		font-size: 18px;
+		font-size: 16px;
 		@apply bg-main text-fore font-sans;
 	}
 
@@ -200,11 +206,11 @@
 @layer utilities {
 	.contain {
 		@apply
-				py-8
-				px-[5%]
-			 md:px-[calc((100%-var(--breakpoint-sm))/2)]
-			 lg:px-[calc((100%-var(--breakpoint-md))/2)]
-			 xl:px-[calc((100%-var(--breakpoint-lg))/2)]
+			py-8
+			px-[5%]
+			lg:px-[calc((100%-var(--breakpoint-md))/2)]
+			md:px-[calc((100%-var(--breakpoint-sm))/2)]
+			xl:px-[calc((100%-var(--breakpoint-lg))/2)]
 			2xl:px-[calc((100%-var(--breakpoint-xl))/2)]
 		;
 	}
