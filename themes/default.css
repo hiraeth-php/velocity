@@ -44,6 +44,7 @@
 	--breakpoint-lg: 1024px;
 	--breakpoint-xl: 1280px;
 	--breakpoint-2xl: 1536px;
+	--breakpoint-3xl: 2880px;
 }
 
 @layer base {
@@ -212,6 +213,7 @@
 			md:px-[calc((100%-var(--breakpoint-sm))/2)]
 			xl:px-[calc((100%-var(--breakpoint-lg))/2)]
 			2xl:px-[calc((100%-var(--breakpoint-xl))/2)]
+			3xl:px-[calc((100%-var(--breakpoint-2xl))/2)]
 		;
 	}
 
