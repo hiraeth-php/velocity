@@ -98,6 +98,7 @@
 
 
 	html {
+		font-size: 18px;
 		@apply bg-main text-fore font-sans;
 	}
 
