@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import 'https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap';
 
 @theme {
 	/**
@@ -7,7 +8,7 @@
 
 	--spacing: .25rem;
 	--radius-default: var(--radius-none);
-	--font-sans: 'Muli', sans-serif;
+	--font-sans: 'Source Sans 3', sans-serif;
 	--font-mono: 'Source Code Pro', monospace;
 
 	--checkmark: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0icmdiYSgxODAsODMsOSwxKSI+PHBhdGggZD0iTTkuOTk5NyAxNS4xNzA5TDE5LjE5MjEgNS45Nzg1MkwyMC42MDYzIDcuMzkyNzNMOS45OTk3IDE3Ljk5OTNMMy42MzU3NCAxMS42MzU0TDUuMDQ5OTYgMTAuMjIxMkw5Ljk5OTcgMTUuMTcwOVoiPjwvcGF0aD48L3N2Zz4=");
@@ -29,8 +30,8 @@
 	--font-weight-button: 400;
 
 
-	--color-main: var(--color-zinc-50);     /* Overall Background Color */
-	--color-fore: var(--color-zinc-950);    /* Main Text Color */
+	--color-main: light-dark(var(--color-zinc-50), var(--color-zinc-950)); /* Overall Background Color */
+	--color-fore: light-dark(var(--color-zinc-950), var(--color-zinc-50)); /* Main Text Color */
 	--color-flip: var(--color-main);        /* Flipped Text Color */
 	--color-link: var(--color-amber-700);   /* Link Color */
 	--color-push: var(--color-amber-700);   /* Push Color */
@@ -39,19 +40,26 @@
 	--color-halt: var(--color-rose-700);    /* Halt Color */
 	--color-play: var(--color-emerald-700); /* Play Color */
 
+	--breakpoint-xs:480px;
 	--breakpoint-sm: 640px;
 	--breakpoint-md: 768px;
 	--breakpoint-lg: 1024px;
 	--breakpoint-xl: 1280px;
 	--breakpoint-2xl: 1536px;
 	--breakpoint-3xl: 2880px;
+
+	--container-xs: 480px;
+	--container-sm: 640px;
+	--container-md: 768px;
+	--container-lg: 1024px;
+	--container-xl: 1280px;
+	--container-2xl: 1536px;
+	--container-3xl: 2880px;
 }
 
 @layer base {
-	@media (prefers-color-scheme: dark) {
-		:root, :host {
-
-		}
+	:root {
+		color-scheme: light dark;
 	}
 
 	@keyframes fade-in {
@@ -109,6 +117,9 @@
 		@apply bg-main text-fore font-sans;
 	}
 
+	header {
+		@apply mb-6;
+	}
 
 	h1, h2, h3, h4, h5 {
 		&:not(:last-child) {
@@ -137,8 +148,8 @@
 	}
 
 	p, table, ul, ol, pre {
-		&:not([class]),
-		&:not(:last-child) {
+		&:not(:last-child),
+		&:not([class]):not(:last-child) {
 			@apply mb-6;
 		}
 	}

@@ -1,0 +1,6 @@
+[detail]
+	consume = true
+	pattern = (.*)
+	mapping = [
+		"section"
+	]
