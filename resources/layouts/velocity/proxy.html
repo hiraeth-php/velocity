@@ -1,3 +1,7 @@
-{% for name in _velocity_.proxy.blocks %}
-    {{ block(name) }}
-{% endfor %}
+{% if _velocity_.proxy.blocks[0]|default(null) != _velocity_.proxy.active %}
+    {{ block(_velocity_.proxy.active) }}
+{% else %}
+    {% for name in _velocity_.proxy.blocks %}
+        {{ block(name) }}
+    {% endfor %}
+{% endif %}

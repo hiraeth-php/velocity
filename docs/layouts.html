@@ -1,20 +1,21 @@
 {% apply markdown %}
 ## Layouts
 
-Layouts are how you create pages with common elements without needing to include those elements as partials on every page.  Velocity provides a "main" layout that effectively creates the overall HTML page structure and provides two content blocks which can be customized as needed `body` and `head`.
+Layouts are templates that can be extended by other layouts or pages to provide common strucutre or content across pages.  This enables you to create a layout, for example, that includes a header and footer so that individual pages can extend that layout and provide only the blocks that are necessary as oppose to each page having to individually include the header and footer as a partial.
 
-Example `resources/layouts/main.html`:
+Layouts are tied to Twig's `extends` tag.  Velocity provides a "main" layout which provides the overall HTML structure for velocity enabled pages.  This layout contains only two blocks which are otherwise placed in the context of a simple best-practices HTML5 skeleton, namely, the  `body` and `head` block.
 
-{% verbatim %}
+Your layouts should, generally speaking, extend this layout and provide the `body`.  For example `resources/layouts/main.html`:
+
 ```twig
-{% extends '@layouts/velocity/main.html' | proxy('main') %}
-
+{% verbatim %}
+{% extends '@layouts/velocity/main.html' | proxy('body') %}
 {% block body %}
-    <x:: hx-target:="main">
+    <x:: hx-target:="#main">
         <header>
             <!-- Common Header/Navigation/Etc -->
         </header>
-        <main>
+        <main id="main">
             {% block main %}
 
             {% endblock %}
@@ -24,13 +25,15 @@ Example `resources/layouts/main.html`:
         </footer>
     </x::>
 {% endblock %}
-```
 {% endverbatim %}
+```
 
-Note the default `head` block contains the requisite scripts and styles for default Velocity functionality.  You're free to overload it, but you should have a look at `vendor/hiraeth/velocity/resources/layouts/head.html` to see what needs to be included.  You can also define a custom `head` block and just include that:
+Note the `proxy()` filter being used, more on this later.
 
-{% verbatim %}
+You are free to overload the head, however, keep in mind that this is where requisite scripts and styles for default Velocity functionality come from.  You can have a look at `vendor/hiraeth/velocity/resources/layouts/head.html` and incorporate or modify various pieces of it in an overloaded `head` block.  You may, for example, wish to use a different CDN, or use local copies of various libraries, or include built Tailwind output instead of using the CDN.  For most use cases where you're simply trying to add new scripts or styles you can just define a custom `head` block and include Velocity's:
+
 ```twig
+{% verbatim %}
 {% block head %}
     {% include '@layouts/velocity/head.html' %}
 
@@ -38,24 +41,26 @@ Note the default `head` block contains the requisite scripts and styles for defa
         // My Custom JS
     </script>
 {% endblock %}
-```
 {% endverbatim %}
+```
 
 ### Targeting
 
-When you create a layout, in most cases you will want to re-target boosted HTMX requests.  The `hx-target` attribute in our example above is set on the `<main>` element.  Since we want all boosted links (including anything in our header navigation and footer) to load in our `<main>` tag we need to set the attribute on all three of these sections.  To do this more easily, we made use of the "fragment" tag, more on this later, but for now, just know that the attribute will be added to all three `<header>`, `<main>` and `<footer>`.
+When you create a layout, in most cases you will want to re-target boosted HTMX requests.  The `hx-target` attribute in our example above is set on the `#main` id.  Since we want all boosted links (including anything in our header navigation and footer) to load in our `<main>` tag we need to set the attribute on all three of these sections.  To do this more easily, we made use of the "fragment" tag (`<x::>`, more on this elsewhere) but for now, just know that the attribute will be added to all three `<header>`, `<main>` and `<footer>`.
 
 The default target in Velocity's main layout (which we extended) is the `<body>` tag.
 
 ### Proxying
 
-Another important part of building layouts and pages in Velocity is understanding proxying.  Proxying is a concept intended to manage how a page is rendered depending on the nature of the request.
+Proxying is a critical and important concept to understand how Velocity works.  It is closely linked to targeting in that the ID of an `hx-target` determines the "level" of rendering being performed.  Because the goal of HTMX is, in part, not to need to re-render entire pages for what amounts to only partial DOM changes, server-side frameworks need a way to determine which content needs to be rendered and returned.
+
+In Velocity, this is done by pairing Twig blocks to the `hx-target`'s ID.  If a request to a page targets `#body` the page should be rendered all the way up to the `body` block, and no further.
 
 #### Direct Requests
 
-Direct requests do not use proxying.  A page that extends a layout will be rendered in full, all the way to its highest level layout as represented by the onion below:
-{% endapply %}
+Direct requests to a page do not use proxying.  A page that extends a layout will be rendered in full when it is directly requested, all the way to its highest level layout as represented by the onion below:
 
+{% endapply %}
 <div class="border-2 p-2 mx-auto mb-8 w-128 text-center">
     <p>@layouts/velocity/main.html</p>
     <div class="border-2 p-2 m-2">
@@ -68,18 +73,119 @@ Direct requests do not use proxying.  A page that extends a layout will be rende
         </div>
     </div>
 </div>
-
 {% apply markdown %}
-#### Boosted Requests (With Proxying)
 
-A boosted request with proxying will render only those blocks which are passed to the `proxy()` filter as the first array of arguments.  So, if we created the following page none of the layout would be re-rendered, and only the content in the main block would be returned to be swapped by HTMX:
+#### Boosted Requests
 
-{% verbatim %}
+A boosted request enables proxying to be performed.  Although we've already seen an example in our `resources/layouts/main.html` example above, let's cover how to make use of proxying in the context of layouts and pages.  To do this, we'll begin defining our first page at `resources/pages/@index.html`.
+
+##### Filtering
+
+The proxy filter is placed within the context of a Twig `extends` tag:
+
 ```twig
+{% verbatim %}
 {% extends '@layouts/main.html' | proxy('main') %}
+{% endverbatim %}
+```
+
+This basically tells Velocity which blocks (and correspondingly which `hx-target` IDs) the current template supports.
+
+If the current `hx-target` ID is not in the list of blocks, the template will be extended.  Accordingly, the layout or extending template can then define which blocks it proxies using the same filter.  Rendering ends when the first template to provide the block for the requested `hx-target` ID is found.
+
+Now that we've defined what we can proxy, let's go ahead and define the block.
+
+```twig
+{% verbatim %}
+{% block main %}
+    <p>
+        Enim fugiat minima perspiciatis harum autem itaque.
+        Est nesciunt aut consequatur ipsum. Adipisci iste
+        repellendus quia adipisci. Voluptate temporibus
+        dolores laborum voluptatum.
+    </p>
+{% endblock %}
+{% endverbatim %}
+```
+
+Given this:
+
+- A boosted request to `/` with an `hx-target` of `#main` will render only the `<p>` (the `main` block)
+- A boosted request to `/` with an `hx-target` of `#body` will render the surrounding `@layouts/main.html` content which proxies `body` which includes the header, footer, main element itself.
+
+##### Providing Multiple Blocks
+
+A single layout or page can provide multiple blocks.  This is particularly useful when rendering content that needs to be swapped "out of bounds."  An out of bounds (OOB) swap is when an element returned in an HTMX requests should be swapped somewhere outside of the target.  You can add multiple arguments to the `proxy()` filter to indicate the template can provide multiple blocks and therefore content for multiple targets.  Take into account:
+
+1. All blocks at a given level are rendered, even if not returned.
+2. The first block proxied SHOULD BE the primary block / target.
+    - When the `hx-target` matches the first proxied block, all blocks are returned, enabling OOB swaps.
+3. Secondary blocks CAN BE independently requested.
+    - When the `hx-target` matches only a secondary block, _only_ that block is returned.
+
+To elucidate this further, let's make some adjustments to our previous work.
+
+###### **Adding a Centralized Header**
+
+One common use case is to have a centralized `<header>` or `<h1>`.  Without re-rendering a full page, we need a way to get the header or heading content as provided by an individual page into this centralized "shared" location.  Let's first update our main layout to include a new block for this:
+
+```twig
+{% verbatim %}
+{% extends '@layouts/velocity/main.html' | proxy('body') %}
+
+{% block body %}
+    <x:: hx-target:="#main">
+        <header>
+            <!-- Common Navigation -->
+            {% block hero %}
+
+            {% endblock %}
+        </header>
+        <main id="main">
+            {% block main %}
+
+            {% endblock %}
+        </main>
+        <footer>
+            <!-- Common Footer -->
+        </footer>
+    </x::>
+{% endblock %}
+{% endverbatim %}
+```
+
+Following this, we'll update our page to proxy and define its "hero" content:
+
+```twig
+{% verbatim %}
+{% extends '@layouts/main.html' | proxy('main', 'hero') %}
+
+{% block hero %}
+    <section
+        id="hero"
+        {% if not proxy('hero') %}
+            hx-swap-oob="true"
+        {% endif %}
+    >
+        <h1>
+            Hello Velocity!
+        </h1>
+    </section>
+{% endblock %}
 
 {% block main %}
-    <h1>Hello Velocity!</h1>
+    <p>
+        Enim fugiat minima perspiciatis harum autem itaque.
+        Est nesciunt aut consequatur ipsum. Adipisci iste
+        repellendus quia adipisci. Voluptate temporibus
+        dolores laborum voluptatum.
+    </p>
 {% endblock %}
-```
 {% endverbatim %}
+```
+
+Using the `proxy()` function (not to be confused with the filter), we ensure effectively that if we're proxying on this template and the `hx-target` does not correspond directly to `#hero` (i.e. if we're requesting the primary `main` block, or even a block in the extended layout), then we want to perform an out of bounds swap.
+
+As you may have guessed, and as was eluded to before, this means that a request could be made to `/` with an `hx-target` ID of `hero`, in which case, only the `hero` block would be returned and the `hx-swap-oob` would not be present.
+
+{% endapply %}

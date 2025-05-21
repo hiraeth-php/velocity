@@ -26,10 +26,8 @@ class ProxyFilter
 			));
 		}
 
-		$do_proxy = in_array(
-			ltrim($context['request']->getHeaderLine('HX-Target'), '#'),
-			$blocks
-		);
+		$active   = $context['request']->getHeaderLine('HX-Target');
+		$do_proxy = in_array($active, $blocks);
 
 		if ($do_proxy) {
 			$target = '@layouts/velocity/proxy.html';
@@ -39,7 +37,7 @@ class ProxyFilter
 
 		$context['_velocity_']['proxy'] = [
 			'blocks' => $blocks,
-			'active' => $do_proxy
+			'active' => $active
 		];
 
 		return $target;
