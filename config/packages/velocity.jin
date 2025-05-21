@@ -51,6 +51,7 @@
 			"target": "Hiraeth\Velocity\ProxyFunction",
 			"options": {
 				"needs_context": true,
+				"is_variadic": true
 			}
 		}
 	}

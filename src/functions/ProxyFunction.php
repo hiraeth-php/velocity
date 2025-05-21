@@ -7,8 +7,12 @@ class ProxyFunction
 	/**
 	 * @param array<string, mixed> $context
 	 */
-	public function __invoke(array &$context): bool
+	public function __invoke(array &$context, string ...$blocks): bool
 	{
-		return $context['_velocity_']['proxy']['active'];
+		if (!count($blocks)) {
+			return $context['_velocity_']['proxy']['active'];
+		}
+
+		return count(array_intersect($blocks, $context['_velocity_']['proxy']['blocks']));
 	}
 }
