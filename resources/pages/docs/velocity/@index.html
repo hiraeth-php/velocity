@@ -98,9 +98,11 @@
         "
     >
         <header class="sticky flex justify-end gap-4 bg-main top-0 z-50 p-4 border-b-1 border-stone-400 mb-4">
-            <x:io:control id:="mobileCtrl" icon="smartphone-line" />
-            <x:io:control id:="darkCtrl" icon="moon-line" class:="dark:hidden" />
-            <x:io:control id:="lightCtrl" icon="sun-line" class:="light:hidden" />
+            <x:: class:="border-1">
+                <x:io:control id:="mobileCtrl" icon="smartphone-line" />
+                <x:io:control id:="darkCtrl" icon="moon-line" class:="dark:hidden" />
+                <x:io:control id:="lightCtrl" icon="sun-line" class:="light:hidden" />
+            </x::>
         </header>
         <section class="contain grid grid-cols-12" hx-target="#content">
             <nav class="col-span-3">
@@ -109,9 +111,9 @@
                     <li><a href="/docs/velocity/">Introduction</a></li>
                     <li><a href="/docs/velocity/layouts">Layouts</a></li>
                     <li><a href="/docs/velocity/pages">Pages</a></li>
-                    <li><a href="/docs/velocity/components">Components</a></li>
+                    <li><a href="/docs/velocity/tags">Tags</a></li>
                 </ul>
-                <h5>Components</h5>
+                <h5>Library</h5>
                 <ul>
                     {% for section in app.run('glob', [ app.directory(docpath) ~ '/*', constant('GLOB_ONLYDIR')]) %}
                         {% set folder = app.run('basename', [section]) %}

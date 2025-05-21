@@ -13,7 +13,7 @@
     x-data="{pressed: false}"
     x-on:click="pressed = !pressed; $dispatch('press', {value:pressed})"
     x-bind:class="{'opacity-30':!pressed}"
-    class="rounded-button size-8 inline-block cursor-pointer border-1 p-1 {{ classes }}"
+    class="rounded-button size-8 inline-block cursor-pointer p-1 {{ classes }}"
 >
     {% if icon %}
         <i::icon

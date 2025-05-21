@@ -184,7 +184,7 @@ Following this, we'll update our page to proxy and define its "hero" content:
 {% endverbatim %}
 ```
 
-Using the `proxy()` function (not to be confused with the filter), we ensure effectively that if we're proxying on this template and the `hx-target` does not correspond directly to `#hero` (i.e. if we're requesting the primary `main` block, or even a block in the extended layout), then we want to perform an out of bounds swap.
+Using the `proxy()` function (not to be confused with the filter), we ensure effectively that if we're not proxying the `hero` block directly, then we want to perform an out of bounds swap.
 
 As you may have guessed, and as was eluded to before, this means that a request could be made to `/` with an `hx-target` ID of `hero`, in which case, only the `hero` block would be returned and the `hx-swap-oob` would not be present.
 
