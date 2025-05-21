@@ -1,8 +1,8 @@
 {% do default({
     icon:  (not icon ?? null) ? null : (icon != 1 ? icon : 'notification-line'),
+    color: color ?? null,
     boxed: (boxed ?? false)|switch,
     ghost: (ghost ?? false)|switch,
-    color: color ?? null,
 }) %}
 
 {% set classes = styling({

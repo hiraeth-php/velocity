@@ -1,0 +1,42 @@
+<header>
+    <h2>Icons</h2>
+    <p>
+        Icons use the <a href="https://remixicon.com/">Remix Icon Library</a>.
+    </p>
+    {% include '@vendor/hiraeth/velocity/docs/-signature.html' with {
+        tags: [
+            '<x::ticker>',
+        ],
+        attributes: {
+            name: '
+                The Remix icon name to use
+            ',
+        }
+    } %}
+</header>
+
+{% apply markdown %}
+    Icons are always squares, and you should normally apply a specific size.
+
+    ```xml
+    <x::icon class:="size-6" name="thumb-up-line" />
+    ```
+{% endapply %}
+<x::icon class:="size-6" name="thumb-up-line" />
+
+<hr />
+
+{% apply markdown %}
+    Because the icons are SVGs that will take on text color, you can color them using the standard `text-*` classes.
+
+    ```xml
+    <x::icon
+        class:="size-6 text-red-600 hover:animate-bounce"
+        name="thumb-up-line"
+    />
+    ```
+{% endapply %}
+<x::icon
+    class:="size-6 text-red-600 hover:animate-bounce"
+    name="thumb-up-line"
+/>

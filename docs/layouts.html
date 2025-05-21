@@ -1,0 +1,85 @@
+{% apply markdown %}
+## Layouts
+
+Layouts are how you create pages with common elements without needing to include those elements as partials on every page.  Velocity provides a "main" layout that effectively creates the overall HTML page structure and provides two content blocks which can be customized as needed `body` and `head`.
+
+Example `resources/layouts/main.html`:
+
+{% verbatim %}
+```twig
+{% extends '@layouts/velocity/main.html' | proxy('main') %}
+
+{% block body %}
+    <x:: hx-target:="main">
+        <header>
+            <!-- Common Header/Navigation/Etc -->
+        </header>
+        <main>
+            {% block main %}
+
+            {% endblock %}
+        </main>
+        <footer>
+            <!-- Common Footer -->
+        </footer>
+    </x::>
+{% endblock %}
+```
+{% endverbatim %}
+
+Note the default `head` block contains the requisite scripts and styles for default Velocity functionality.  You're free to overload it, but you should have a look at `vendor/hiraeth/velocity/resources/layouts/head.html` to see what needs to be included.  You can also define a custom `head` block and just include that:
+
+{% verbatim %}
+```twig
+{% block head %}
+    {% include '@layouts/velocity/head.html' %}
+
+    <script>
+        // My Custom JS
+    </script>
+{% endblock %}
+```
+{% endverbatim %}
+
+### Targeting
+
+When you create a layout, in most cases you will want to re-target boosted HTMX requests.  The `hx-target` attribute in our example above is set on the `<main>` element.  Since we want all boosted links (including anything in our header navigation and footer) to load in our `<main>` tag we need to set the attribute on all three of these sections.  To do this more easily, we made use of the "fragment" tag, more on this later, but for now, just know that the attribute will be added to all three `<header>`, `<main>` and `<footer>`.
+
+The default target in Velocity's main layout (which we extended) is the `<body>` tag.
+
+### Proxying
+
+Another important part of building layouts and pages in Velocity is understanding proxying.  Proxying is a concept intended to manage how a page is rendered depending on the nature of the request.
+
+#### Direct Requests
+
+Direct requests do not use proxying.  A page that extends a layout will be rendered in full, all the way to its highest level layout as represented by the onion below:
+{% endapply %}
+
+<div class="border-2 p-2 mx-auto mb-8 w-128 text-center">
+    <p>@layouts/velocity/main.html</p>
+    <div class="border-2 p-2 m-2">
+        <p>@layouts/main.html</p>
+        <div class="border-2 p-2 m-2">
+            <p>@pages/@index.html</p>
+            <div class="border-2 p-2 m-2">
+                <p>[ block main ]</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% apply markdown %}
+#### Boosted Requests (With Proxying)
+
+A boosted request with proxying will render only those blocks which are passed to the `proxy()` filter as the first array of arguments.  So, if we created the following page none of the layout would be re-rendered, and only the content in the main block would be returned to be swapped by HTMX:
+
+{% verbatim %}
+```twig
+{% extends '@layouts/main.html' | proxy('main') %}
+
+{% block main %}
+    <h1>Hello Velocity!</h1>
+{% endblock %}
+```
+{% endverbatim %}

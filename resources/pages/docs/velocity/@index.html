@@ -1,10 +1,11 @@
-{% extends '@layouts/velocity/main.html' | proxy(['content']) %}
+{% extends '@layouts/velocity/main.html' | proxy('content') %}
 
 {% set docpath ='vendor/hiraeth/velocity/docs' %}
 
 {% block head %}
     {% include '@layouts/velocity/head.html' %}
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/nord.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
     <script>
         {% verbatim %}
@@ -57,22 +58,58 @@
         }]}}})();hljs.registerLanguage("twig",e)})();
         {% endverbatim %}
     </script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/nord.min.css" />
+
+    <style>
+        :root {
+            font-size: 20px;
+        }
+    </style>
 
     <title>Welcome to Velocity</title>
 {% endblock %}
 
 {% block body %}
-    <main class="max-w-[80vw] m-auto py-16">
-        <h1>Welcome to Velocity</h1>
-        <p>
-            Velocity is an application and component framework that makes rapidly developing sites and application prototypes a breeze.
-        </p>
-        <section class="grid grid-cols-12">
-            <nav class="col-span-3" hx-target="#view">
+    <main
+        class="m-auto"
+        x-data="{
+            mobile:false,
+            colorCtrl($event, color) {
+                const root = document.querySelector(':root');
+
+                if (!$event.detail.value) {
+                    root.style.colorScheme = '';
+                } else {
+                    root.style.colorScheme = color;
+                }
+            }
+        }"
+        x-on:press="
+            {
+                mobileCtrl: ($event) => {
+                    mobile = $event.detail.value;
+                },
+                darkCtrl: ($event) => {
+                    colorCtrl($event, 'dark');
+                },
+                lightCtrl: ($event) => {
+                    colorCtrl($event, 'light');
+                }
+            }[$event.target.id]?.($event)
+        "
+    >
+        <header class="sticky flex justify-end gap-4 bg-main top-0 z-50 p-4 border-b-1 border-stone-400 mb-4">
+            <x:io:control id:="mobileCtrl" icon="smartphone-line" />
+            <x:io:control id:="darkCtrl" icon="moon-line" class:="dark:hidden" />
+            <x:io:control id:="lightCtrl" icon="sun-line" class:="light:hidden" />
+        </header>
+        <section class="contain grid grid-cols-12" hx-target="#content">
+            <nav class="col-span-3">
                 <h5>Main</h5>
                 <ul>
-                    <li><a href="/docs/velocity/">Home</a></li>
+                    <li><a href="/docs/velocity/">Introduction</a></li>
+                    <li><a href="/docs/velocity/layouts">Layouts</a></li>
+                    <li><a href="/docs/velocity/pages">Pages</a></li>
+                    <li><a href="/docs/velocity/components">Components</a></li>
                 </ul>
                 <h5>Components</h5>
                 <ul>
@@ -86,7 +123,7 @@
                                     <li>
                                         {% set name = app.run('basename', [component, '.html']) %}
                                         <a href="{{ '/docs/velocity/' ~ folder ~ '/' ~ name }}">
-                                            {{ name }}
+                                            {{ name|title }}
                                         </a>
                                     </li>
                                 {% endfor %}
@@ -97,9 +134,9 @@
                 </ul>
             </nav>
             <section class="col-span-9">
-                <div id="view">
+                <div id="content" class="@container mx-auto" x-bind:class="{'w-[420px]': mobile}">
                     {% block content %}
-                        Test
+                        {% include '@vendor/hiraeth/velocity/docs/' ~ (parameters.article ?? 'introduction') ~ '.html' %}
                     {% endblock %}
                 </div>
             </section>

@@ -29,15 +29,6 @@
     <script>
         window.hashLoads = {};
 
-        document.addEventListener('htmx:beforeSend', function (e) {
-            let proxy = e.target.closest('[vf-proxy]');
-
-            e.detail.xhr.setRequestHeader(
-                'VF-Proxy',
-                proxy ? proxy.getAttribute('vf-proxy') : 'true',
-            );
-        });
-
         document.addEventListener('htmx:beforeOnLoad', function (e) {
             e.detail.shouldSwap = true;
             e.detail.isError = false;

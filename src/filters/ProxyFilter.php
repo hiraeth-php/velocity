@@ -10,10 +10,9 @@ class ProxyFilter
 	/**
 	 * @param array<string, mixed> $context
 	 * @param string $parent
-	 * @param array $blocks
-	 * @param bool $always Always proxy if we're using HTMX (only extend for non-HTMX)
+	 * @param string ...$blocks
 	 */
-	public function __invoke(array &$context, string $target, array $blocks, bool $always = FALSE): string
+	public function __invoke(array &$context, string $target, string ...$blocks): string
 	{
 		if (!count($blocks)) {
 			throw new InvalidArgumentException(sprintf(
@@ -27,10 +26,12 @@ class ProxyFilter
 			));
 		}
 
-		$is_htmx  = $context['request']->getHeaderLine('HX-Request') == 'true';
-		$do_proxy = $context['request']->getHeaderLine('VF-Proxy') != 'false';
+		$do_proxy = in_array(
+			ltrim($context['request']->getHeaderLine('HX-Target'), '#'),
+			$blocks
+		);
 
-		if ($is_htmx && ($do_proxy || $always)) {
+		if ($do_proxy) {
 			$target = '@layouts/velocity/proxy.html';
 		} else {
 			$blocks = [];

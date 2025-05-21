@@ -1,0 +1,55 @@
+<header>
+    <h2>Ticker</h2>
+    <p>
+        A ticker is a span of text that can display a rotating message.
+    </p>
+    {% include '@vendor/hiraeth/velocity/docs/-signature.html' with {
+        tags: [
+            '<x::ticker>',
+        ],
+        attributes: {
+            timeout: '
+                The time in milliseconds between rotations.
+            ',
+            repeat: '
+                If set to `false` then the ticker will not repeat.  Default is `true`.
+            '
+        }
+    } %}
+</header>
+
+{% apply markdown %}
+    ```xml
+    <p>
+        I can count to
+        <x:ticker timeout="500" repeat="false">
+            1; 2; 3; 4; 5; 6; 7; 8; 9; 10
+        </x:ticker>.
+    </p>
+    ```
+{% endapply %}
+<p>
+    I can count to
+    <x:ticker timeout="500" repeat="false">
+        1; 2; 3; 4; 5; 6; 7; 8; 9; 10
+    </x:ticker>.
+</p>
+
+<hr />
+
+{% apply markdown %}
+    ```xml
+    <p>
+        As easy as
+        <x:ticker class:="bg-black/80 text-white px-1">
+            one; two; three
+        </x:ticker>.
+    </p>
+    ```
+{% endapply %}
+<p>
+    As easy as
+    <x:ticker class:="bg-black/80 text-white px-1">
+        one; two; three
+    </x:ticker>.
+</p>

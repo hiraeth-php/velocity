@@ -1,3 +1,8 @@
+{% do default({
+    timeout: timeout ?? 2000,
+    repeat: (repeat ?? true)|switch
+}) %}
+
 <script>
     function vTicker(opt) {
         return {
@@ -5,39 +10,44 @@
             items: null,
             init() {
                 const ticker = this;
-                this.items   = [...this.$el.querySelectorAll('& > li')];
+                this.items   = [...this.$el.querySelectorAll('& > span')];
                 this.active  = this.items[0];
 
                 this.items.forEach((node, i) => {
                     node.style.top = i > 1 ? ((i - 1) * -1) + 'lh' : i + 'lh';
                 });
 
-                setInterval(function() {
+                let id = setInterval(function() {
                     const current = ticker.items.indexOf(ticker.active);
                     const next    = current != ticker.items.length - 1
                         ? current + 1
                         : 0
                     ;
 
-                    ticker.items[current].style.top = (1 - current) + 'lh';
-                    ticker.items[next].style.top = (next * -1) + 'lh';
+                    if (!next && !opt.repeat) {
+                        clearInterval(id);
+                    } else {
+                        ticker.items[current].style.top = (1 - current) + 'lh';
+                        ticker.items[next].style.top = (next * -1) + 'lh';
 
-                    ticker.active = ticker.items[next];
+                        ticker.active = ticker.items[next];
+                    }
                 }, opt.timeout);
             }
         };
     }
 </script>
 
-<ul
+<span
     x-data="vTicker({
-        timeout: {{ timeout ?? 5000 }}
+        timeout: {{ timeout }},
+        repeat: {{ repeat }}
     })"
-    class="inline-block border-b border-dotted overflow-hidden relative h-[1lh] align-top -mr-[.5ch] z-0"
+    class="relative inline-block border-b border-dotted overflow-hidden h-[1lh] align-top -mr-[.25ch] z-0 text-center"
 >
     {% for i, child in children|split(';')|map(v => v|trim) %}
-        <li class="relative transition-[top] duration-[300ms]">
+        <span class="block relative transition-[top] duration-[300ms]">
             {{ child }}
-        </li>
+        </span>
     {% endfor %}
-</ul>
+</span>

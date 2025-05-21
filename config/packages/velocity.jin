@@ -59,7 +59,8 @@
 		"proxy": {
 			"target": "Hiraeth\Velocity\ProxyFilter",
 			"options": {
-				"needs_context": true
+				"needs_context": true,
+				"is_variadic": true
 			}
 		}
 	}

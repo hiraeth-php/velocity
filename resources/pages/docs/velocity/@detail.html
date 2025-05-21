@@ -1,4 +1,4 @@
-{% extends '@pages/docs/velocity/@index.html' | proxy(['content']) %}
+{% extends '@pages/docs/velocity/@index.html' | proxy('content') %}
 
 {% block content %}
     {% include '@vendor/hiraeth/velocity/docs/' ~ parameters.section ~ '/' ~ request.attributes._consumed_ ~ '.html' %}

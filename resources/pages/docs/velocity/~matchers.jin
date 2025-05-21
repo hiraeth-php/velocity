@@ -1,6 +1,13 @@
 [detail]
 	consume = true
-	pattern = (.*)
+	pattern = ([0-9]{2}.*)
 	mapping = [
 		"section"
+	]
+
+[index]
+	consume = true
+	pattern = (.*)
+	mapping = [
+		"article"
 	]

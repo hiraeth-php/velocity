@@ -1,6 +1,13 @@
 @import 'tailwindcss';
 @import 'https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap';
 
+
+@custom-variant light {
+	@media (prefers-color-scheme: light) {
+		@slot;
+	}
+}
+
 @theme {
 	/**
 	 * General
@@ -29,16 +36,40 @@
 	--radius-button: var(--radius-sm);
 	--font-weight-button: 400;
 
+	--color-celadon-50: rgb(247 250 248);
+	--color-celadon-100: rgb(236 242 239);
+	--color-celadon-150: rgb(218 229 224);
+	--color-celadon-200: rgb(195 212 204);
+	--color-celadon-250: rgb(166 191 180);
+	--color-celadon-300: rgb(137 170 156);
+	--color-celadon-350: rgb(108 149 132);
+	--color-celadon-400: rgb(86 122 107);
+	--color-celadon-450: rgb(65 96 85);
+	--color-celadon-500: rgb(44 70 63);
+	--color-celadon-550: rgb(23 43 38);
 
-	--color-main: light-dark(var(--color-zinc-50), var(--color-zinc-950)); /* Overall Background Color */
-	--color-fore: light-dark(var(--color-zinc-950), var(--color-zinc-50)); /* Main Text Color */
+	--color-clay-50: rgb(251 247 245);
+	--color-clay-100: rgb(245 235 230);
+	--color-clay-150: rgb(237 215 206);
+	--color-clay-200: rgb(226 191 176);
+	--color-clay-250: rgb(211 161 140);
+	--color-clay-300: rgb(193 130 104);
+	--color-clay-350: rgb(171 97 68);
+	--color-clay-400: rgb(143 79 53);
+	--color-clay-450: rgb(116 63 43);
+	--color-clay-500: rgb(89 47 32);
+	--color-clay-550: rgb(61 31 21);
+
+
+	--color-main: light-dark(var(--color-zinc-50), var(--color-zinc-800)); /* Overall Background Color */
+	--color-fore: light-dark(var(--color-zinc-900), var(--color-zinc-200)); /* Main Text Color */
 	--color-flip: var(--color-main);        /* Flipped Text Color */
-	--color-link: var(--color-amber-700);   /* Link Color */
+	--color-link: light-dark(var(--color-amber-700), var(--color-rose-400));   /* Link Color */
 	--color-push: var(--color-amber-700);   /* Push Color */
-	--color-info: var(--color-cyan-700);    /* Info Color */
-	--color-warn: var(--color-amber-700);   /* Warn Color */
-	--color-halt: var(--color-rose-700);    /* Halt Color */
-	--color-play: var(--color-emerald-700); /* Play Color */
+	--color-info: light-dark(var(--color-cyan-500), var(--color-cyan-600));    /* Info Color */
+	--color-warn: light-dark(var(--color-amber-600), var(--color-amber-500));   /* Warn Color */
+	--color-halt: light-dark(var(--color-red-500), var(--color-rose-600));    /* Halt Color */
+	--color-play: light-dark(var(--color-emerald-600), var(--color-emerald-600)); /* Play Color */
 
 	--breakpoint-xs:480px;
 	--breakpoint-sm: 640px;
@@ -114,7 +145,7 @@
 
 	html {
 		font-size: 16px;
-		@apply bg-main text-fore font-sans;
+		@apply bg-main text-fore font-sans leading-8;
 	}
 
 	header {
@@ -182,8 +213,28 @@
 		@apply w-full h-auto;
 	}
 
-	a:not([class]) {
-		@apply underline decoration-1 decoration-dotted underline-offset-3 text-link;
+	a:not([class]:not([class=""])),
+	a[class="htmx-request"] {
+		&:link,
+		&:visited,
+		&:hover,
+		&:active {
+			@apply underline decoration-1 decoration-dotted underline-offset-3 text-link;
+		}
+
+		/* on-click */
+		&:active {
+			@apply text-shadow-xs text-shadow-fore/20;
+		}
+
+		/* on-hover */
+		&:hover {
+			@apply decoration-solid;
+		}
+
+		[role] & {
+			color: currentColor;
+		}
 	}
 
 	ul:not([class]), ol:not([class]) {
@@ -199,7 +250,7 @@
 	}
 
 	li:not([class]) {
-		@apply mb-2;
+		@apply mt-1;
 	}
 
 	table {

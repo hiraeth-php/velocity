@@ -1,45 +1,43 @@
-{% set tags = [
-    '<x::message>',
-    '<x:alert:info>',
-    '<x:alert:warn>',
-    '<x:alert:error>',
-    '<x:alert:success',
-] %}
-
-{% set attributes = {
-    color: '
-        Sets the color of the button, for some styles the color is used for text, for others the background, e.g. **amber**, **zinc**.
-    ',
-    boxed: '
-        Boxes off the message with padding, uses color for background.
-    ',
-    ghost: '
-        Uses the color for text and border, background is transparent.
-    ',
-} %}
-
 {% set message = 'This is my message. I hope you receive it.' %}
 
 <header>
-    {% apply markdown %}
-        {: .mb-0}
-        #### Messages and Alerts
-
-        {% include '@vendor/hiraeth/velocity/docs/-signature.html' %}
-    {% endapply %}
+    <h2>Messages and Alerts</h2>
+    {% include '@vendor/hiraeth/velocity/docs/-signature.html' with {
+        tags: [
+            '<x::message>',
+            '<x:alert:info>',
+            '<x:alert:warn>',
+            '<x:alert:error>',
+            '<x:alert:success',
+        ],
+        attributes: {
+            icon: '
+                Sets the Remix Icon name to use for the icon, e.g. **arrow-down-circle-line**
+            ',
+            color: '
+                Sets the color of the message, for some styles the color is used for text, for others the background, e.g. `amber-600`.
+            ',
+            ghost: '
+                Uses the color for text and border, background is transparent.
+            ',
+            boxed: '
+                Boxes off the message with padding, uses color for background.
+            ',
+        }
+    } %}
 </header>
 
 
 {% apply markdown %}
     ```xml
-    <x::message>
-        {{ message|trim }}
+    <x::message icon="arrow-down-circle-line">
+        {{ message|trim|raw }}
     </x::message>
     ```
 {% endapply %}
-<x::message>
+<x::message icon="arrow-down-circle-line">
     {% apply markdown %}
-        {{ message|trim }}
+        {{ message|trim|raw }}
     {% endapply %}
 </x::message>
 
@@ -47,14 +45,14 @@
 
 {% apply markdown %}
     ```xml
-    <x::message boxed class:="bg-stone-300 dark:bg-stone-800">
-        {{ message|trim }}
+    <x::message boxed icon="arrow-down-circle-line" class:="bg-stone-300 dark:bg-stone-800">
+        {{ message|trim|raw }}
     </x::message>
     ```
 {% endapply %}
-<x::message boxed class:="bg-stone-300 dark:bg-stone-800">
+<x::message boxed icon="arrow-down-circle-line" class:="bg-stone-300 dark:bg-stone-800">
     {% apply markdown %}
-        {{ message|trim }}
+        {{ message|trim|raw }}
     {% endapply %}
 </x::message>
 
@@ -63,13 +61,13 @@
 {% apply markdown %}
     ```xml
     <x::message ghost color="emerald">
-        {{ message|trim }}
+        {{ message|trim|raw }}
     </x::message>
     ```
 {% endapply %}
 <x::message ghost color="emerald">
     {% apply markdown %}
-        {{ message|trim }}
+        {{ message|trim|raw }}
     {% endapply %}
 </x::message>
 
@@ -78,13 +76,13 @@
 {% apply markdown %}
     ```xml
     <x::message ghost class:="border-dashed">
-        {{ message|trim }}
+        {{ message|trim|raw }}
     </x::message>
     ```
 {% endapply %}
 <x::message ghost class:="border-dashed">
     {% apply markdown %}
-        {{ message|trim }}
+        {{ message|trim|raw }}
     {% endapply %}
 </x::message>
 
@@ -95,42 +93,42 @@
 
     ```xml
     <x:alert:info boxed>
-        {{ message|trim }}
+        {{ message|trim|raw }}
     </x:alert:info>
 
     <x:alert:warn ghost>
-        {{ message|trim }}
+        {{ message|trim|raw }}
     </x:alert:warn>
 
     <x:alert:error boxed>
-        {{ message|trim }}
+        {{ message|trim|raw }}
     </x:alert:error>
 
     <x:alert:success ghost>
-        {{ message|trim }}
+        {{ message|trim|raw }}
     </x:alert:success>
     ```
 {% endapply %}
 <x:alert:info boxed>
     {% apply markdown %}
-        {{ message|trim }}
+        {{ message|trim|raw }}
     {% endapply %}
 </x:alert:info>
 
 <x:alert:warn ghost>
     {% apply markdown %}
-        {{ message|trim }}
+        {{ message|trim|raw }}
     {% endapply %}
 </x:alert:warn>
 
 <x:alert:error boxed>
     {% apply markdown %}
-        {{ message|trim }}
+        {{ message|trim|raw }}
     {% endapply %}
 </x:alert:error>
 
 <x:alert:success ghost>
     {% apply markdown %}
-        {{ message|trim }}
+        {{ message|trim|raw }}
     {% endapply %}
 </x:alert:success>

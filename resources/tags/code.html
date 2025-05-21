@@ -1,0 +1,5 @@
+{% apply markdown %}
+    ```{{ type ?? '' }}
+    {{ children|raw }}
+    ```
+{% endapply %}
