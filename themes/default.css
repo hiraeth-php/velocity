@@ -29,6 +29,11 @@
 	--font-weight-message: 400;
 
 	/**
+	 * Form Features
+	 */
+	--radius-input: var(--radius-sm);
+
+	/**
 	 * Buttons
 	 */
 

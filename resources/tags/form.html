@@ -1,6 +1,6 @@
 {% do default({
     'method': method ?? 'get',
-    'action': action ?? route(request.uri.path ?? null),
+    'action': action ?? route(context.request.uri.path ?? null),
     'boost': (boost ?? true)|switch,
 }) %}
 

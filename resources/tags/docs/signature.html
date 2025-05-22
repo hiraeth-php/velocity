@@ -1,0 +1,12 @@
+{% apply markdown %}
+{: .mt-2 }
+{{ data.tags|map(t => "`#{t}`{ .bg-cyan-600/25 }")|join(' | ')|raw }}
+
+{% if data.attributes|length %}
+| Property  | Description
+|-----------|------------------------
+{% for i in data.attributes|keys %}
+    | `{{ i }}`{ .bg-lime-600/25 } | {{ data.attributes[i]|trim|raw }}
+{% endfor %}
+{% endif %}
+{% endapply %}

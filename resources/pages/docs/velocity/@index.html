@@ -1,6 +1,31 @@
 {% extends '@layouts/velocity/main.html' | proxy('content') %}
 
-{% set docpath ='vendor/hiraeth/velocity/docs' %}
+{% set docpaths = [
+    'vendor/hiraeth/velocity/resources/pages/docs/velocity',
+    'resources/pages/docs/velocity'
+] %}
+
+{% set tagpaths = {} %}
+
+{% for docpath in docpaths %}
+    {% for section in app.run('glob', [ app.directory(docpath) ~ '/*', constant('GLOB_ONLYDIR')]) %}
+        {% set folder = section|basename %}
+        {% set title  = folder|replace({'-':' '})|title %}
+
+        {% for component in app.run('glob', [section ~ '/*']) %}
+            {% set name = app.run('basename', [component, '.html']) %}
+            {% set tagpaths = tagpaths|combine({
+                (title): {
+                    (name): {
+                        name: name,
+                        path: folder ~ '/' ~ name
+                    }
+                }
+            }) %}
+        {% endfor %}
+    {% endfor %}
+{% endfor %}
+
 
 {% block head %}
     {% include '@layouts/velocity/head.html' %}
@@ -104,7 +129,7 @@
                 <x:io:control id:="lightCtrl" icon="sun-line" class:="light:hidden" />
             </x::>
         </header>
-        <section class="contain grid grid-cols-12" hx-target="#content">
+        <section class="contain grid grid-cols-12 gap-8" hx-target="#content">
             <nav class="col-span-3">
                 <h5>Main</h5>
                 <ul>
@@ -114,31 +139,28 @@
                     <li><a href="/docs/velocity/tags">Tags</a></li>
                 </ul>
                 <h5>Library</h5>
-                <ul>
-                    {% for section in app.run('glob', [ app.directory(docpath) ~ '/*', constant('GLOB_ONLYDIR')]) %}
-                        {% set folder = app.run('basename', [section]) %}
-                        {% set title  = section|split('-')[1]|title %}
-                        <li>
-                            <h6>{{ title }}</h6>
-                            <ul>
-                                {% for component in app.run('glob', [section ~ '/*']) %}
+                <x::accordion>
+                    {% for section in tagpaths|keys|sort  %}
+                        <x::shade class="p-2 bg-fore/10">
+                            <h6>{{ section }}</h6>
+                            <ul class="p-2 mb-2">
+                                {% for component in tagpaths[section]|keys|sort %}
                                     <li>
-                                        {% set name = app.run('basename', [component, '.html']) %}
-                                        <a href="{{ '/docs/velocity/' ~ folder ~ '/' ~ name }}">
-                                            {{ name|title }}
+                                        <a href="{{ '/docs/velocity/' ~ tagpaths[section][component].path }}">
+                                            {{ tagpaths[section][component].name|title }}
                                         </a>
                                     </li>
                                 {% endfor %}
 
                             </ul>
-                        </li>
+                        </x::shade>
                     {% endfor %}
-                </ul>
+                </x::accordion>
             </nav>
             <section class="col-span-9">
                 <div id="content" class="@container mx-auto" x-bind:class="{'w-[420px]': mobile}">
                     {% block content %}
-                        {% include '@vendor/hiraeth/velocity/docs/' ~ (parameters.article ?? 'introduction') ~ '.html' %}
+                        {% include '@pages/docs/velocity/' ~ (parameters.article ?? 'introduction') ~ '.html' %}
                     {% endblock %}
                 </div>
             </section>

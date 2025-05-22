@@ -46,7 +46,7 @@
         {% if capture %}
             x-on:click="toggle()"
         {% endif %}
-        class="flex items-end cursor-pointer"
+        class="flex items-center {{ class|default('') }} {{ 'cursor-pointer'|if(capture) }}"
     >
         <x:: class:="grow">
             {{ (children[0] ?? null)|raw }}
@@ -56,7 +56,7 @@
             {% if not capture %}
                 x-on:click:="toggle()"
             {% endif %}
-            class:="w-6 ml-4 shrink-0"
+            class:="w-6 shrink-0 cursor-pointer"
         >
             <i::icon x-show:="!isOpen" name="expand-up-down-line" />
             <i::icon x-show:="isOpen"  name="arrow-down-s-line" />
@@ -68,7 +68,6 @@
         {% if animate %}
             x-transition
         {% endif %}
-        class="mt-4"
     >
         {{ children|slice(1)|join|raw }}
     </div>

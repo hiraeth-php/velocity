@@ -3,7 +3,7 @@
 
 <header>
     <h2>Buttons</h2>
-    {% include '@vendor/hiraeth/velocity/docs/-signature.html' with {
+    <x:docs:signature data={% v: {
         tags: [
             '<x::button>',
 
@@ -19,7 +19,7 @@
                 Where the button should link to.  If passed, the button will be rendered as an `<a>` tag.
             ',
         }
-    } %}
+    } %} />
 </header>
 
 {% apply markdown %}
