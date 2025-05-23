@@ -141,7 +141,7 @@
                 <h5>Library</h5>
                 <x::accordion>
                     {% for section in tagpaths|keys|sort  %}
-                        <x::shade class="p-2 bg-fore/10">
+                        <x::shade class="!py-2 px-4 bg-fore/10">
                             <h6>{{ section }}</h6>
                             <ul class="p-2 mb-2">
                                 {% for component in tagpaths[section]|keys|sort %}
