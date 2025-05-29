@@ -1,6 +1,6 @@
 <h1>Welcome to Velocity</h1>
 <p>
-    Velocity is an application and component framework built on <a href="https://hiraeth.dev" hx-boost="false">Hiraeth</a> that makes rapidly developing site and application prototypes a breeze.  Using lightweight alternatives to heavy front-end frameworks, Velocity provides a server-side rendered component system capable of building modern and dynamic front-ends with the speed, efficiency, and power of PHP and Twig.
+    Velocity is an application and component framework built on <a href="https://hiraeth.dev" hx-boost="false">Hiraeth</a> that makes rapidly developing site and application prototypes a breeze.  Using lightweight alternatives to heavy front-end frameworks, Velocity provides a server-side rendered component system capable of building modern and dynamic front-ends with the speed, efficiency, and power of PHP and Twig.  Other components include:
 </p>
 <div class="grid grid-cols-1 @md:grid-cols-3 gap-8 mb-8">
     <x:: class:="border-1 border-zinc-500 p-2 rounded-md text-center hover:scale-[1.10] transition-all duration-300 shadow">
@@ -24,3 +24,150 @@
         </section>
     </x::>
 </div>
+
+<x:alert:warn ghost>
+    We're still building out the built-in component library, but the framework is highly functional for custom components.  Check back frequently to keep up to date on available components.
+</x:alert:warn>
+
+Want to try it?
+
+{% apply markdown %}
+```html
+mkdir <path>
+cd <path>
+composer create-project hiraeth/app:^3.0 ./ -s dev
+composer require hiraeth/velocity
+```
+{% endapply %}
+
+<h2>How It Works</h2>
+<p>
+    Define your Twig layout structure as you normally would using <code>extends</code>, <code>block</code>, and the built-in <code>proxy()</code> filter to align your HTMX Boosted Targets and Twig Blocks:
+</p>
+
+{% apply markdown %}
+```twig
+{% verbatim %}
+{% extends '@layouts/velocity/main.html' | proxy('body') %}
+
+{% block body %}
+    <x:: hx-target:="#main">
+        <header>
+            <!-- Common Header/Navigation/Etc -->
+        </header>
+        <main id="main">
+            {% block main %}
+
+            {% endblock %}
+        </main>
+        <footer>
+            <!-- Common Footer -->
+        </footer>
+    </x::>
+{% endblock %}
+{% endverbatim %}
+```
+{% endapply %}
+
+<p>
+    Create a page simply by adding it to a file, e.g. <code>resources/pages/@index.html</code>.  When
+    a boosted HTMX Request is made to <code>/</code> with an HX-Target of <code>main</code> this
+    will only render the main block (not the full layout).
+</p>
+
+{% apply markdown %}
+```twig
+{% verbatim %}
+{% extends '@layouts/main.html' | proxy('main') %}
+
+{% block main %}
+    <p>
+        This is my first page!  Will automatically resolve which blocks
+        to render based on the type and target of the HTMX request.
+    </p>
+{% endblock %}
+{% endverbatim %}
+```
+{% endapply %}
+
+<p>
+    Create custom components by adding them to <code>resources/tags</code>, e.g. <code>resources/tags/hero.html</code>:
+</p>
+
+{% apply markdown %}
+```twig
+{% verbatim %}
+{% do require(['image']) %}
+
+<div
+    class="
+        flex flex-col items-center justify-center
+        min-h-64 w-full
+        bg-[image:url('{{ image }}')]
+    "
+>
+    <hgroup>
+        {{ children|raw }}
+    </hgroup>
+</div>
+{% endverbatim %}
+```
+{% endapply %}
+
+<p>
+   Use the compoonents in your other templates:
+</p>
+
+{% apply markdown %}
+```twig
+{% verbatim %}
+<x::hero image="/images/waterfall.jpg">
+    <h1>How To Build Bullet-Proof MVPs</h1>
+    <h2>Matthew J. Sahagian</h2>
+</x::hero>
+{% endverbatim %}
+```
+{% endapply %}
+
+<p>
+   Use fragments (<code>&lt;x::&gt;</code>) and merge attributes (<code>:=</code>) to apply place-of-use customizations and pass in rich/native types with the <code>{% verbatim %}{% v: ... %}{% endverbatim %}</code> tag:
+</p>
+
+{% apply markdown %}
+```twig
+{% verbatim %}
+<x::hero
+    image={% v: app.get('WebImageGenerator').fromText('shamrocks wallpaper') %}
+    hx-get:="/api/v1/articles/2/readStart"
+    hx-trigger:="revealed"
+    hx-swap:="none"
+>
+    <x:: class:="text-emerald-300">
+        <h1>Happy St. Patrick's Day!</h1>
+        <h2>Matthew J. Sahagian</h2>
+    </x::>
+</x::hero>
+{% endverbatim %}
+```
+{% endapply %}
+
+<p>
+    Create dynamic stateful-components by defining AlpineJS scripts local to your components:
+</p>
+
+{% apply markdown %}
+```twig
+{% verbatim %}
+<script>
+    function myCounter() {
+        return {
+            value: 0
+        }
+    }
+</script>
+<button x-data="myCounter" x-on:click="value++">
+    Count: <span x-text="value"></span>
+</button>
+{% endverbatim %}
+```
+{% endapply %}
