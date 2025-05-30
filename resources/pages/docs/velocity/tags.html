@@ -1,3 +1,281 @@
-<x:alert:error ghost>
-    Sorry, there's nothing here yet, we're still working on it!
-</x:alert:error>
+{% apply markdown %}
+## Tags
+
+Tags are templates that represent an isolated component.  Similar to pages, a tag can be added by simply creating a new file.  In this case, they don't use any special prefix (like pages with `@`).  Tags can have their own hierarchy based on directory structure.  The root directory for all tags is `resources/tags`.
+
+The basic structur of a tag when used is:
+
+{% verbatim %}
+```twig
+<[ref]:[path]:[name]>
+```
+{% endverbatim %}
+
+A concrete example:
+
+{% verbatim %}
+```twig
+<x:form:string>
+```
+{% endverbatim %}
+
+The `ref` is effectively arbitrary, though should conform to well-formed HTML/XML standards.  In most use-cases and by convention `x` is used as the ref.  However, you can use your own conventions to differentiate tags by use-case or whatever you like.  For example, you could use `<input:form:string>` if you prefer to distinguish input tags from others. The `path` corresponds to the subdirectory within `resources/tags` which contains the tag. The `name` corresponds to the file basename for the tag, minus the `.html` extension.
+
+In the example of `<x:form:string>` this would reference the tag at `resources/tags/form/string.html`.
+
+Minimally, every tag requires all three parts, however, the parts can be empty.  For example, to reference `resources/tags/grid.html` you would simply use:
+
+{% verbatim %}
+```twig
+<x::grid>
+```
+{% endverbatim %}
+
+The double colon providing for an empty `[path]` portion of the tag.  The path itself can contain any number of sub paths that are also colon separated, though it's generally recommended to avoid deep nesting, as the 1-to-1 mapping would make for very long tag names.  However, nothing prevents you from, in principle, having a tag such as `<x:app:dock:item>`.
+
+Lastly, if all parts except for the `[ref]` are empty, this is what's called a "fragment."  There is no template for a fragment tag, as it's just a "virtual" tag that can contain and/or interop with children (more on this later).  In short, the fragment tag is simply:
+
+{% verbatim %}
+```twig
+<x::>
+```
+{% endverbatim %}
+
+#### Attributes
+
+Tags can have attributes (as one might expect).  Attributes can have values or stand alone.  There's no validation of invalid attributes, accordingly, if you add an attribute that doesn't correspond to a variable inside the tag template, nothing will happen, however, if you use a variable inside a tag template that doesn't correspond to an attribute, then you will receive an exception.  Let's use our aformentioned `<x::grid>` tag as an example by creating `resources/tags/grid.html`:
+
+{% verbatim %}
+```twig
+{% do default({
+    split: split ?? 2
+}) %}
+
+<div class="grid grid-cols-1 @md:grid-cols-12 gap-4">
+    {% for child in children %}
+        <div class="@md:col-span-{{ 12 / split }}">
+            {{ child|raw }}
+        </div>
+    {% endfor %}
+</div>
+```
+{% endverbatim %}
+
+In this example, our split defaults to `2` so if a `split` attribute is not provided on the tag it will default to that at any container width larger than `md`.  We'd use this as follows:
+
+{% verbatim %}
+```twig
+<x::grid split="3">
+    <p>
+        Left Column
+    </p>
+    <p>
+        Center
+    </p>
+    <p>
+        Right Column
+    </p>
+</x::grid>
+```
+{% endverbatim %}
+
+##### Native Attributes
+
+A native attribute is one whose value can be any native PHP type.  Since traditional attributes always take the form of a string, in order to pass in something like an object or an array to a tag template when you use the tag, you'd need to serialize and then deserialize the attribute.
+
+Velocity enables passing native values directly by swapping them for tokens which are later resolved during the second-phase render.  For example:
+
+{% verbatim %}
+```twig
+<x::badge person={% v: {firstName: 'Matthew', lastName: 'Sahagian'} %} />
+```
+{% endverbatim %}
+
+Using the above the `resources/tags/badge.html` file can use the rich object in place of a string:
+
+{% verbatim %}
+```twig
+<h4>{{ person.firstName }} {{ person.lastName }}</h4>
+```
+{% endverbatim %}
+
+If this were a `Person` object, we'd also be able to call methods using standard Twig resolution:
+
+{% verbatim %}
+```twig
+<h4>{{ person.fullName }}</h4>
+```
+{% endverbatim %}
+
+##### Merge Attributes
+
+Merge attributes are one of the most powerful aspect's of Velocity's tag system.  A merge attribute is an attribute which is effectively passed along to the top-level children the tag represents.  Merge attributes, as the name suggests will be merged (appended) into existing children's attributes with th same name, or if they don't have such an attribute, added.  The most common use-case for this is adding classes.  Returning to our `<x::grid>` example:
+
+{% verbatim %}
+```twig
+<x::grid class:="bg-slate-300">
+    <p>Column 1</p>
+    <p>Column 2</p>
+</x::grid>
+```
+{% endverbatim %}
+
+The above would add the `bg-slate300` class to the already grid styled `<div>` tag within the `resources/tags/grid.html` file we created earlier, thereby allowing you to as customization to components in the place of use.
+
+Merge attributes work with any attribute and are distinguished by the use of `:=` as opposed to simply `=`.  Merge attributes can be particularly useful when combined with the aforementioned `<x::>` fragment tag.  In some cases, for example you need to repeat a number of utility classes but a custom tag may not be warranted:
+
+{% verbatim %}
+```twig
+<div>
+    <x:: class:="inline-block mr-4 last:mr-0">
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+        <span>4</span>
+    </x::>
+</div>
+```
+{% endverbatim %}
+
+In this example, because the fragment only represents the immediately placed children, each child span will have the requisite `class` attribute added.  If you use this pattern, but all the children are also tag components, the merge attribute will carry to the top-level children inside their template.  Nested fragments will also carry merge attributes to their children:
+
+{% verbatim %}
+```twig
+<x:: class:="block text-center bg-red-400">
+    <h1>Test</h1>
+    <x:: class:="text-white">
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+    </x::>
+</x::>
+```
+{% endverbatim %}
+
+The the above, both the `<h1>` and all the `<span>` tags will have a `class` attribute with classes `block`, `text-center`, `bg-red-400`, however, the `<span>` tags will have a final `class` attribute with which also has the `text-white` class appended.
+
+This can be applied to remove excessive nested HTML wrappers and prevent severe cases of divitis.  Now that we've explained it, let's change how our grid worked from using this:
+
+{% verbatim %}
+```twig
+<div class="@md:col-span-{{ 12 / split }}">
+    {{ child|raw }}
+</div>
+```
+{% endverbatim %}
+
+To this:
+
+{% verbatim %}
+```twig
+<x:: class:="@md:col-span-{{ 12 / split }}">
+    {{ children|raw }}
+</x::>
+```
+{% endverbatim %}
+
+Now rather than each child being wrapped in a `<div>` that defines the column spanning, they will have their column spanning merged directly into their `class` attribute.  The child can, of course, still be a `<div>` itself, if that makes sense in the context.
+
+
+#### Context
+
+Tags have a relatively isolated scope.  While globally registered Twig variables will be directly available (unless overloaded by an attribute), within a tag template additional variables created in parent scopes are not available except through the `context` variable.  This includes variables which may have been added when the parent most template was originally rendered, such as the `request` variable which is added when the template middleware for the pages renders the page.  Instead of `request.uri.path`, for example, you would do:
+
+{% verbatim %}
+```twig
+{{ context.request.uri.path }}
+```
+{% endverbatim %}
+
+This also means that tags nested within other tags receive their parent's attributes on their `context` variable.  For a tag nested in multiple other tags, each parent tag can potentially overload this value.  Let's use the built-in `<x::form>` tag to have a closer look:
+
+{% verbatim %}
+```twig
+<x::form method="get">
+    <x:form:email name="email" />
+</x::form>
+```
+{% endverbatim %}
+
+In this example the value of the `method` variable within the `<x::form>` tag's template would be `get`, while the `<x:form:email>`'s template would only have this avaialble as a property of context, e.g. `context.method`.
+
+#### Helpers
+
+Helpers are functions that are built into velocity and can be used to perform certain actions within the context of a tag's template.  We already demonstrated the use of one `default()` when we created our `<x::grid>` template, but let's taken a moment to formally explain them all.
+
+##### Require
+
+You can explicitly require certain attribute values or context be provided at the top of your templates rather than waiting for the use of a variable to fail.  To do this, simply call `require()`.  The first parameter is an array of required attribute names, the second is an array of required context properties.  Found at the top of the actual `<x:form:email>` tag is:
+
+{% verbatim %}
+```twig
+{% do require(['name'], ['method']) %}
+```
+{% endverbatim %}
+
+In short, this asserts that the tag itself must receive a `name` attribute and one of its parents needed to define the `method`.
+
+##### Default
+
+The `default()` function is a simple context mapper that allows you to resolve attributes into variables and provide defaults without having to use multiple instances of twig's `set` tag.  This was used in a previous example to resolve the `split` value for our `<x::grid>` tag.  When combined with the `??` null coalescing operator you can quickly map all the defaults and how they're resolved.
+
+It takes an object/associative array as its argument and defines all keys to the corresponding value in as template variables.  Here's an example from the `<x::ticker>` tag:
+
+{% verbatim %}
+```twig
+{% do default({
+    timeout: timeout ?? 2000,
+    repeat: (repeat ?? true)|switch
+}) %}
+```
+{% endverbatim %}
+
+Note the `switch` filter is also available which allows for easily handling/converting common true/false expressions to a 1 or 0, enabling attributes that can be passed like `repeat="false"` or `repeat="off"`.
+
+###### Styling
+
+The `styling()` function creatins a space separated class list from a variable number of arguments which can either be:
+
+1. a string (always included)
+2. an object/associtative array whose keys are classes and whose values can be boolean expressions which determine whether or not the class(es) are included.  From `<x:form:email>`
+
+{% verbatim %}
+```twig
+{% set classes = styling(
+    'px-4 py-2 w-full',
+    {
+        'border-l-1': inline,
+        'mb-4 border-1 rounded-input': not inline
+    }
+) %}
+```
+{% endverbatim %}
+
+Depending on whethr or not the `inline` attribute was passed and/or truthy, we use different styles, while the first style list remains consistent.  This is then applied simply to the input, {% verbatim %}`class="{{ classes }}"`{% endverbatim %}.
+
+
+#### Children
+
+In the previous `<x::grid>` example, we can see that the special `children` variable contains an iterable/array of the child nodes when/where the tag was used.  In that example, we placed each child in a wrapping element, so we iterated over them.  It is completely possible, however, to simply place all children at once inside a tag template:
+
+{% verbatim %}
+```twig
+{{ children|raw }}
+```
+{% endverbatim %}
+
+You can also work with children as you would any other array, keeping in mind that these are object instances of various DOM Nodes.  Accordingly you can perform operations such as:
+
+{% verbatim %}
+```twig
+{% if children[0].nodeName == 'p' %}
+    {# do something special if first child is a paragraph #}
+{% else %}
+    {# do other things #}
+{% endif %}
+```
+{% endverbatim %}
+
+The oyster is your world!
+
+{% endapply %}
