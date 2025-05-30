@@ -28,7 +28,8 @@
         {% endblock %}
     </body>
     <script>
-        window.hashLoads = {};
+        window.hashLoads = Array.from(document.querySelectorAll('script[data-hash]'))
+            .map(node => node.dataset.hash);
 
         document.addEventListener('htmx:beforeOnLoad', function (e) {
             e.detail.shouldSwap = true;
@@ -46,15 +47,16 @@
 
                 ['script', 'style'].forEach((type) => {
                     dom.querySelectorAll(type).forEach((node) => {
-                        let hash = node.getAttribute('data-hash');
+                        let hash = node.dataset.hash;
 
-                        if (!hash || window.hashLoads[hash]) {
+                        if (!hash || window.hashLoads.find(hash)) {
                             return;
                         }
 
                         let new_node = document.createElement(type);
+                        new_node.dataset.hash = hash;
                         new_node.innerHTML = node.innerHTML;
-                        window.hashLoads[hash] = true;
+                        window.hashLoads.push(hash);
 
                         document.head.appendChild(new_node);
                         node.remove();
