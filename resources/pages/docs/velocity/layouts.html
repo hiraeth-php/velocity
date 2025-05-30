@@ -10,6 +10,7 @@ Your layouts should, generally speaking, extend this layout and provide the `bod
 ```twig
 {% verbatim %}
 {% extends '@layouts/velocity/main.html' | proxy('body') %}
+
 {% block body %}
     <x:: hx-target:="#main">
         <header>
