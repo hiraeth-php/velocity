@@ -1,3 +1,110 @@
-<x:alert:error ghost>
-    Sorry, there's nothing here yet, we're still working on it!
-</x:alert:error>
+{% apply markdown %}
+## Pages
+
+Pages are templates that represent a complete externally accesisble request independent of whether or not that request was initiated via HTMX or directly from the user agent (client).  A page can be added in velocity simply by adding a file under `resources/pages` which corresponds to the URL/path which should resolve that page.
+
+The most basic example is `resources/pages/@index.html` which would correspond to the `/` request path.  Similarly `resources/pages/@about-us.html` would correspond to `/about-us`.
+
+#### Page layout
+
+While it's possible to write a page without any additional layout, most pages will extend a layout and provide one or more blocks to fullfill its dependencies.  The most basic example of a page that uses velocity would be something like this:
+
+{% verbatim %}
+```twig
+{% extends '@layouts/velocity/main.html' | proxy('body') %}
+
+{% block body %}
+    ...
+{% endblock }
+```
+{% endverbatim %}
+
+In the example above, we include the main Velocity layout and simply provide the `body` block.  In most cases, you'll actually want to [create your own layout](./layouts) to extend the main layout and include common elements.  Then your pages would extend that.  This would prevent, for example, constant reloading of header/footer and/or common navigation elements.
+
+#### Canonoical URLs
+
+There is a distinction between `resources/pages/@settings.html` and `resources/pages/settings/@index.html`.  The former indicates a canonical URL of `/settings` while the latter indicates a canonical url of `/settings/`.  Velocity will automatically redirect when a user hits a non-canonical URL for which there is a canonical alternative (i.e. adding the `/` or removing it depending on the file found).  If both files exist, these could, in principle, indicate two distinct resources.
+
+#### Matchers
+
+While direct 1-to-1 mappings are a really great solution for one off pages, they're a poor subtitute for many modern web reqeusts which require dynamic URL segments that map to specific parameters.  Ergo, it's possible to have a URL such as `/users/1` where `1` indicates a user id.  To do this, you create a `~matchers.jin` file in the directory that corresponds to the appropriate URL segment.  In this example, we'd create a `resources/pages/users/~matchers.jin` file with contents like the following:
+
+```toml
+[detail]
+
+    pattern = ([1-9][0-9]*)
+    mapping = [
+        "id"
+    ]
+```
+
+With this in place our request to `/users/1` will now match the pattern.  The first defined capture group will map to a parameter called `id`, and the the template that will be resolved is `resources/pages/users/@detail.html`.  Within the template you can access the parameter as follows:
+
+{% verbatim %}
+```twig
+<p>The user ID is {{ parameters.id }}</p>
+```
+{% endverbatim %}
+
+#### Control Logic
+
+At this point, you may be wondering... if requests are routed directly to templates, how do we perform required control logic?  Where does the more complex stuff go?  Velocity takes a "view-first" approach, which means unlike traditional web-MVC approaches your template calls your control logic rather than your controller calling your template.  Control logic can "interrupt" the request, but we believe this view-first approach provides a much more accurate model as to how web sites and applications are developed.
+
+To invoke control logic, you simply use the `do` tag built into twig, combined with the `action()` function provided by Velocity:
+
+{% verbatim %}
+```twig
+{% do action('My:App:GetUser') %}
+```
+{% endverbatim %}
+
+In the example above, this call would call the `My\App\GetUser` action passing any parameters to the `__invoke()` method by name.  A hypothetical example of what that might look like:
+
+```php
+<?php
+
+namespace My\App;
+
+use Hiraeth\Actions\AbstractAction;
+
+class GetUser extends AbstractAction
+{
+    public function __construct(
+        protected UserRepository $users
+    ) {}
+
+    public function __invoke(int $id)
+    {
+        $user = $this->users->find($id);
+
+        if (!$user) {
+            return $this->response(404);
+        }
+
+        return [
+            'user' => $user
+        ]
+    }
+}
+```
+
+Critical points to note:
+
+- The `$id` parameter is automatically resolved from our `parameters.id` (via our `~matchers.jin`) file.
+- We can return and interrupted response, in this case a `404` if the user is not found.  This will interrupt template rendering and return the response instead.
+- The `__construct()` dependencies are autowired and injected.  For more about this, see [Hiraeth's dependency injector docs](https://hiraeth.dev/docs/latest/dependencies).
+
+Once we've called the control logic, the returned array becomes part of our template context.  So, immediately after our `do` tag, we can us the `user` in our page template:
+
+{% verbatim %}
+```twig
+<p>
+    First Name: {{ user.firstName }}
+    Last Name: {{ user.lastName }}
+</p>
+```
+{% endverbatim %}
+
+
+
+{% endapply %}
