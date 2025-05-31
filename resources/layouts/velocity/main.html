@@ -47,19 +47,20 @@
 
                 ['script', 'style'].forEach((type) => {
                     dom.querySelectorAll(type).forEach((node) => {
-                        let hash = node.dataset.hash;
+                        if ('hash' in node.dataset) {
+                            let hash = node.dataset.hash;
 
-                        if (!hash || window.hashLoads.find(hash)) {
-                            return;
+                            if (!window.hashLoads.includes(hash)) {
+                                let new_node = document.createElement(type);
+
+                                new_node.dataset.hash = hash;
+                                new_node.innerHTML = node.innerHTML;
+
+                                window.hashLoads.push(hash);
+                                document.head.appendChild(new_node);
+                                node.remove();
+                            }
                         }
-
-                        let new_node = document.createElement(type);
-                        new_node.dataset.hash = hash;
-                        new_node.innerHTML = node.innerHTML;
-                        window.hashLoads.push(hash);
-
-                        document.head.appendChild(new_node);
-                        node.remove();
                     });
                 });
 
