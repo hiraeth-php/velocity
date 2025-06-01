@@ -12,7 +12,7 @@ class ProxyFilter
 	 * @param string $parent
 	 * @param string ...$blocks
 	 */
-	public function __invoke(array &$context, string $target, string ...$blocks): string
+	public function __invoke(array &$context, string $layout, string ...$blocks): string
 	{
 		if (!count($blocks)) {
 			throw new InvalidArgumentException(sprintf(
@@ -26,20 +26,21 @@ class ProxyFilter
 			));
 		}
 
-		$active   = $context['request']->getHeaderLine('HX-Target');
-		$do_proxy = in_array($active, $blocks);
+		$active = $context['request']->getHeaderLine('HX-Request');
+		$target = $context['request']->getHeaderLine('HX-Target');
 
-		if ($do_proxy) {
-			$target = '@layouts/velocity/proxy.html';
+		if ($active && (!$target || in_array($target, $blocks))) {
+			$layout = '@layouts/velocity/proxy.html';
 		} else {
 			$blocks = [];
+
 		}
 
 		$context['_velocity_']['proxy'] = [
 			'blocks' => $blocks,
-			'active' => $active
+			'target' => $target
 		];
 
-		return $target;
+		return $layout;
 	}
 }

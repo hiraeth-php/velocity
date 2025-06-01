@@ -14,7 +14,7 @@ class ProxyFunction
 		}
 
 		if (array_intersect($blocks, $context['_velocity_']['proxy']['blocks'])) {
-			return in_array($context['_velocity_']['proxy']['active'], $blocks);
+			return in_array($context['_velocity_']['proxy']['target'], $blocks);
 		} else {
 			return TRUE;
 		}
