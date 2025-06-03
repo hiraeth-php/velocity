@@ -28,6 +28,32 @@
         {% endblock %}
     </body>
     <script>
+        const __vHoist = function(content) {
+            let parser = new DOMParser();
+            let dom    = parser.parseFromString(content, 'text/html');
+
+            ['script', 'style'].forEach((type) => {
+                dom.querySelectorAll(type).forEach((node) => {
+                    if ('hash' in node.dataset) {
+                        let hash = node.dataset.hash;
+
+                        if (!window.hashLoads.includes(hash)) {
+                            let new_node = document.createElement(type);
+
+                            new_node.dataset.hash = hash;
+                            new_node.innerHTML = node.innerHTML;
+
+                            window.hashLoads.push(hash);
+                            document.head.appendChild(new_node);
+                            node.remove();
+                        }
+                    }
+                });
+            });
+
+            return dom.documentElement.innerHTML;
+        };
+
         window.hashLoads = Array.from(document.querySelectorAll('script[data-hash]'))
             .map(node => node.dataset.hash);
 
@@ -37,35 +63,11 @@
         });
 
         document.addEventListener('htmx:afterRequest', function (e) {
-            let parser = new DOMParser();
+            e.detail.xhr.response = __vHoist(e.detail.xhr.response);
+        });
 
-            if (e.detail.xhr.response.includes('<html>')) {
-                let dom = parser.parseFromString(
-                    e.detail.xhr.response,
-                    'text/html',
-                );
-
-                ['script', 'style'].forEach((type) => {
-                    dom.querySelectorAll(type).forEach((node) => {
-                        if ('hash' in node.dataset) {
-                            let hash = node.dataset.hash;
-
-                            if (!window.hashLoads.includes(hash)) {
-                                let new_node = document.createElement(type);
-
-                                new_node.dataset.hash = hash;
-                                new_node.innerHTML = node.innerHTML;
-
-                                window.hashLoads.push(hash);
-                                document.head.appendChild(new_node);
-                                node.remove();
-                            }
-                        }
-                    });
-                });
-
-                e.detail.xhr.response = dom.documentElement.innerHTML;
-            }
+        document.addEventListener('htmx:sseBeforeMessage', function (e) {
+            e.detail.data = __vHoist(e.detail.data);
         });
     </script>
 </html>
