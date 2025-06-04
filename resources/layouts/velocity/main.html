@@ -62,6 +62,12 @@
             e.detail.isError = false;
         });
 
+        document.addEventListener('htmx:beforeSend', function (e) {
+            document.querySelectorAll('meta[data-htmx]').forEach(function(node) {
+                e.detail.xhr.setRequestHeader(node.getAttribute('name'), node.getAttribute('content'));
+            });
+        });
+
         document.addEventListener('htmx:afterRequest', function (e) {
             e.detail.xhr.response = __vHoist(e.detail.xhr.response);
         });
