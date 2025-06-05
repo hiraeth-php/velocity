@@ -45,13 +45,14 @@
 
                             window.hashLoads.push(hash);
                             document.head.appendChild(new_node);
-                            node.remove();
                         }
+
+                        node.remove();
                     }
                 });
             });
 
-            return dom.documentElement.innerHTML;
+            return dom.body.innerHTML;
         };
 
         window.hashLoads = Array.from(document.querySelectorAll('script[data-hash]'))
@@ -68,8 +69,8 @@
             });
         });
 
-        document.addEventListener('htmx:afterRequest', function (e) {
-            e.detail.xhr.response = __vHoist(e.detail.xhr.response);
+        document.addEventListener('htmx:beforeSwap', function (e) {
+            e.detail.serverResponse = __vHoist(e.detail.xhr.response);
         });
 
         document.addEventListener('htmx:sseBeforeMessage', function (e) {
