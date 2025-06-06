@@ -28,7 +28,7 @@
         {% endblock %}
     </body>
     <script>
-        const __vHoist = function(content) {
+        const __vHoist = function(content, config) {
             let parser = new DOMParser();
             let dom    = parser.parseFromString(content, 'text/html');
 
@@ -50,6 +50,10 @@
                         node.remove();
                     }
                 });
+
+                dom.querySelectorAll('meta[http-equiv]').forEach((node) => {
+                    config.headers[node.httpEquiv] = node.content;
+                });
             });
 
             return dom.body.innerHTML;
@@ -70,11 +74,11 @@
         });
 
         document.addEventListener('htmx:beforeSwap', function (e) {
-            e.detail.serverResponse = __vHoist(e.detail.xhr.response);
+            e.detail.serverResponse = __vHoist(e.detail.xhr.response, e.detail.requestConfig);
         });
 
         document.addEventListener('htmx:sseBeforeMessage', function (e) {
-            e.detail.data = __vHoist(e.detail.data);
+            e.detail.data = __vHoist(e.detail.data, e.detail.requestConfig);
         });
     </script>
 </html>
