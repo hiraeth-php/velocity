@@ -28,7 +28,7 @@
         {% endblock %}
     </body>
     <script>
-        const __vHoist = function(content, config) {
+        const __vHoist = function(content, meta) {
             let parser = new DOMParser();
             let dom    = parser.parseFromString(content, 'text/html');
 
@@ -50,10 +50,10 @@
                         node.remove();
                     }
                 });
+            });
 
-                dom.querySelectorAll('meta[http-equiv]').forEach((node) => {
-                    config.headers[node.httpEquiv] = node.content;
-                });
+            dom.querySelectorAll('meta[http-equiv]').forEach((node) => {
+                meta[node.httpEquiv.toLowerCase()] = node.content;
             });
 
             return dom.body.innerHTML;
@@ -73,12 +73,51 @@
             });
         });
 
+        document.addEventListener('htmx:afterRequest', function (e) {
+            let parser = new DOMParser();
+            let dom    = parser.parseFromString(e.detail.xhr.response, 'text/html');
+        });
+
+        document.addEventListener('htmx:beforeHistoryUpdate', function (e) {
+            let checkFalse = false;
+
+            if (e.detail.etc.meta['hx-push-url']) {
+                e.detail.history.type = 'push';
+                e.detail.history.path = e.detail.etc.meta['hx-push-url'];
+                checkFalse = true;
+            }
+
+            if (e.detail.etc.meta['hx-replace-url']) {
+                e.detail.history.type = 'replace';
+                e.detail.history.path = e.detail.etc.meta['hx-replace-url'];
+                checkFalse = true;
+            }
+
+            if (checkFalse && e.detail.history.path == 'false') {
+                delete e.detail.history.type;
+                delete e.detail.history.path;
+            }
+        });
+
         document.addEventListener('htmx:beforeSwap', function (e) {
-            e.detail.serverResponse = __vHoist(e.detail.xhr.response, e.detail.requestConfig);
+            e.detail.etc.meta = {};
+            e.detail.serverResponse = __vHoist(e.detail.xhr.response, e.detail.etc.meta);
+
+            if (e.detail.etc.meta['hx-retarget']) {
+                e.detail.target = document.querySelector(e.detail.etc.meta['hx-retarget']);
+            }
+
+            if (e.detail.etc.meta['hx-reselect']) {
+                e.detail.selectOverride = e.detail.etc.meta['hx-reselect'];
+            }
+
+            if (e.detail.etc.meta['hx-reswap']) {
+                e.detail.selectOverride = e.detail.etc.meta['hx-reswap'];
+            }
         });
 
         document.addEventListener('htmx:sseBeforeMessage', function (e) {
-            e.detail.data = __vHoist(e.detail.data, e.detail.requestConfig);
+            e.detail.data = __vHoist(e.detail.data);
         });
     </script>
 </html>

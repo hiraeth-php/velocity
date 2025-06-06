@@ -1,7 +1,7 @@
 {% do default({
     'method': method ?? 'get',
     'action': action ?? route(context.request.uri.path ?? null),
-    'boost': (boost ?? true)|switch,
+    'boost': (context['hx-boost'] ?? true)|switch,
 }) %}
 
 <form
