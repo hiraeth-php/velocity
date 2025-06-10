@@ -1,6 +1,8 @@
 {% do require(['value', 'name']) %}
 
 {% do default({
+    label: label ?? name|title,
+    disabled: (disabled ?? false)|switch,
     selected: name
         |trim('[]')
         |split('.')
@@ -22,6 +24,14 @@
         |first
 }) %}
 
+{% set content %}
+    {% if children|length %}
+        {{ children|raw }}
+    {% else %}
+        {{ label }}
+    {% endif %}
+{% endset %}
+
 <x:form:label class:="flex items-start mb-4">
     <input
         type="checkbox"
@@ -29,8 +39,9 @@
         value="{{ value }}"
         {{ 'checked'|if(selected|array ? value in selected : selected == value) }}
         class="block mr-4 p-2 size-[1.5em] border-1 checked:bg-(image:--checkmark)"
+        {{ 'disabled'|if(disabled) }}
     />
     <span>
-        {{ children|raw }}
+        {{ content }}
     </span>
 </x:form:label>
