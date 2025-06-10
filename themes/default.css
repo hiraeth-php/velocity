@@ -218,7 +218,7 @@
 		@apply border border-zinc-300 p-0.5 px-1 text-sm font-mono text-nowrap leading-4;
 	}
 
-	svg {
+	svg, canvas {
 		@apply w-full h-auto;
 	}
 
