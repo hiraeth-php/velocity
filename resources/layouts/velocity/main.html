@@ -8,10 +8,6 @@
         />
         <meta name="htmx-config" content='{"selfRequestsOnly": false}' />
 
-        {% if app.hasFile('public/manifest.json') %}
-            <link rel="manifest" href="/manifest.json" />
-        {% endif %}
-
         {% block head %}
         	{% include '@layouts/velocity/head.html' %}
         {% endblock %}
