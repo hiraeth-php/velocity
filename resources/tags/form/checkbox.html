@@ -17,7 +17,7 @@
                     ? context.request.queryParams
                     : context.request.parsedBody,
                 context.model ?? null,
-                selected ?? checked|switch ? [value] : []
+                selected ?? (checked ?? false)|switch ? [value] : []
             ]
         )
         |filter((v) => v is not null)
