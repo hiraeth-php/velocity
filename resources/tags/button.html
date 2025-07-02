@@ -6,10 +6,10 @@
 }) %}
 
 {% set classes = styling(
-    'py-2 px-4 font-button inline-block cursor-pointer rounded-button',
+    'py-2 px-4 font-button inline-block cursor-pointer rounded-button text-center',
     {
         'text-push': ghost,
-        'bg-push': not ghost,
+        'bg-push text-main': not ghost,
         'shadow-button': not naked,
         'underline': ghost and naked,
         'border': ghost and not naked,

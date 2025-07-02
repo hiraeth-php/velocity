@@ -17,7 +17,7 @@
                     ? context.request.queryParams
                     : context.request.parsedBody,
                 context.model ?? null,
-                value|if(selected is defined)
+                selected ?? checked|switch ? [value] : []
             ]
         )
         |filter((v) => v is not null)
@@ -37,7 +37,7 @@
         type="checkbox"
         name="{{ name }}"
         value="{{ value }}"
-        {{ 'checked'|if(selected|array ? value in selected : selected == value) }}
+        {{ 'checked'|if(value in selected) }}
         class="block mr-4 p-2 size-[1.5em] border-1 checked:bg-(image:--checkmark)"
         {{ 'disabled'|if(disabled) }}
     />
