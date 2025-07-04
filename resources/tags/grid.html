@@ -1,0 +1,14 @@
+{% do require(["split"]) %}
+
+{% do default({
+    cols: '/' in split ? split|split('/')|sum : '12',
+    splits: '/' in split ? split|split('/') : [(12 / split)]
+}) %}
+
+<div class="grid grid-cols-{{ cols }} gap-4">
+    {% for i, child in children %}
+        <x:: class:="col-span-{{ splits[i % splits|length] }}">
+           {{ child|raw }}
+        </x::>
+    {% endfor %}
+</div>
