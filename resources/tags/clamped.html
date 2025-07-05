@@ -1,0 +1,25 @@
+<script>
+    function pClamped() {
+        return {
+            expandable: false,
+            expanded: false,
+            init() {
+                const container = this.$el.firstChild;
+
+                if (container.scrollHeight > container.clientHeight) {
+                    this.expandable = true;
+                    this.expanded   = false;
+                }
+            }
+        };
+    }
+</script>
+
+<div x-data="pClamped">
+    <div class="line-clamp-{{ lines ?? 6 }}" x-bind:class="{'!line-clamp-none': expanded}">
+        {{ children|raw }}
+    </div>
+    <div x-show="expandable && !expanded" x-on:click="expanded = true" class="text-center p-2 mt-2 border-t-1 border-dotted text-push uppercase text-sm cursor-pointer">
+        Expand
+    </div>
+</div>

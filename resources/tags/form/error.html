@@ -1,0 +1,19 @@
+{% do require(['name'], ['errors']) %}
+
+{% set name = name|trim('[]') %}
+
+{% do default({
+    'errors': errors ?? (
+        context.errors|object
+            ? context.errors.messages(name)
+            : context.errors[name]|default([])
+    )
+}) %}
+
+{% if errors|length %}
+    <ul class="text-halt text-xs mb-4 -mt-3 ml-3 list-disc">
+        {% for error in errors %}
+            <li class="mb-1">{{ error }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}

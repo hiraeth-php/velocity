@@ -1,0 +1,79 @@
+{% do require([], ['method', 'action']) %}
+
+<script>
+    function vLive() {
+        return {
+            count: 1,
+            start: null,
+            timer: null,
+            error : false,
+            success: false,
+            doError() {
+                this.error = true;
+
+                this.$el.dispatchEvent(new CustomEvent('vLiveUpdateError', {bubbles: true}));
+            },
+            doSuccess() {
+                this.success = true;
+
+                this.$el.dispatchEvent(new CustomEvent('vLiveUpdateError', {bubbles: true}));
+            },
+            debounce() {
+                if (this.timer) {
+                    clearTimeout(this.timer);
+                    this.count++;
+
+                } else {
+                    this.$el.querySelector('[data-response]').innerHTML = '';
+                    this.error   = false;
+                    this.success = false;
+                    this.start   = Date.now();
+                }
+
+                this.timer = setTimeout(() => {
+                        this.$el.dispatchEvent(new CustomEvent('vLiveUpdate', {bubbles: false}));
+                        this.count = 1;
+                        this.start = null;
+                        this.timer = null;
+                    },
+                    this.count > 3
+                        ? ((Date.now() - this.start) / this.count) * 4 /* 4 times average character speed */
+                        : 1500
+                );
+            }
+        }
+    }
+</script>
+
+<div
+    x-data="vLive"
+    x-on:input="debounce"
+    hx-trigger="vLiveUpdate"
+    hx-target="find [data-response]"
+    hx-{{ context.method }}="{{ context.action }}"
+    hx-include="find input,find textarea"
+    hx-swap="show:none"
+    class="relative"
+>
+    <x::icon
+        name="refresh-line"
+        class:="size-3 absolute top-1 right-1 animate-spin"
+        x-show:="timer"
+    />
+
+    <x::icon
+        name="checkbox-circle-line"
+        class:="size-3 absolute top-1 right-1 text-emerald-600 dark:text-emerald-300"
+        x-show:="success"
+    />
+
+    <x::icon
+        name="error-warning-line"
+        class:="size-3 absolute top-1 right-1 text-rose-600 dark:text-rose-300"
+        x-show:="error"
+    />
+
+    {{ children|raw }}
+
+    <div data-response></div>
+</div>

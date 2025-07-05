@@ -5,6 +5,7 @@
     label: label ?? name|title,
     required: (required ?? false)|switch,
     inline: (inline ?? false)|switch,
+    live: (live ?? false)|switch,
     flip: (flip ?? false)|switch,
     value: name
         |split('.')
@@ -36,6 +37,10 @@
     }
 ) %}
 
+{% if live %}
+    <x::live>
+{% endif %}
+
 {% if inline %}
     <x::grid class:="border-1 rounded-input !gap-0" split="{{ split ?? '4/8' }}">
         <label for="{{ id }}" class="px-4 py-2 text-fore-300 {{ 'border-l-1 order-last'|if((flip ?? false)|switch) }}">
@@ -47,6 +52,7 @@
             type="text"
             size="1"
             name="{{ name }}"
+            value="{{ value }}"
             placeholder="{{ eg }}"
             {{ (pattern ?? null)|attr('pattern') }}
             {{ 'required'|if(required) }}
@@ -70,4 +76,8 @@
         {{ (pattern ?? null)|attr('pattern') }}
         {{ 'required'|if(required) }}
     />
+{% endif %}
+
+{% if live %}
+    </x::live>
 {% endif %}
