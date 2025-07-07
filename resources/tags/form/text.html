@@ -30,7 +30,7 @@
 {% set id = 'id' ~ random() %}
 
 {% set classes = styling(
-    'px-4 w-full relative',
+    'px-4 w-full relative border-edge',
     {
         'border-l-1': inline,
         'mb-4 border-1 rounded-input': not inline,
@@ -65,7 +65,7 @@
 </script>
 
 {% if inline %}
-    <x:form:label class:="border-1 rounded-input flex">
+    <x:form:label class:="border-edge border-1 rounded-input flex">
         <div class="px-4 py-2 text-fore-300 text-nowrap">
             {{ label }} {% if required %}<span class="text-halt">*</span>{% endif %}
         </div>

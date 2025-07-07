@@ -61,7 +61,7 @@
 </x:form:label>
 <div
     x-data="hFormNumber({value: {{ value ?? 'null' }}, timeout: {{ timeout }}})"
-    class="flex items-center max-w-128 min-w-24 border-1 mb-4"
+    class="flex items-center max-w-128 min-w-24 border-edge border-1 mb-4"
 >
     <i::icon
         x-on:mousedown:="change({{ step }} * -1)"
