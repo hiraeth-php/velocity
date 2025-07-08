@@ -1,0 +1,27 @@
+{% do require(['name', 'scripts']) %}
+
+{% if app.hasFile('storage/public/scripts/' ~ name ~ '.js') %}
+    {% if not (copy ?? false)|switch %}
+        <script
+            {{ 'defer'|if((defer ?? false)|switch)}}
+            src="/storage/scripts/{{ name }}.js"
+        ></script>
+    {% endif %}
+
+{% else %}
+    {% set bundle = app.getFile('storage/public/scripts/' ~ name ~ '.js', true).openFile('w') %}
+
+    {% for local, origin in scripts %}
+        {% set partial = app.getFile('public' ~ local).openFile('r') %}
+
+        {% if not (copy ?? false)|switch %}
+            <script
+                {{ 'defer'|if((defer ?? false)|switch)}}
+                src="{{ local }}"
+                data-origin="{{ origin }}"
+            ></script>
+        {% endif %}
+
+        {% do bundle.fwrite(partial.fread(partial.size)) %}
+    {% endfor %}
+{% endif %}
