@@ -2,10 +2,15 @@
 
 {% do default({
     cols: '/' in split ? split|split('/')|sum : '12',
-    splits: '/' in split ? split|split('/') : [(12 / split)]
+    splits: '/' in split ? split|split('/') : [(12 / split)],
+    gap: gap ?? null,
 }) %}
 
-<div class="grid grid-cols-{{ cols }} gap-4">
+{% set classes = styling({
+    ('gap-' ~ gap): gap
+}) %}
+
+<div class="grid grid-cols-{{ cols }} {{ classes }}">
     {% for i, child in children %}
         <x:: class:="col-span-{{ splits[i % splits|length] }}">
            {{ child|raw }}

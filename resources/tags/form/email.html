@@ -36,8 +36,8 @@
 ) %}
 
 {% if inline %}
-    <t:form:label class:="border-1 rounded-input flex">
-        <div class="px-4 py-2 text-fore-300 text-nowrap">
+    <x:form:label class:="border-1 rounded-input flex">
+        <div class="px-4 py-2 text-head text-nowrap">
             {{ label }} {% if required %}<span class="text-halt">*</span>{% endif %}
         </div>
         <input
@@ -48,14 +48,14 @@
             placeholder="{{ eg }}"
             {{ 'required'|if(required) }}
         />
-    </t:form:label>
+    </x:form:label>
 {% else %}
-    <t:form:label for="{{ id }}">
+    <x:form:label for="{{ id }}">
         {{ label }}
         {% if required %}
             <span class="text-halt">*</span>
         {% endif %}
-    </t:form:label>
+    </x:form:label>
     <input
         id="{{ id }}"
         class="{{ classes }}"

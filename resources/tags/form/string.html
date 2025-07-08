@@ -43,7 +43,7 @@
 
 {% if inline %}
     <x::grid class:="mb-4 border-edge border-1 rounded-input !gap-0" split="{{ split ?? '4/8' }}">
-        <label for="{{ id }}" class="px-4 py-2 text-fore-300 {{ 'border-edge border-l-1 order-last'|if((flip ?? false)|switch) }}">
+        <label for="{{ id }}" class="px-4 py-2 text-head {{ 'border-edge border-l-1 order-last'|if((flip ?? false)|switch) }}">
             {{ label }} {% if required %}<span class="text-halt">*</span>{% endif %}
         </label>
         <input
