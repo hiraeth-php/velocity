@@ -1,25 +1,33 @@
+{% do default({
+    lines: lines ?? 6
+}) %}
 <script>
     function pClamped() {
         return {
-            expandable: false,
-            expanded: false,
+            container: null,
+            expandable: true,
             init() {
-                const container = this.$el.firstChild;
+                this.container = this.$el.firstChild;
 
-                if (container.scrollHeight > container.clientHeight) {
-                    this.expandable = true;
-                    this.expanded   = false;
-                }
+                setTimeout(() => {
+                    if (this.container.scrollHeight <= this.container.clientHeight) {
+                        this.expand();
+                    }
+                }, 300);
+            },
+            expand() {
+                this.container.classList.remove('line-clamp-{{ lines }}');
+                this.expandable = false;
             }
         };
     }
 </script>
 
 <div x-data="pClamped">
-    <div class="line-clamp-{{ lines ?? 6 }}" x-bind:class="{'!line-clamp-none': expanded}">
+    <div class="line-clamp-{{ lines }}">
         {{ children|raw }}
     </div>
-    <div x-show="expandable && !expanded" x-on:click="expanded = true" class="text-center p-2 mt-2 border-t-1 border-dotted text-push uppercase text-sm cursor-pointer">
+    <div x-show="expandable" x-on:click="expand" class="text-center p-2 mt-2 border-t-1 border-dotted text-push uppercase text-sm cursor-pointer">
         Expand
     </div>
 </div>
