@@ -24,11 +24,12 @@
     </body>
     <script>
         const __vHoist = function(content, meta) {
-            let parser = new DOMParser();
-            let dom    = parser.parseFromString(content, 'text/html');
+            let parser   = new DOMParser();
+            let fragment = parser.parseFromString(content, 'text/html');
+            let title    = fragment.querySelector('title');
 
             ['script', 'style'].forEach((type) => {
-                dom.querySelectorAll(type).forEach((node) => {
+                fragment.querySelectorAll(type).forEach((node) => {
                     if ('hash' in node.dataset) {
                         let hash = node.dataset.hash;
 
@@ -47,11 +48,11 @@
                 });
             });
 
-            dom.querySelectorAll('meta[http-equiv]').forEach((node) => {
+            fragment.querySelectorAll('meta[http-equiv]').forEach((node) => {
                 meta[node.httpEquiv.toLowerCase()] = node.content;
             });
 
-            return dom.body.innerHTML;
+            return (title ? title.outerHTML : '') + fragment.body.innerHTML;
         };
 
         window.hashLoads = Array.from(document.querySelectorAll('script[data-hash]'))
