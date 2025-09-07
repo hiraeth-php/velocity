@@ -8,18 +8,18 @@
 {% set classes = styling({
     'border-1': ghost,
     'p-4': boxed or ghost,
-    'pl-12': icon and (boxed or ghost),
-    'pl-8': icon and not (boxed or ghost),
     ('text-' ~ color): color and (ghost or not boxed),
     ('bg-' ~ color): color and (boxed and not ghost),
 }) %}
 
-<div role="alert" class="relative font-message rounded-message mb-4 {{ classes }}">
+<div role="alert" class="flex gap-[1ch] font-message rounded-message mb-4 {{ classes }}">
     {% if icon %}
         <i::icon
             name="{{ icon }}"
-            class:="size-6 absolute {{ (boxed or ghost) ? 'left-3 top-4.25' : 'left-0' }}"
+            class:="size-[1.5em]"
         />
     {% endif %}
-    {{ children|raw }}
+    <div>
+        {{ children|raw }}
+    </div>
 </div>
