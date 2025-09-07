@@ -1,33 +1,45 @@
 {% do default({
-    lines: lines ?? 6
+    label: label ?? 'Expand',
+    lines: lines ?? 6,
+    auto: (auto ?? true)|switch
 }) %}
+
+{% set classes = styling({
+    'hidden': lines == 0,
+    ('line-clamp-' ~ lines): lines > 0,
+}) %}
+
 <script>
-    function pClamped() {
+    function pClamped(options) {
         return {
             container: null,
+            automatic: options.auto,
             expandable: true,
             init() {
                 this.container = this.$el.firstChild;
 
                 setTimeout(() => {
-                    if (this.container.scrollHeight <= this.container.clientHeight) {
+                    if (this.automatic && this.container.scrollHeight <= this.container.clientHeight) {
                         this.expand();
                     }
                 }, 300);
             },
             expand() {
                 this.container.classList.remove('line-clamp-{{ lines }}');
+                this.container.classList.remove('hidden');
                 this.expandable = false;
             }
         };
     }
 </script>
 
-<div x-data="pClamped">
-    <div class="line-clamp-{{ lines }}">
+<div x-data="pClamped({
+    auto: {{ auto }}
+})">
+    <div class="{{ classes }}">
         {{ children|raw }}
     </div>
-    <div x-show="expandable" x-on:click="expand" class="text-center p-2 mt-2 border-t-1 border-dotted text-push uppercase text-sm cursor-pointer">
-        Expand
-    </div>
+    <button x-show="expandable" x-on:click="expand" class="block w-full text-center p-2 mt-2 border-t-1 border-dotted text-push uppercase text-sm cursor-pointer">
+        {{ label }}
+    </button>
 </div>

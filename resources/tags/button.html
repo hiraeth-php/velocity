@@ -1,6 +1,7 @@
 {% do default({
 	url: url ?? null,
 	text: text ?? 'Click',
+    link: (link ?? false)|switch,
 	naked: (naked ?? false)|switch,
 	ghost: (ghost ?? false)|switch,
 }) %}
@@ -24,7 +25,7 @@
     {% endif %}
 {% endset %}
 
-{% if url %}
+{% if url or link %}
     <a class="{{ classes }}" href="{{ url }}">
         {{ content }}
     </a>
