@@ -5,6 +5,7 @@
     min: min ?? 1,
     max: max ?? 10,
     step: step ?? 1,
+    scale: scale ?? [],
     value: name
         |split('.')
         |reduce(
@@ -25,8 +26,21 @@
         |first
 }) %}
 
+{% set classes = styling({
+    'mb-4': not scale|length
+}) %}
+
 <x:form:label>
     {{ label }}
 </x:form:label>
-<input type="range" name="{{ name }}" step="{{ step }}" min="{{ min }}" max="{{ max }}" value="{{ value }}" class="mb-4" />
+<input type="range" name="{{ name }}" step="{{ step }}" min="{{ min }}" max="{{ max }}" value="{{ value }}" class="{{ classes }}" />
+{% if scale %}
+    <div class="flex w-full justify-between text-xs mb-4">
+        {% for k in range(min, max, step) %}
+            {% if scale[k] is defined %}
+                <span>{{ scale[k] }}</span>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}
 

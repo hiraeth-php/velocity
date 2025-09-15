@@ -1,10 +1,8 @@
 {% do default({
     type: type ?? 'submit',
-    text: text ?? 'Submit',
-    ghost: (ghost ?? false)|switch,
-    naked: (naked ?? false)|switch,
+    text: text ?? 'Submit'
 }) %}
 
-<x::button type:="{{ type }}" text="{{ text }}" ghost="{{ ghost }}" naked="{{ naked }}" data-thing:="{{ false|switch }}">
+<x::button type:="{{ type }}" text="{{ text }}" ghost... naked...>
     {{ children|raw }}
 </x::button>
