@@ -1,0 +1,84 @@
+{% do require(["name"], ["method"]) %}
+
+{% do default({
+    eg: eg ?? null,
+    label: label ?? name|title,
+    required: (required ?? false)|switch,
+    inline: (inline ?? false)|switch,
+    live: (live ?? false)|switch,
+    flip: (flip ?? false)|switch,
+    value: name
+        |split('.')
+        |reduce(
+            (n, v, k) => [
+                n[0].(v) ?? null,
+                n[1].(v) ?? null,
+                n[2]
+            ],
+            [
+                context.request.method == 'GET'
+                    ? context.request.queryParams
+                    : context.request.parsedBody,
+                context.model ?? null,
+                value ?? null
+            ]
+        )
+        |filter((v) => v is not null)
+        |first
+}) %}
+
+{% set id = 'id' ~ random() %}
+{% set value = value ? value|date('Y-m-d') : '' %}
+
+{% set classes = styling(
+    'p-2 w-full border-edge',
+    {
+        'border-l-1': inline and not flip,
+        'mb-4 border-1 rounded-input': not inline
+    }
+) %}
+
+{% if live %}
+    <x::live>
+{% endif %}
+
+{% if inline %}
+    <x::grid class:="mb-4 border-edge border-1 rounded-input !gap-0" split="{{ split ?? '4/8' }}">
+        <label for="{{ id }}" class="px-4 py-2 text-head {{ 'border-edge border-l-1 order-last'|if((flip ?? false)|switch) }}">
+            {{ label }} {% if required %}<span class="text-halt">*</span>{% endif %}
+        </label>
+        <input
+            id="{{ id }}"
+            class="{{ classes }}"
+            type="date"
+            size="1"
+            name="{{ name }}"
+            value="{{ value }}"
+            placeholder="{{ eg }}"
+            {{ (pattern ?? null)|attr('pattern') }}
+            {{ 'required'|if(required) }}
+        />
+    </x::grid>
+{% else %}
+    <x:form:label for="{{ id }}">
+        {{ label }}
+        {% if required %}
+            <span class="text-halt">*</span>
+        {% endif %}
+    </x:form:label>
+    <input
+        id="{{ id }}"
+        class="{{ classes }}"
+        type="date"
+        size="1"
+        name="{{ name }}"
+        value="{{ value }}"
+        placeholder="{{ eg }}"
+        {{ (pattern ?? null)|attr('pattern') }}
+        {{ 'required'|if(required) }}
+    />
+{% endif %}
+
+{% if live %}
+    </x::live>
+{% endif %}

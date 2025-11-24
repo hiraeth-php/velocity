@@ -79,7 +79,13 @@
         />
     </x:form:label>
 {% else %}
-    <x:form:label for="{{ id }}">
+    <x:form:label
+        for="{{ id }}"
+        {% if label == "!" %}
+            class:="hidden"
+        {% endif %}
+
+    >
         {{ label }}
         {% if required %}
             <span class="text-halt">*</span>
@@ -99,6 +105,9 @@
             rows="{{ lines }}"
             placeholder="{{ eg }}"
             {{ 'required'|if(required) }}
+            {% if context['x-model'] ?? false %}
+                x-model="{{ context['x-model'] }}"
+            {% endif %}
             {% if maxlength %}
                 maxlength="{{ maxlength }}"
             {% endif %}
