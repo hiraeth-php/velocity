@@ -24,14 +24,6 @@
         |first
 }) %}
 
-{% set content %}
-    {% if children|length %}
-        {{ children|raw }}
-    {% else %}
-        {{ label }}
-    {% endif %}
-{% endset %}
-
 <x:form:label class:="flex items-start mb-4">
     <input
         type="checkbox"
@@ -42,6 +34,6 @@
         {{ 'disabled'|if(disabled) }}
     />
     <span>
-        {{ content }}
+        {{ (children|length ? children : label)|raw }}
     </span>
 </x:form:label>

@@ -31,7 +31,7 @@
 }) %}
 
 <x:form:label>
-    {{ label }}
+    {{ (children|length ? children : label)|raw }}
 </x:form:label>
 <input type="range" name="{{ name }}" step="{{ step }}" min="{{ min }}" max="{{ max }}" value="{{ value }}" class="{{ classes }}" />
 {% if scale %}

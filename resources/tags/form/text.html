@@ -67,7 +67,10 @@
 {% if inline %}
     <x:form:label class:="border-edge border-1 rounded-input flex">
         <div class="px-4 py-2 text-head text-nowrap">
-            {{ label }} {% if required %}<span class="text-halt">*</span>{% endif %}
+            {{ (children|length ? children : label)|raw }}
+            {% if required %}
+                <span class="text-halt">*</span>
+            {% endif %}
         </div>
         <input
             class="{{ classes }}"
@@ -86,7 +89,7 @@
         {% endif %}
 
     >
-        {{ label }}
+        {{ (children|length ? children : label)|raw }}
         {% if required %}
             <span class="text-halt">*</span>
         {% endif %}

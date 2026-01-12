@@ -47,7 +47,7 @@
 >
     {% for i, child in children|split(';')|map(v => v|trim) %}
         <span class="block relative transition-[top] duration-[300ms]">
-            {{ child }}
+            {{ child|raw }}
         </span>
     {% endfor %}
 </span>

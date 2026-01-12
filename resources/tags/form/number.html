@@ -57,7 +57,7 @@
 </script>
 
 <x:form:label>
-    {{ label }}
+    {{ (children|length ? children : label)|raw }}
 </x:form:label>
 <div
     x-data="hFormNumber({value: {{ value ?? 'null' }}, timeout: {{ timeout }}})"
