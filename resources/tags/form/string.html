@@ -38,11 +38,11 @@
 ) %}
 
 {% if live %}
-    <x::live>
+    <x:live>
 {% endif %}
 
 {% if inline %}
-    <x::grid class:="mb-4 border-edge border-1 rounded-input !gap-0" split="{{ split ?? '4/8' }}">
+    <x:grid class:="mb-4 border-edge border-1 rounded-input !gap-0" split="{{ split ?? '4/8' }}">
         <label for="{{ id }}" class="px-4 py-2 text-head {{ 'border-edge border-l-1 order-last'|if((flip ?? false)|switch) }}">
             {{ (children|length ? children : label)|raw }}
             {% if required %}
@@ -60,7 +60,7 @@
             {{ (pattern ?? null)|attr('pattern') }}
             {{ 'required'|if(required) }}
         />
-    </x::grid>
+    </x:grid>
 {% else %}
     <x:form:label for="{{ id }}">
         {{ (children|length ? children : label)|raw }}
@@ -82,5 +82,5 @@
 {% endif %}
 
 {% if live %}
-    </x::live>
+    </x:live>
 {% endif %}

@@ -40,18 +40,18 @@
         x-bind:class="{ 'opacity-30': cursor == 0 }"
         class="min-w-5% grow-0 text-push cursor-pointer"
     >
-        <x::icon name="arrow-left-wide-line" />
+        <x:icon name="arrow-left-wide-line" />
     </button>
     <section class="flex overflow-scroll no-scrollbar">
-        <x:: class:="w-full shrink-0 m-0">
+        <x class:="w-full shrink-0 m-0">
             {{ children|raw }}
-        </x::>
+        </x>
     </section>
     <button
         x-on:click="next($event)"
         x-bind:class="{ 'opacity-30': cursor == items.length - 1 }"
         class="min-w-5% grow-0 text-push cursor-pointer"
     >
-        <x::icon name="arrow-right-wide-line" />
+        <x:icon name="arrow-right-wide-line" />
     </button>
 </div>

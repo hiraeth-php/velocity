@@ -6,7 +6,7 @@
             {{ children|raw }}
         {% else %}
             {% if icon|default(false) %}
-                <i::icon class:="w-6" name="{{ icon }}" color="{{ color|default('white') }}" />
+                <x:icon class:="w-6" name="{{ icon }}" color="{{ color|default('white') }}" />
             {% endif %}
             <span class="block mt-1 text-xs">
                 {{ text|default('Unknown') }}

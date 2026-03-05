@@ -12,8 +12,8 @@
 
 <div class="grid grid-cols-{{ cols }} {{ classes }}">
     {% for i, child in children %}
-        <x:: class:="col-span-{{ splits[i % splits|length] }}">
+        <x class:="col-span-{{ splits[i % splits|length] }}">
            {{ child|raw }}
-        </x::>
+        </x>
     {% endfor %}
 </div>
