@@ -1,6 +1,7 @@
 {% do default({
 	url: url ?? null,
 	text: text ?? 'Click',
+    type: type ?? 'button',
     link: (link ?? false)|switch,
 	naked: (naked ?? false)|switch,
 	ghost: (ghost ?? false)|switch,
@@ -30,7 +31,7 @@
         {{ content }}
     </a>
 {% else %}
-    <button class="{{ classes }}">
+    <button type="{{ type }}" class="{{ classes }}">
         {{ content }}
     </button>
 {% endif %}
