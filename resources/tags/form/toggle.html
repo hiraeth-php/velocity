@@ -1,0 +1,44 @@
+{% do require(['value', 'name']) %}
+
+{% do default({
+    label: label ?? name|title,
+    disabled: (disabled ?? false)|switch,
+    selected: name
+        |trim('[]')
+        |split('.')
+        |reduce(
+            (n, v, k) => [
+                n[0].(v) ?? null,
+                n[1].(v) ?? null,
+                n[2]
+            ],
+            [
+                context.request.method == 'GET'
+                    ? context.request.queryParams
+                    : context.request.parsedBody,
+                context.model ?? null,
+                selected ?? (checked ?? false)|switch ? [value] : []
+            ]
+        )
+        |filter((v) => v is not null)
+        |first
+}) %}
+
+<x:form:label class:="flex mb-4 gap-4">
+    <input
+        type="checkbox"
+        name="{{ name }}"
+        value="{{ value }}"
+        {{ 'checked'|if(value in selected) }}
+        class="peer sr-only"
+        {{ 'disabled'|if(disabled) }}
+    />
+    <div class="grow">
+        {{ (children|length ? children : label)|raw }}
+    </div>
+    <div class="peer shrink-0 h-[1.5em] w-[calc(3em-6px)] rounded-full relative bg-gray-300 after:absolute after:left-[3px] after:top-[3px] after:h-[calc(1.5em-6px)] after:w-[calc(1.5em-6px)] after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-play peer-checked:after:translate-x-full peer-checked:after:border-white"></div>
+</x:form:label>
+
+
+
+
